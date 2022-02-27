@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>API Decorators &#8212; Zeno</title>
+    <title>Command Line &#8212; Zeno</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -53,7 +53,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Markdown Files" href="markdown.html" />
+    <link rel="next" title="Interface" href="interface.html" />
+    <link rel="prev" title="Decorator Functions" href="decorators.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -93,19 +94,24 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="intro.html">
-   Welcome to your Jupyter Book
+   Zeno
   </a>
  </li>
 </ul>
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="markdown.html">
-   Markdown Files
+  <a class="reference internal" href="decorators.html">
+   Decorator Functions
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   API Decorators
+   Command Line
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="interface.html">
+   Interface
   </a>
  </li>
 </ul>
@@ -165,11 +171,11 @@ const thebe_selector_output = ".output, .cell_output"
         aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
     <div class="dropdown-buttons sourcebuttons">
         <a class="repository-button"
-            href="https://cabreraalex.github.io/zeno/"><button type="button" class="btn btn-secondary topbarbtn"
+            href="https://github.com/cabreraalex/zeno/"><button type="button" class="btn btn-secondary topbarbtn"
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://cabreraalex.github.io/zeno//issues/new?title=Issue%20on%20page%20%2Fapi.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/cabreraalex/zeno//issues/new?title=Issue%20on%20page%20%2Fapi.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -195,14 +201,9 @@ const thebe_selector_output = ".output, .cell_output"
             </div>
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   API Decorators
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#module-zeno.zeno">
-   Internal API
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Named Arguments">
+   Named Arguments
   </a>
  </li>
 </ul>
@@ -215,7 +216,7 @@ const thebe_selector_output = ".output, .cell_output"
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>API Decorators</h1>
+                <h1>Command Line</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -225,14 +226,9 @@ const thebe_selector_output = ".output, .cell_output"
                         </div>
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   API Decorators
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#module-zeno.zeno">
-   Internal API
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Named Arguments">
+   Named Arguments
   </a>
  </li>
 </ul>
@@ -244,169 +240,46 @@ const thebe_selector_output = ".output, .cell_output"
             
               <div>
                 
-  <div class="section" id="module-zeno">
-<span id="api-decorators"></span><h1>API Decorators<a class="headerlink" href="#module-zeno" title="Permalink to this headline">¶</a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="zeno.load_data">
-<span class="sig-name descname"><span class="pre">load_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/api.html#load_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.load_data" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="zeno.load_model">
-<span class="sig-name descname"><span class="pre">load_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/api.html#load_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.load_model" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="zeno.metric">
-<span class="sig-name descname"><span class="pre">metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/api.html#metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.metric" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="zeno.slicer">
-<span class="sig-name descname"><span class="pre">slicer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metrics</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/api.html#slicer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.slicer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decorator for slicing functions</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>metrics</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]) – A metric or [tranform, metric] tuple.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="zeno.transform">
-<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/api.html#transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.transform" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+  <div class="section" id="command-line">
+<h1>Command Line<a class="headerlink" href="#command-line" title="Permalink to this headline">¶</a></h1>
+<p><p>Evaluate ML systems.</p>
+</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">zeno</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">test</span><span class="o">-</span><span class="n">files</span> <span class="n">TEST_FILES</span> <span class="p">[</span><span class="n">TEST_FILES</span> <span class="o">...</span><span class="p">]]</span>
+            <span class="p">[</span><span class="o">--</span><span class="n">metadata</span> <span class="n">METADATA</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">models</span> <span class="n">MODELS</span> <span class="p">[</span><span class="n">MODELS</span> <span class="o">...</span><span class="p">]]</span>
+            <span class="p">[</span><span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="n">path</span> <span class="p">[</span><span class="n">DATA_PATH</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="n">cache</span><span class="o">-</span><span class="n">path</span> <span class="p">[</span><span class="n">CACHE_PATH</span><span class="p">]]</span>
+            <span class="p">[</span><span class="o">--</span><span class="nb">id</span><span class="o">-</span><span class="n">column</span> <span class="p">[</span><span class="n">ID_COLUMN</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="n">batch</span><span class="o">-</span><span class="n">size</span> <span class="p">[</span><span class="n">BATCH_SIZE</span><span class="p">]]</span>
+</pre></div>
 </div>
-<div class="section" id="module-zeno.zeno">
-<span id="internal-api"></span><h1>Internal API<a class="headerlink" href="#module-zeno.zeno" title="Permalink to this headline">¶</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="zeno.zeno.Metric">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/zeno.html#Metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.zeno.Metric" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="zeno.zeno.Result">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sli</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slice_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/zeno.html#Result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.zeno.Result" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>metric</strong> (<em>str</em>) – </p></li>
-<li><p><strong>transform</strong> (<em>str</em>) – </p></li>
-<li><p><strong>sli</strong> (<em>str</em>) – </p></li>
-<li><p><strong>slice_size</strong> (<em>int</em>) – </p></li>
-</ul>
+<div class="section" id="Named Arguments">
+<h2>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h2>
+<dl class="option-list">
+<dt><kbd>--test-files</kbd></dt>
+<dd><p>Python files with annotated functions such as slicers and metrics.</p>
+</dd>
+<dt><kbd>--metadata</kbd></dt>
+<dd><p>CSV with metadata for each instance.</p>
+</dd>
+<dt><kbd>--models</kbd></dt>
+<dd><p>Paths to models for testing</p>
+</dd>
+<dt><kbd>--data-path</kbd></dt>
+<dd><p>Folder with data instances identifiedby the id-column option in the metadata file.</p>
+<p>Default: “”</p>
+</dd>
+<dt><kbd>--cache-path</kbd></dt>
+<dd><p>Folder for caching results of slicers and metrics.</p>
+<p>Default: “./.zeno_cache/”</p>
+</dd>
+<dt><kbd>--id-column</kbd></dt>
+<dd><p>Column with the ID used retrieve data files AND for caching</p>
+<p>Default: “id”</p>
+</dd>
+<dt><kbd>--batch-size</kbd></dt>
+<dd><p>Batch size of passed model predictions</p>
+<p>Default: 64</p>
 </dd>
 </dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="zeno.zeno.Result.get_model_names">
-<span class="sig-name descname"><span class="pre">get_model_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/zeno.html#Result.get_model_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.zeno.Result.get_model_names" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="zeno.zeno.Result.set_model_outputs">
-<span class="sig-name descname"><span class="pre">set_model_outputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_results</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/zeno.html#Result.set_model_outputs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.zeno.Result.set_model_outputs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="zeno.zeno.Slice">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Slice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tests</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slicer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/zeno.html#Slice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.zeno.Slice" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
-<dt class="sig sig-object py" id="zeno.zeno.Slice.get_name">
-<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/zeno.html#Slice.get_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.zeno.Slice.get_name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="zeno.zeno.Slicer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Slicer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/zeno.html#Slicer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.zeno.Slicer" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>func</strong> (<em>Callable</em>) – </p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="zeno.zeno.Slicer.slice_data">
-<span class="sig-name descname"><span class="pre">slice_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/zeno.html#Slicer.slice_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.zeno.Slicer.slice_data" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="zeno.zeno.Transform">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/zeno.html#Transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.zeno.Transform" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="zeno.zeno.Zeno">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Zeno</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_files</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">models</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'id'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/zeno.html#Zeno"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.zeno.Zeno" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>metadata_path</strong> (<em>str</em>) – </p></li>
-<li><p><strong>test_files</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – </p></li>
-<li><p><strong>models</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – </p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="zeno.zeno.Zeno.get_metadata_path">
-<span class="sig-name descname"><span class="pre">get_metadata_path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/zeno.html#Zeno.get_metadata_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.zeno.Zeno.get_metadata_path" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="zeno.zeno.Zeno.get_metrics">
-<span class="sig-name descname"><span class="pre">get_metrics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/zeno.html#Zeno.get_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.zeno.Zeno.get_metrics" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="zeno.zeno.Zeno.get_results">
-<span class="sig-name descname"><span class="pre">get_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/zeno.html#Zeno.get_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.zeno.Zeno.get_results" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="zeno.zeno.Zeno.get_sample">
-<span class="sig-name descname"><span class="pre">get_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sli</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/zeno.html#Zeno.get_sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.zeno.Zeno.get_sample" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="zeno.zeno.Zeno.get_slice">
-<span class="sig-name descname"><span class="pre">get_slice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sli</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/zeno.html#Zeno.get_slice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.zeno.Zeno.get_slice" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="zeno.zeno.Zeno.get_slicers">
-<span class="sig-name descname"><span class="pre">get_slicers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/zeno.html#Zeno.get_slicers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.zeno.Zeno.get_slicers" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="zeno.zeno.Zeno.get_slices">
-<span class="sig-name descname"><span class="pre">get_slices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/zeno.html#Zeno.get_slices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.zeno.Zeno.get_slices" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="zeno.zeno.Zeno.get_status">
-<span class="sig-name descname"><span class="pre">get_status</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/zeno.html#Zeno.get_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.zeno.Zeno.get_status" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="zeno.zeno.Zeno.set_status">
-<span class="sig-name descname"><span class="pre">set_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">status</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/zeno.html#Zeno.set_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.zeno.Zeno.set_status" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="zeno.zeno.Zeno.start_processing">
-<span class="sig-name descname"><span class="pre">start_processing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/zeno.html#Zeno.start_processing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.zeno.Zeno.start_processing" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+</div>
 </div>
 
     <script type="text/x-thebe-config">
@@ -434,12 +307,19 @@ const thebe_selector_output = ".output, .cell_output"
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="markdown.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="decorators.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Markdown Files</p>
+            <p class="prev-next-title">Decorator Functions</p>
         </div>
+    </a>
+    <a class='right-next' id="next-link" href="interface.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Interface</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
     </a>
 </div>
             
