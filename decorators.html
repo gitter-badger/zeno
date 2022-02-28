@@ -261,7 +261,7 @@ const thebe_selector_output = ".output, .cell_output"
 The subset can be created either from the raw data or metdata DataFrame.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># A list of metric functions or (transform function, metric function) tuples.</span>
 <span class="nd">@slicer</span><span class="p">([</span><span class="s2">&quot;Metric 1&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;Transform 1&quot;</span><span class="p">,</span> <span class="s2">&quot;Metric 1&quot;</span><span class="p">),</span> <span class="s2">&quot;Metric 2&quot;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">slicing_func</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">slicing_func</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
 </pre></div>
 </div>
 <p>Examples:</p>
@@ -274,18 +274,30 @@ The subset can be created either from the raw data or metdata DataFrame.</p>
     <span class="k">return</span> <span class="p">[</span><span class="n">img</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">data</span> <span class="k">if</span> <span class="n">img</span><span class="o">.</span><span class="n">brightness</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.1</span><span class="p">]</span>
 </pre></div>
 </div>
+<p><strong>Transform</strong></p>
+<p>Functions with the <code class="docutils literal notranslate"><span class="pre">transform</span></code> decorator return a list of transformed data.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@transform</span>
+<span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">DataFrame</span><span class="p">:</span>
+</pre></div>
+</div>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@transform</span>
+<span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="n">images</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">img</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">images</span><span class="p">]</span>
+</pre></div>
+</div>
 <p><strong>Metric</strong></p>
 <p>Functions with the <code class="docutils literal notranslate"><span class="pre">metric</span></code> decorator return a float between 0 and 1.
 Metrics can be classic functions such as accuracy, or specific measures such as switch percentage or word prevalence.
 Optionally, metric functions can take the original output and metadata for instances that had a transformation applied to calculate metrics such as switch percentage.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@metric</span>
-<span class="k">def</span> <span class="nf">metric_func</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">metric_func</span><span class="p">(</span><span class="n">output</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 
 <span class="nd">@metric</span>
-<span class="k">def</span> <span class="nf">metric_func</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">orig_output</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">metric_func</span><span class="p">(</span><span class="n">output</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">orig_output</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 
 <span class="nd">@metric</span>
-<span class="k">def</span> <span class="nf">metric_func</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">orig_output</span><span class="p">,</span> <span class="n">orig_metadata</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">metric_func</span><span class="p">(</span><span class="n">output</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">orig_output</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">orig_metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 </pre></div>
 </div>
 <p>Examples:</p>
@@ -315,9 +327,10 @@ Optionally, metric functions can take the original output and metadata for insta
 </pre></div>
 </div>
 <p><strong>Load Data</strong></p>
-<p>Functions with the <code class="docutils literal notranslate"><span class="pre">load_data</span></code> decorator should return a list of data instances, e.g. images or text strings, that can be predicted by the function returned from <code class="docutils literal notranslate"><span class="pre">load_model</span></code>.</p>
+<p>Functions with the <code class="docutils literal notranslate"><span class="pre">load_data</span></code> decorator should return a list of data instances, e.g. images or text strings, that can be predicted by the function returned from <code class="docutils literal notranslate"><span class="pre">load_model</span></code>.
+To get the column with ID labels, use <code class="docutils literal notranslate"><span class="pre">metadata.index</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@load_data</span>
-<span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="n">metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">id_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span>
+<span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="n">metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">data_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>Examples:</p>
