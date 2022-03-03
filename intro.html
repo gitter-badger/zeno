@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Zeno &#8212; Zeno</title>
+    <title>ML Testing with Zeno &#8212; Zeno</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -51,9 +51,10 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Decorator Functions" href="decorators.html" />
+    <link rel="next" title="Writing Tests" href="decorators.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -91,27 +92,129 @@ const thebe_selector_output = ".output, .cell_output"
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item active">
         <ul class="nav bd-sidenav">
- <li class="toctree-l1 current">
-  <a class="reference internal" href="#">
-   Zeno
-  </a>
- </li>
-</ul>
-<ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="decorators.html">
-   Decorator Functions
+   Writing Tests
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="api.html">
-   Command Line
+   Running Tests
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="interface.html">
-   Interface
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="example_test_functions.html">
+   Example Test Functions
   </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="model_loaders/model_loaders.html">
+     Model Loaders
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+    <label for="toctree-checkbox-2">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="model_loaders/pytorch.html">
+       Pytorch Loader
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="data_loaders/data_loaders.html">
+     Data Loaders
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="data_loaders/image_loader.html">
+       Image Loader
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="slicers/slicers.html">
+     Slicers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="slicers/images.html">
+       Image Slicers
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="transforms/transforms.html">
+     Transforms
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+    <label for="toctree-checkbox-5">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="transforms/images.html">
+       Image Transforms
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="metrics/metrics.html">
+     Metrics
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="metrics/classification.html">
+       Classification
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="example_analyses/example_analyses.html">
+   Example Analyses
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="example_analyses/cifar.html">
+     CIFAR Analysis Example
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -220,7 +323,7 @@ const thebe_selector_output = ".output, .cell_output"
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Zeno</h1>
+                <h1>ML Testing with Zeno</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -249,22 +352,101 @@ const thebe_selector_output = ".output, .cell_output"
             
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="zeno">
-<h1>Zeno<a class="headerlink" href="#zeno" title="Permalink to this headline">¶</a></h1>
+  <div class="tex2jax_ignore mathjax_ignore section" id="ml-testing-with-zeno">
+<h1>ML Testing with Zeno<a class="headerlink" href="#ml-testing-with-zeno" title="Permalink to this headline">¶</a></h1>
 <p>Zeno is an API and interface for evaluating machine learning models.
 You first define how you expect a model to behave for subsets of data, and optionally after transformations.
 The UI then allows you to explore and compare the results across models.</p>
+<div class="sphinx-bs container pb-4 docutils">
+<div class="row docutils">
+<div class="d-flex col-lg-6 col-md-6 col-sm-6 col-xs-12 p-2 docutils">
+<div class="card w-100 border-2 docutils">
+<div class="card-header docutils">
+<p class="card-text">Write simple <code class="docutils literal notranslate"><span class="pre">slicing</span></code> and <code class="docutils literal notranslate"><span class="pre">metric</span></code> functions:</p>
+</div>
+<div class="card-body docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@slicer</span><span class="p">([</span><span class="s2">&quot;accuracy&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">medium_sample</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">metad</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">metad</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">index</span>
+
+<span class="nd">@metric</span>
+<span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">metad</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">metad</span><span class="p">[</span>
+           <span class="n">metad</span><span class="p">[</span><span class="s2">&quot;lab&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">out</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+           <span class="o">/</span> <span class="p">(</span><span class="n">metad</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="mi">100</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="d-flex col-lg-6 col-md-6 col-sm-6 col-xs-12 p-2 docutils">
+<div class="card w-100 border-2 docutils">
+<div class="card-header docutils">
+<p class="card-text">Analyze &amp; compare models with a powerful UI:</p>
+</div>
+<div class="card-body docutils">
+<p class="card-text"><img alt="teaser" src="_images/teaser.png" /></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The tests are connected as follows. Slices are optionally passed to transforms, which are then passed to have metrics calculated.</p>
+<a class="reference internal image-reference" href="_images/flow.png"><img alt="flow" class="align-center" src="_images/flow.png" style="width: 400px;" /></a>
 <div class="section" id="quickstart">
 <h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h2>
-<p>Write functions.</p>
+<p>Install <a class="reference external" href="https://python-poetry.org/">Poetry</a>, clone the repository, and install Zeno:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/cabreraalex/zeno
+<span class="nb">cd</span> zeno
+poetry install
+</pre></div>
+</div>
+<p>Next, create at least one testing file with both a <code class="docutils literal notranslate"><span class="pre">load_model</span></code> and <code class="docutils literal notranslate"><span class="pre">load_data</span></code> function.
+Additionally add any number of tests using the <code class="docutils literal notranslate"><span class="pre">slicer</span></code>, <code class="docutils literal notranslate"><span class="pre">transform</span></code> and <code class="docutils literal notranslate"><span class="pre">metric</span></code> functions.
+See <a class="reference internal" href="decorators.html#writing-tests"><span class="std std-ref">Writing Tests</span></a> for details on each of these functions.</p>
+<p>Run the tests and load the ui with the zeno command using Poetry:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry run zeno
+    --test_files test.py
+    --metadata data.csv
+    --data-path data
+    --models model.pth
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="api.html#api"><span class="std std-ref">Running Tests</span></a> for the various command line options.</p>
 </div>
 <div class="section" id="table-of-contents">
 <h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="decorators.html">Decorator Functions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">Command Line</a></li>
-<li class="toctree-l1"><a class="reference internal" href="interface.html">Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="decorators.html">Writing Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Running Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example_test_functions.html">Example Test Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="model_loaders/model_loaders.html">Model Loaders</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="model_loaders/pytorch.html">Pytorch Loader</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="data_loaders/data_loaders.html">Data Loaders</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="data_loaders/image_loader.html">Image Loader</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="slicers/slicers.html">Slicers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="slicers/images.html">Image Slicers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="transforms/transforms.html">Transforms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="transforms/images.html">Image Transforms</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="metrics/metrics.html">Metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="metrics/classification.html">Classification</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example_analyses/example_analyses.html">Example Analyses</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example_analyses/cifar.html">CIFAR Analysis Example</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -298,7 +480,7 @@ The UI then allows you to explore and compare the results across models.</p>
     <a class='right-next' id="next-link" href="decorators.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Decorator Functions</p>
+        <p class="prev-next-title">Writing Tests</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
