@@ -396,8 +396,8 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 <span class="nd">@slicer</span><span class="p">([</span><span class="s2">&quot;accuracy&quot;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">by_class</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[(</span><span class="n">c</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">]</span>
+<span class="k">def</span> <span class="nf">by_class</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">label_col</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="n">c</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">label_col</span><span class="p">]</span> <span class="o">==</span> <span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">]</span>
 
 
 <span class="nd">@transform</span>
@@ -406,8 +406,8 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 <span class="nd">@metric</span>
-<span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">output</span>
+<span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">label_col</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">metadata</span><span class="p">[</span><span class="n">label_col</span><span class="p">]</span> <span class="o">==</span> <span class="n">output</span>
 </pre></div>
 </div>
 </div>
