@@ -508,9 +508,9 @@ The parameters to the decorator should either be the name of a metric or a tuple
 </div>
 <div class="section" id="transform">
 <h3>Transform<a class="headerlink" href="#transform" title="Permalink to this headline">¶</a></h3>
-<p>Functions with the <code class="docutils literal notranslate"><span class="pre">transform</span></code> decorator take a list of instances and return transformed data and metadata.</p>
+<p>Functions with the <code class="docutils literal notranslate"><span class="pre">transform</span></code> decorator take a list of instances and return transformed data.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@transform</span>
-<span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">DataFrame</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">T</span><span class="p">]:</span>
 </pre></div>
 </div>
 <p>Example:</p>

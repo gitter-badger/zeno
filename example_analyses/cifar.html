@@ -412,24 +412,36 @@ const thebe_selector_output = ".output, .cell_output"
     <span class="k">return</span> <span class="n">metadata</span><span class="o">.</span><span class="n">index</span>
 
 
-<span class="nd">@slicer</span><span class="p">([</span><span class="s2">&quot;accuracy&quot;</span><span class="p">])</span>
+<span class="nd">@slicer</span><span class="p">([</span><span class="s2">&quot;accuracy&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;rotate&quot;</span><span class="p">,</span> <span class="s2">&quot;accuracy&quot;</span><span class="p">)])</span>
 <span class="k">def</span> <span class="nf">low_brightness</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">metadata</span><span class="p">[</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;brightness&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">80</span><span class="p">]</span><span class="o">.</span><span class="n">index</span>
 
 
 <span class="c1"># @slicer([&quot;accuracy&quot;, (&quot;rotate&quot;, &quot;accuracy&quot;)])</span>
-<span class="c1"># def medium_sample(metadata):</span>
-<span class="c1">#     return metadata.sample(100).index</span>
+<span class="c1"># def low_brightness_frog(metadata, label_col):</span>
+<span class="c1">#     return metadata[</span>
+<span class="c1">#         (metadata[&quot;brightness&quot;] &lt; 80) &amp; (metadata[label_col] == &quot;frog&quot;)</span>
+<span class="c1">#     ].index</span>
 
 
 <span class="nd">@slicer</span><span class="p">([</span><span class="s2">&quot;accuracy&quot;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">by_class</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">label_col</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[(</span><span class="n">c</span><span class="p">,</span> <span class="n">metadata</span><span class="p">[</span><span class="n">metadata</span><span class="p">[</span><span class="n">label_col</span><span class="p">]</span> <span class="o">==</span> <span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">]</span>
+<span class="k">def</span> <span class="nf">cat</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">metadata</span><span class="p">[</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;cat&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span>
 
 
-<span class="c1"># @transform</span>
-<span class="c1"># def rotate(data, metadata):</span>
-<span class="c1">#     return [img.rotate(90, PIL.Image.NEAREST, expand=1) for img in data], metadata</span>
+<span class="nd">@slicer</span><span class="p">([</span><span class="s2">&quot;accuracy&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">dog</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">metadata</span><span class="p">[</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;dog&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span>
+
+
+<span class="c1"># @slicer([&quot;accuracy&quot;])</span>
+<span class="c1"># def by_class(metadata, label_col):</span>
+<span class="c1">#     return [(c, metadata[metadata[label_col] == c].index) for c in classes]</span>
+
+
+<span class="nd">@transform</span>
+<span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">img</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="n">PIL</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">NEAREST</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
 
 
 <span class="nd">@metric</span>
