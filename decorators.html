@@ -147,6 +147,11 @@ const thebe_selector_output = ".output, .cell_output"
      </li>
     </ul>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="preprocessors/preprocessors.html">
+     Preprocessors
+    </a>
+   </li>
    <li class="toctree-l2 has-children">
     <a class="reference internal" href="slicers/slicers.html">
      Slicers
@@ -327,6 +332,11 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#preprocess">
+     Preprocess
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#slicer">
      Slicer
     </a>
@@ -385,6 +395,11 @@ const thebe_selector_output = ".output, .cell_output"
    Testing Functions
   </a>
   <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#preprocess">
+     Preprocess
+    </a>
+   </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#slicer">
      Slicer
@@ -453,8 +468,26 @@ You may have as many of the testing functions as you may like.</p>
 </div>
 <div class="section" id="testing-functions">
 <h2>Testing Functions<a class="headerlink" href="#testing-functions" title="Permalink to this headline">¶</a></h2>
-<p>The two core functions for writing tests are <code class="docutils literal notranslate"><span class="pre">slicer</span></code> and <code class="docutils literal notranslate"><span class="pre">metric</span></code> functions.
-<code class="docutils literal notranslate"><span class="pre">slicer</span></code> functions return subsets of data for which certain <code class="docutils literal notranslate"><span class="pre">metric</span></code> functions should be calculated.</p>
+<p>The four core functions for writing tests are <code class="docutils literal notranslate"><span class="pre">preprocess</span></code>, <code class="docutils literal notranslate"><span class="pre">slicer</span></code>, <code class="docutils literal notranslate"><span class="pre">transform</span></code> and <code class="docutils literal notranslate"><span class="pre">metric</span></code>.
+<code class="docutils literal notranslate"><span class="pre">preprocess</span></code> runs a function, e.g. extracting metadata, on each instance.
+The <code class="docutils literal notranslate"><span class="pre">slicer</span></code> function return subsets of data for which certain <code class="docutils literal notranslate"><span class="pre">metric</span></code> functions should be calculated.
+An optional <code class="docutils literal notranslate"><span class="pre">transform</span></code> function can be provided to modify instances before they are passed to the <code class="docutils literal notranslate"><span class="pre">metric</span></code> functions.</p>
+<div class="section" id="preprocess">
+<h3>Preprocess<a class="headerlink" href="#preprocess" title="Permalink to this headline">¶</a></h3>
+<p>Functions with the <code class="docutils literal notranslate"><span class="pre">preprocess</span></code> decorator return a new column derived from the original data and metadata.
+It can be used to extract metadata from an instance</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@preprocess</span>
+<span class="k">def</span> <span class="nf">preprocessor</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Series</span><span class="p">,</span> <span class="n">List</span><span class="p">]:</span>
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@preprocess</span>
+<span class="k">def</span> <span class="nf">get_objects</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">ObjectDetector</span><span class="p">(</span><span class="n">inst</span><span class="p">)</span> <span class="k">for</span> <span class="n">inst</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="preprocessors/preprocessors.html#preprocessors"><span class="std std-ref">Preprocessors</span></a> for real-world examples.</p>
+</div>
 <div class="section" id="slicer">
 <h3>Slicer<a class="headerlink" href="#slicer" title="Permalink to this headline">¶</a></h3>
 <p>Functions with the <code class="docutils literal notranslate"><span class="pre">slicer</span></code> decorator return a subset of data.
@@ -462,17 +495,13 @@ The subset can be created either from the raw data or metdata DataFrame.
 The parameters to the decorator should either be the name of a metric or a tuple specifying a transform function and metric function.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># A list of metric functions or (transform function, metric function) tuples.</span>
 <span class="nd">@slicer</span><span class="p">([</span><span class="s2">&quot;Metric 1&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;Transform 1&quot;</span><span class="p">,</span> <span class="s2">&quot;Metric 1&quot;</span><span class="p">),</span> <span class="s2">&quot;Metric 2&quot;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">slicing_func</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="k">def</span> <span class="nf">slicing_func</span><span class="p">(</span><span class="n">metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
 </pre></div>
 </div>
 <p>Example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@slicer</span><span class="p">([</span><span class="s2">&quot;accuracy&quot;</span><span class="p">,</span> <span class="s2">&quot;false_positive&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;rotate&quot;</span><span class="p">,</span> <span class="s2">&quot;accuracy&quot;</span><span class="p">)])</span>
-<span class="k">def</span> <span class="nf">small_sample</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">metadata</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-
-<span class="nd">@slicer</span><span class="p">([</span><span class="s2">&quot;accuracy&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;brighten&quot;</span><span class="p">,</span> <span class="s2">&quot;switch_percentage&quot;</span><span class="p">)])</span>
-<span class="k">def</span> <span class="nf">dark_images</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">img</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">data</span> <span class="k">if</span> <span class="n">img</span><span class="o">.</span><span class="n">brightness</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.1</span><span class="p">]</span>
+<span class="k">def</span> <span class="nf">small_sample</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">metadata</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">index</span>
 </pre></div>
 </div>
 <p>See <a class="reference internal" href="slicers/slicers.html#slicers"><span class="std std-ref">Slicers</span></a> for real-world examples.</p>

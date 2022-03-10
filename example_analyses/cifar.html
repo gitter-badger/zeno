@@ -146,6 +146,11 @@ const thebe_selector_output = ".output, .cell_output"
      </li>
     </ul>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../preprocessors/preprocessors.html">
+     Preprocessors
+    </a>
+   </li>
    <li class="toctree-l2 has-children">
     <a class="reference internal" href="../slicers/slicers.html">
      Slicers
@@ -324,7 +329,7 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">torchvision.transforms</span> <span class="k">as</span> <span class="nn">transforms</span>
-<span class="kn">from</span> <span class="nn">zeno</span> <span class="kn">import</span> <span class="n">load_data</span><span class="p">,</span> <span class="n">load_model</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">slicer</span><span class="p">,</span> <span class="n">transform</span>
+<span class="kn">from</span> <span class="nn">zeno</span> <span class="kn">import</span> <span class="n">load_data</span><span class="p">,</span> <span class="n">load_model</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">slicer</span><span class="p">,</span> <span class="n">transform</span><span class="p">,</span> <span class="n">preprocess</span>
 
 <span class="n">transform_image</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">(</span>
     <span class="p">[</span><span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">((</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))]</span>
@@ -365,6 +370,23 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="p">)</span>
 
 
+<span class="k">def</span> <span class="nf">get_brightness</span><span class="p">(</span><span class="n">im</span><span class="p">):</span>
+    <span class="n">im_grey</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;LA&quot;</span><span class="p">)</span>  <span class="c1"># convert to grayscale</span>
+    <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">size</span>
+
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
+            <span class="n">total</span> <span class="o">+=</span> <span class="n">im_grey</span><span class="o">.</span><span class="n">getpixel</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">total</span> <span class="o">/</span> <span class="p">(</span><span class="n">width</span> <span class="o">*</span> <span class="n">height</span><span class="p">)</span>
+
+
+<span class="nd">@preprocess</span>
+<span class="k">def</span> <span class="nf">brightness</span><span class="p">(</span><span class="n">images</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">get_brightness</span><span class="p">(</span><span class="n">im</span><span class="p">)</span> <span class="k">for</span> <span class="n">im</span> <span class="ow">in</span> <span class="n">images</span><span class="p">]</span>
+
+
 <span class="c1"># Return a prediction function that returns output given input</span>
 <span class="nd">@load_model</span>
 <span class="k">def</span> <span class="nf">load_model</span><span class="p">(</span><span class="n">model_path</span><span class="p">):</span>
@@ -386,23 +408,28 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 <span class="nd">@slicer</span><span class="p">([</span><span class="s2">&quot;accuracy&quot;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">overall</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">overall</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">metadata</span><span class="o">.</span><span class="n">index</span>
 
 
-<span class="nd">@slicer</span><span class="p">([</span><span class="s2">&quot;accuracy&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;rotate&quot;</span><span class="p">,</span> <span class="s2">&quot;accuracy&quot;</span><span class="p">)])</span>
-<span class="k">def</span> <span class="nf">medium_sample</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">metadata</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">index</span>
+<span class="nd">@slicer</span><span class="p">([</span><span class="s2">&quot;accuracy&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">low_brightness</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">metadata</span><span class="p">[</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;brightness&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">80</span><span class="p">]</span><span class="o">.</span><span class="n">index</span>
+
+
+<span class="c1"># @slicer([&quot;accuracy&quot;, (&quot;rotate&quot;, &quot;accuracy&quot;)])</span>
+<span class="c1"># def medium_sample(metadata):</span>
+<span class="c1">#     return metadata.sample(100).index</span>
 
 
 <span class="nd">@slicer</span><span class="p">([</span><span class="s2">&quot;accuracy&quot;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">by_class</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">label_col</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[(</span><span class="n">c</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">label_col</span><span class="p">]</span> <span class="o">==</span> <span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">]</span>
+<span class="k">def</span> <span class="nf">by_class</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">label_col</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="n">c</span><span class="p">,</span> <span class="n">metadata</span><span class="p">[</span><span class="n">metadata</span><span class="p">[</span><span class="n">label_col</span><span class="p">]</span> <span class="o">==</span> <span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">]</span>
 
 
-<span class="nd">@transform</span>
-<span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">img</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="n">PIL</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">NEAREST</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">data</span><span class="p">],</span> <span class="n">metadata</span>
+<span class="c1"># @transform</span>
+<span class="c1"># def rotate(data, metadata):</span>
+<span class="c1">#     return [img.rotate(90, PIL.Image.NEAREST, expand=1) for img in data], metadata</span>
 
 
 <span class="nd">@metric</span>
