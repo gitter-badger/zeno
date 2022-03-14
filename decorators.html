@@ -490,12 +490,12 @@ It can be used to extract metadata from an instance</p>
 </div>
 <div class="section" id="slicer">
 <h3>Slicer<a class="headerlink" href="#slicer" title="Permalink to this headline">¶</a></h3>
-<p>Functions with the <code class="docutils literal notranslate"><span class="pre">slicer</span></code> decorator return a subset of data.
-The subset can be created either from the raw data or metdata DataFrame.
-The parameters to the decorator should either be the name of a metric or a tuple specifying a transform function and metric function.</p>
+<p>Functions with the <code class="docutils literal notranslate"><span class="pre">slicer</span></code> decorator return a subset of data derived form metadata values.
+The parameters to the decorator should either be the name of a metric or a tuple specifying a transform function and metric function.
+The function should return either a list of indices or the sliced DataFrame.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># A list of metric functions or (transform function, metric function) tuples.</span>
 <span class="nd">@slicer</span><span class="p">([</span><span class="s2">&quot;Metric 1&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;Transform 1&quot;</span><span class="p">,</span> <span class="s2">&quot;Metric 1&quot;</span><span class="p">),</span> <span class="s2">&quot;Metric 2&quot;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">slicing_func</span><span class="p">(</span><span class="n">metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="k">def</span> <span class="nf">slicing_func</span><span class="p">(</span><span class="n">metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
 </pre></div>
 </div>
 <p>Example:</p>
