@@ -417,11 +417,11 @@ const thebe_selector_output = ".output, .cell_output"
     <span class="k">return</span> <span class="n">metadata</span><span class="p">[</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;brightness&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">80</span><span class="p">]</span><span class="o">.</span><span class="n">index</span>
 
 
-<span class="c1"># @slicer([&quot;accuracy&quot;, (&quot;rotate&quot;, &quot;accuracy&quot;)])</span>
-<span class="c1"># def low_brightness_frog(metadata, label_col):</span>
-<span class="c1">#     return metadata[</span>
-<span class="c1">#         (metadata[&quot;brightness&quot;] &lt; 80) &amp; (metadata[label_col] == &quot;frog&quot;)</span>
-<span class="c1">#     ].index</span>
+<span class="nd">@slicer</span><span class="p">([</span><span class="s2">&quot;accuracy&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;rotate&quot;</span><span class="p">,</span> <span class="s2">&quot;accuracy&quot;</span><span class="p">)])</span>
+<span class="k">def</span> <span class="nf">low_brightness_frog</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">label_col</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">metadata</span><span class="p">[</span>
+        <span class="p">(</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;brightness&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">80</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">metadata</span><span class="p">[</span><span class="n">label_col</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;frog&quot;</span><span class="p">)</span>
+    <span class="p">]</span><span class="o">.</span><span class="n">index</span>
 
 
 <span class="nd">@slicer</span><span class="p">([</span><span class="s2">&quot;accuracy&quot;</span><span class="p">])</span>
