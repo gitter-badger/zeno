@@ -304,6 +304,24 @@ const thebe_selector_output = ".output, .cell_output"
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show noprint">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Core test options">
+   Core test options
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Additional options">
+   Additional options
+  </a>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -316,6 +334,24 @@ const thebe_selector_output = ".output, .cell_output"
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Core test options">
+   Core test options
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Additional options">
+   Additional options
+  </a>
+ </li>
+</ul>
+
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -324,6 +360,54 @@ const thebe_selector_output = ".output, .cell_output"
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="running-tests">
 <span id="api"></span><h1>Running Tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h1>
+<p><p>Evaluate ML systems.</p>
+</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">zeno</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">metadata</span> <span class="n">METADATA</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="n">path</span> <span class="p">[</span><span class="n">DATA_PATH</span><span class="p">]]</span>
+            <span class="p">[</span><span class="o">--</span><span class="n">models</span> <span class="n">MODELS</span> <span class="p">[</span><span class="n">MODELS</span> <span class="o">...</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="nb">id</span><span class="o">-</span><span class="n">column</span> <span class="p">[</span><span class="n">ID_COLUMN</span><span class="p">]]</span>
+            <span class="p">[</span><span class="o">--</span><span class="n">label</span><span class="o">-</span><span class="n">column</span> <span class="p">[</span><span class="n">LABEL_COLUMN</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="n">batch</span><span class="o">-</span><span class="n">size</span> <span class="p">[</span><span class="n">BATCH_SIZE</span><span class="p">]]</span>
+            <span class="p">[</span><span class="o">--</span><span class="n">cache</span><span class="o">-</span><span class="n">path</span> <span class="p">[</span><span class="n">CACHE_PATH</span><span class="p">]]</span>
+            <span class="n">test_files</span> <span class="p">[</span><span class="n">test_files</span> <span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="section" id="Core test options">
+<h2>Core test options<a class="headerlink" href="#Core test options" title="Permalink to this headline">¶</a></h2>
+<dl class="option-list">
+<dt><kbd>test_files</kbd></dt>
+<dd><p>Directory or Python files with annotated functionssuch as slicers and metrics.</p>
+</dd>
+<dt><kbd>--metadata</kbd></dt>
+<dd><p>CSV or Parquet file with metadata for each instance, at minimum a column with file names.</p>
+</dd>
+<dt><kbd>--data-path</kbd></dt>
+<dd><p>Folder with data instances identifiedby the id-column option in the metadata file.</p>
+<p>Default: “”</p>
+</dd>
+<dt><kbd>--models</kbd></dt>
+<dd><p>Paths to models for testing</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="Additional options">
+<h2>Additional options<a class="headerlink" href="#Additional options" title="Permalink to this headline">¶</a></h2>
+<dl class="option-list">
+<dt><kbd>--id-column</kbd></dt>
+<dd><p>Column with the ID used retrieve data files AND for caching</p>
+<p>Default: “id”</p>
+</dd>
+<dt><kbd>--label-column</kbd></dt>
+<dd><p>Column with the ground truth label for instances.</p>
+<p>Default: “label”</p>
+</dd>
+<dt><kbd>--batch-size</kbd></dt>
+<dd><p>Batch size of passed model predictions</p>
+<p>Default: 64</p>
+</dd>
+<dt><kbd>--cache-path</kbd></dt>
+<dd><p>Folder for caching results of slicers and metrics.</p>
+<p>Default: ./.zeno_cache/</p>
+</dd>
+</dl>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
