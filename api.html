@@ -310,13 +310,13 @@ const thebe_selector_output = ".output, .cell_output"
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#Core test options">
-   Core test options
+  <a class="reference internal nav-link" href="#Positional Arguments">
+   Positional Arguments
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#Additional options">
-   Additional options
+  <a class="reference internal nav-link" href="#Named Arguments">
+   Named Arguments
   </a>
  </li>
 </ul>
@@ -340,13 +340,13 @@ const thebe_selector_output = ".output, .cell_output"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#Core test options">
-   Core test options
+  <a class="reference internal nav-link" href="#Positional Arguments">
+   Positional Arguments
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#Additional options">
-   Additional options
+  <a class="reference internal nav-link" href="#Named Arguments">
+   Named Arguments
   </a>
  </li>
 </ul>
@@ -369,12 +369,17 @@ const thebe_selector_output = ".output, .cell_output"
             <span class="n">test_files</span> <span class="p">[</span><span class="n">test_files</span> <span class="o">...</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="section" id="Core test options">
-<h2>Core test options<a class="headerlink" href="#Core test options" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Positional Arguments">
+<h2>Positional Arguments<a class="headerlink" href="#Positional Arguments" title="Permalink to this headline">¶</a></h2>
 <dl class="option-list">
 <dt><kbd>test_files</kbd></dt>
 <dd><p>Directory or Python files with annotated functionssuch as slicers and metrics.</p>
 </dd>
+</dl>
+</div>
+<div class="section" id="Named Arguments">
+<h2>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h2>
+<dl class="option-list">
 <dt><kbd>--metadata</kbd></dt>
 <dd><p>CSV or Parquet file with metadata for each instance, at minimum a column with file names.</p>
 </dd>
@@ -385,11 +390,6 @@ const thebe_selector_output = ".output, .cell_output"
 <dt><kbd>--models</kbd></dt>
 <dd><p>Paths to models for testing</p>
 </dd>
-</dl>
-</div>
-<div class="section" id="Additional options">
-<h2>Additional options<a class="headerlink" href="#Additional options" title="Permalink to this headline">¶</a></h2>
-<dl class="option-list">
 <dt><kbd>--id-column</kbd></dt>
 <dd><p>Column with the ID used retrieve data files AND for caching</p>
 <p>Default: “id”</p>
