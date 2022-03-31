@@ -438,13 +438,19 @@ You may have as many of the testing functions as you may like.</p>
 <h3>Load Model<a class="headerlink" href="#load-model" title="Permalink to this headline">¶</a></h3>
 <p>Functions with the <code class="docutils literal notranslate"><span class="pre">load_model</span></code> decorator should return a function that takes a list of data in the format returned by <code class="docutils literal notranslate"><span class="pre">load_data</span></code> and returns a list of outputs used by <code class="docutils literal notranslate"><span class="pre">metric</span></code> functions.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@load_model</span>
-<span class="k">def</span> <span class="nf">load_model</span><span class="p">(</span><span class="n">model_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span>
+<span class="k">def</span> <span class="nf">load_model</span><span class="p">(</span><span class="n">model_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="n">Any</span><span class="p">[],</span> <span class="n">Any</span><span class="p">[]]</span>
 </pre></div>
 </div>
 <p>Example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@load_model</span>
 <span class="k">def</span> <span class="nf">load_model</span><span class="p">(</span><span class="n">model_path</span><span class="p">):</span>
-    <span class="k">return</span> <span class="k">lambda</span> <span class="n">data</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;We return a new function to be able to process the output of the model correctly&quot;&quot;&quot;</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">pred</span><span class="p">(</span><span class="n">instances</span><span class="p">):</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">instances</span><span class="p">)</span>
+        <span class="n">processed</span> <span class="o">=</span> <span class="n">process</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">processed</span>
+    <span class="k">return</span> <span class="n">model</span>
 </pre></div>
 </div>
 <p>See <a class="reference internal" href="model_loaders/model_loaders.html#model-loaders"><span class="std std-ref">Model Loaders</span></a> for real-world examples.</p>
@@ -452,15 +458,15 @@ You may have as many of the testing functions as you may like.</p>
 <div class="section" id="load-data">
 <h3>Load Data<a class="headerlink" href="#load-data" title="Permalink to this headline">¶</a></h3>
 <p>Functions with the <code class="docutils literal notranslate"><span class="pre">load_data</span></code> decorator should return a list of data instances, e.g. images or text strings, that are passed to the function returned from <code class="docutils literal notranslate"><span class="pre">load_model</span></code>.
-<code class="docutils literal notranslate"><span class="pre">id_col</span></code> is a parameter passed to the zeno command specifying the column with instance paths in the <code class="docutils literal notranslate"><span class="pre">data_path</span></code> folder, e.g. <code class="docutils literal notranslate"><span class="pre">data/train/0.jpg</span></code> in <code class="docutils literal notranslate"><span class="pre">images/</span></code>.</p>
+Use the index of the dataframe, e.g. <code class="docutils literal notranslate"><span class="pre">metadata.index</span></code> to get the column with instance paths in the <code class="docutils literal notranslate"><span class="pre">data_path</span></code> folder, e.g. <code class="docutils literal notranslate"><span class="pre">data/train/0.jpg</span></code> in <code class="docutils literal notranslate"><span class="pre">images/</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@load_data</span>
-<span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="n">metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">id_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span>
+<span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="n">metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">data_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>Example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@load_data</span>
-<span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="n">df_metadata</span><span class="p">,</span> <span class="n">id_col</span><span class="p">,</span> <span class="n">data_path</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">PIL</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">img</span><span class="p">))</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">df_metadata</span><span class="p">[</span><span class="n">id_col</span><span class="p">]]</span>
+<span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="n">df_metadata</span><span class="p">,</span> <span class="n">data_path</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">PIL</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">img</span><span class="p">))</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">df_metadata</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>See <a class="reference internal" href="data_loaders/data_loaders.html#data-loaders"><span class="std std-ref">Data Loaders</span></a> for real-world examples.</p>
@@ -477,7 +483,7 @@ An optional <code class="docutils literal notranslate"><span class="pre">transfo
 <p>Functions with the <code class="docutils literal notranslate"><span class="pre">preprocess</span></code> decorator return a new column derived from the original data and metadata.
 It can be used to extract metadata from an instance</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@preprocess</span>
-<span class="k">def</span> <span class="nf">preprocessor</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Series</span><span class="p">,</span> <span class="n">List</span><span class="p">]:</span>
+<span class="k">def</span> <span class="nf">preprocessor</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">List</span><span class="p">]:</span>
 </pre></div>
 </div>
 <p>Example:</p>
@@ -493,13 +499,12 @@ It can be used to extract metadata from an instance</p>
 <p>Functions with the <code class="docutils literal notranslate"><span class="pre">slicer</span></code> decorator return a subset of data derived form metadata values.
 The parameters to the decorator should either be the name of a metric or a tuple specifying a transform function and metric function.
 The function should return either a list of indices or the sliced DataFrame.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># A list of metric functions or (transform function, metric function) tuples.</span>
-<span class="nd">@slicer</span><span class="p">([</span><span class="s2">&quot;Metric 1&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;Transform 1&quot;</span><span class="p">,</span> <span class="s2">&quot;Metric 1&quot;</span><span class="p">),</span> <span class="s2">&quot;Metric 2&quot;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">slicing_func</span><span class="p">(</span><span class="n">metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@slicer</span>
+<span class="k">def</span> <span class="nf">slicing_func</span><span class="p">(</span><span class="n">metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">]:</span>
 </pre></div>
 </div>
 <p>Example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@slicer</span><span class="p">([</span><span class="s2">&quot;accuracy&quot;</span><span class="p">,</span> <span class="s2">&quot;false_positive&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;rotate&quot;</span><span class="p">,</span> <span class="s2">&quot;accuracy&quot;</span><span class="p">)])</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@slicer</span>
 <span class="k">def</span> <span class="nf">small_sample</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">metadata</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">index</span>
 </pre></div>
@@ -527,23 +532,13 @@ The function should return either a list of indices or the sliced DataFrame.</p>
 Metrics can be classic functions such as accuracy, or specific measures such as switch percentage or word prevalence.
 Optionally, metric functions can take the original output and metadata for instances that had a transformation applied to calculate metrics such as switch percentage.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@metric</span>
-<span class="k">def</span> <span class="nf">metric_func</span><span class="p">(</span><span class="n">output</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-
-<span class="nd">@metric</span>
-<span class="k">def</span> <span class="nf">metric_func</span><span class="p">(</span><span class="n">output</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">orig_output</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-
-<span class="nd">@metric</span>
-<span class="k">def</span> <span class="nf">metric_func</span><span class="p">(</span><span class="n">output</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">orig_output</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">orig_metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">metric_func</span><span class="p">(</span><span class="n">output</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">label_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]]:</span>
 </pre></div>
 </div>
 <p>Example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@metric</span>
-<span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">metadata</span><span class="p">[</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">output</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">metadata</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-
-<span class="nd">@metric</span>
-<span class="k">def</span> <span class="nf">switch_percentage</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">orig_output</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">output</span> <span class="o">!=</span> <span class="n">orig_output</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">metadata</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">label_col</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">metadata</span><span class="p">[</span><span class="n">metadata</span><span class="p">[</span><span class="n">label_col</span><span class="p">]</span> <span class="o">==</span> <span class="n">output</span><span class="p">]]</span>
 </pre></div>
 </div>
 <p>See <a class="reference internal" href="metrics/metrics.html#metrics"><span class="std std-ref">Metrics</span></a> for real-world examples.</p>
