@@ -367,7 +367,7 @@ const thebe_selector_output = ".output, .cell_output"
             <span class="p">[</span><span class="o">--</span><span class="n">metadata</span> <span class="n">METADATA</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="n">path</span> <span class="p">[</span><span class="n">DATA_PATH</span><span class="p">]]</span>
             <span class="p">[</span><span class="o">--</span><span class="n">models</span> <span class="n">MODELS</span> <span class="p">[</span><span class="n">MODELS</span> <span class="o">...</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="nb">id</span><span class="o">-</span><span class="n">column</span> <span class="p">[</span><span class="n">ID_COLUMN</span><span class="p">]]</span>
             <span class="p">[</span><span class="o">--</span><span class="n">label</span><span class="o">-</span><span class="n">column</span> <span class="p">[</span><span class="n">LABEL_COLUMN</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="n">batch</span><span class="o">-</span><span class="n">size</span> <span class="p">[</span><span class="n">BATCH_SIZE</span><span class="p">]]</span>
-            <span class="p">[</span><span class="o">--</span><span class="n">cache</span><span class="o">-</span><span class="n">path</span> <span class="p">[</span><span class="n">CACHE_PATH</span><span class="p">]]</span>
+            <span class="p">[</span><span class="o">--</span><span class="n">cache</span><span class="o">-</span><span class="n">path</span> <span class="p">[</span><span class="n">CACHE_PATH</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="n">port</span> <span class="p">[</span><span class="n">PORT</span><span class="p">]]</span>
             <span class="n">test_files</span> <span class="p">[</span><span class="n">test_files</span> <span class="o">...</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -411,6 +411,10 @@ const thebe_selector_output = ".output, .cell_output"
 <dt><kbd>--cache-path</kbd></dt>
 <dd><p>Folder for caching results of slicers and metrics.</p>
 <p>Default: ./.zeno_cache/</p>
+</dd>
+<dt><kbd>--port</kbd></dt>
+<dd><p>IP port to run Zeno on.</p>
+<p>Default: 8000</p>
 </dd>
 </dl>
 </div>
