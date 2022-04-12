@@ -42,6 +42,24 @@
         "--id-column",
         "file_name"
       ]
+    },
+    {
+      "name": "zeno breast cancer",
+      "type": "python",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "module": "zeno",
+      "args": [
+        "./examples/breast_cancer/test/",
+        "--metadata",
+        "./examples/breast_cancer/extract_subsets_10_10_10/data.csv",
+        "--models",
+        "./examples/models/breast_cancer/best_model.pth",
+        "--data-path",
+        "./examples/breast_cancer/extract_subsets_10_10_10",
+        "--id-column",
+        "patch_dir"
+      ]
     }
   ]
 }
