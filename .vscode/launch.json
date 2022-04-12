@@ -5,13 +5,15 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "zeno cifar",
+      "name": "zenocifar",
       "type": "python",
       "request": "launch",
       "cwd": "${workspaceFolder}",
       "module": "zeno",
       "args": [
         "./examples/cifar",
+        "--task",
+        "image-classification",
         "--metadata",
         "./examples/models/cifar/cifar_pred.csv",
         "--models",
@@ -20,11 +22,13 @@
         "./examples/models/cifar/cifar_net_5.pth",
         "./examples/models/cifar/cifar_net_10.pth",
         "--data-path",
-        "~/dev/data/cifar/test/"
+        "~/dev/data/cifar/test/",
+        "--port",
+        "8000"
       ]
     },
     {
-      "name": "zeno coco",
+      "name": "zenococo",
       "type": "python",
       "request": "launch",
       "cwd": "${workspaceFolder}",
@@ -33,14 +37,62 @@
         "./examples/coco",
         "--metadata",
         "./examples/models/coco/coco.parquet",
+        "--task",
+        "object-detection",
         "--models",
-        "a",
+        "yolov3",
+        "yolov5",
         "--data-path",
         "/Users/acabrera/dev/data/coco-2014/val2014",
         "--batch-size",
-        "64",
+        "20",
         "--id-column",
-        "file_name"
+        "file_name",
+        "--port",
+        "8001"
+      ]
+    },
+    {
+      "name": "zenoreviews",
+      "type": "python",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "module": "zeno",
+      "args": [
+        "./examples/reviews/",
+        "--metadata",
+        "./examples/models/sentiment/amazon_pred.parquet",
+        "--task",
+        "text-classification",
+        "--models",
+        "distilbert-base-uncased-finetuned-sst-2-english",
+        "fabriceyhc/bert-base-uncased-amazon_polarity",
+        "--batch-size",
+        "20",
+        "--port",
+        "8002"
+      ]
+    },
+    {
+      "name": "zenofsdd",
+      "type": "python",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "module": "zeno",
+      "args": [
+        "./examples/fsdd",
+        "--metadata",
+        "./examples/models/fsdd/fsdd.csv",
+        "--task",
+        "audio-classification",
+        "--models",
+        "a",
+        "--data-path",
+        "/Users/acabrera/dev/data/free-spoken-digit-dataset/recordings",
+        "--batch-size",
+        "20",
+        "--port",
+        "8003"
       ]
     },
     {

@@ -10,7 +10,7 @@ export const models = writable(null);
 export const ready: Writable<boolean> = writable(false);
 
 export const wsResponse: Writable<WSResponse> = websocketStore(
-  "ws://localhost:8000/api/results",
+  `ws://localhost:${location.port}/api/results`,
   {
     status: "connecting",
     results: [],
@@ -66,6 +66,12 @@ export const table: Writable<ColumnTable> = writable(aq.table({}));
 
 wsResponse.subscribe(() => {
   fetch("/api/table")
-    .then((d) => d.arrayBuffer())
-    .then((d) => table.set(aq.fromArrow(d)));
+    .then((d) => d.json())
+    .then((d) => {
+      const x = {};
+      Object.keys(d).forEach((k) => {
+        x[k] = Object.values(d[k]);
+      });
+      table.set(aq.fromJSON(x));
+    });
 });

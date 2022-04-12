@@ -1,79 +1,118 @@
 <script lang="ts">
   import type ColumnTable from "arquero/dist/types/table/column-table";
+  import { Pagination } from "@smui/data-table";
+  import Select, { Option } from "@smui/select";
+  import IconButton from "@smui/icon-button";
+  import { Label } from "@smui/common";
 
-  import Tooltip, { Wrapper } from "@smui/tooltip";
-  import Button from "@smui/button";
+  import TextClassification from "./TextClassification.svelte";
+  import ImageClassification from "./ImageClassification.svelte";
+  import ObjectDetection from "./ObjectDetection.svelte";
 
-  import { settings } from "../stores";
+  import { settings, ready } from "../stores";
+  import AudioClassification from "./AudioClassification.svelte";
 
   export let modelACol: string = "";
   export let modelBCol: string = "";
   export let table: ColumnTable;
 
-  let n = 20;
+  let rowsPerPage = 15;
+  let currentPage = 0;
+
+  $: start = currentPage * rowsPerPage;
+  $: end = Math.min(start + rowsPerPage, table.size);
+  $: lastPage = Math.max(Math.ceil(table.size / rowsPerPage) - 1, 0);
+
+  $: if (currentPage > lastPage) {
+    currentPage = lastPage;
+  }
 </script>
 
-<Button
-  on:click={() => (n += 10)}
-  variant="outlined"
-  style="margin-bottom: 20px;">See more</Button
->
-<div class="container">
-  {#each table.slice(0, n).objects() as row}
-    <div class="box">
-      <Wrapper>
-        <img
-          src="/static/{row[$settings.idColumn]}"
-          style:max-width="200px"
-          alt="Image thumbnail for instance {row[$settings.idColumn]}"
-        />
-        <Tooltip>
-          {#each Object.keys(row) as key}
-            {key} : {row[key]}
-            <br />
-          {/each}
-        </Tooltip>
-      </Wrapper>
-      <br />
-      <span class="label">{row[$settings.labelColumn]} </span>
-      {#if modelACol}
-        <br />
-        <span class="output">{row[modelACol]} </span>
-      {/if}
-      {#if modelBCol}
-        <br />
-        <span class="second_output">{row[modelBCol]} </span>
-      {/if}
-    </div>
-  {/each}
+{#if table.size > 0}
+  <div>
+    <Pagination slot="paginate" class="pagination">
+      <svelte:fragment slot="rowsPerPage">
+        <Label>Rows Per Page</Label>
+        <Select variant="outlined" bind:value={rowsPerPage} noLabel>
+          <Option value={15}>15</Option>
+          <Option value={30}>30</Option>
+          <Option value={60}>60</Option>
+          <Option value={100}>100</Option>
+        </Select>
+      </svelte:fragment>
+      <svelte:fragment slot="total">
+        {start + 1}-{end} of {table.size}
+      </svelte:fragment>
 
-  <!-- {#if type == "table"}
-    <SamplesTable {table} />
-  {:else if type == "image"}
-    <SamplesImages {table} />
-  {/if} -->
+      <IconButton
+        class="material-icons"
+        action="first-page"
+        title="First page"
+        on:click={() => (currentPage = 0)}
+        disabled={currentPage === 0}>first_page</IconButton
+      >
+      <IconButton
+        class="material-icons"
+        action="prev-page"
+        title="Prev page"
+        on:click={() => currentPage--}
+        disabled={currentPage === 0}>chevron_left</IconButton
+      >
+      <IconButton
+        class="material-icons"
+        action="next-page"
+        title="Next page"
+        on:click={() => currentPage++}
+        disabled={currentPage === lastPage}>chevron_right</IconButton
+      >
+      <IconButton
+        class="material-icons"
+        action="last-page"
+        title="Last page"
+        on:click={() => (currentPage = lastPage)}
+        disabled={currentPage === lastPage}>last_page</IconButton
+      >
+    </Pagination>
+  </div>
+{/if}
+<div class="container">
+  {#if $ready}
+    {#if $settings.task === "image-classification"}
+      <ImageClassification
+        table={table.slice(start, end).objects()}
+        {modelACol}
+        {modelBCol}
+      />
+    {:else if $settings.task === "object-detection"}
+      <ObjectDetection
+        table={table.slice(start, end).objects()}
+        {modelACol}
+        {modelBCol}
+      />
+    {:else if $settings.task === "text-classification"}
+      <TextClassification
+        table={table.slice(start, end).objects()}
+        {modelACol}
+        {modelBCol}
+      />
+    {:else if $settings.task === "audio-classification"}
+      <AudioClassification
+        table={table.slice(start, end).objects()}
+        {modelACol}
+        {modelBCol}
+      />
+    {/if}
+  {/if}
 </div>
 
-<style>
+<style global>
   .container {
     display: flex;
     flex-direction: inline;
     flex-wrap: wrap;
     width: 100%;
   }
-  .label {
-    font-size: 9px;
-    color: rgba(0, 0, 0, 0.5);
-  }
-  .output {
-    font-size: 9px;
-    color: rgba(255, 0, 0, 0.5);
-  }
-  .second_output {
-    font-size: 9px;
-    color: rgba(255, 0, 255, 0.5);
-  }
-  .box {
-    padding: 10px;
+  .pagination {
+    border-top-width: 0px !important;
   }
 </style>

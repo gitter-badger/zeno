@@ -1,6 +1,5 @@
 import asyncio
 import json
-import logging
 import os
 
 import uvicorn  # type: ignore
@@ -16,6 +15,7 @@ from .zeno import Zeno
 def run_background_processor(conn, args):
     zeno = Zeno(
         metadata_path=args.metadata[0],
+        task=args.task[0],
         test_files=args.__dict__["test-files"],
         models=args.models,
         batch_size=args.batch_size,
@@ -33,7 +33,12 @@ def run_background_processor(conn, args):
         if case == "GET_SETTINGS":
             conn.send(
                 json.dumps(
-                    {"idColumn": zeno.id_column, "labelColumn": zeno.label_column}
+                    {
+                        "task": zeno.task,
+                        "idColumn": zeno.id_column,
+                        "labelColumn": zeno.label_column,
+                        "port": args.port,
+                    }
                 )
             )
 
@@ -130,7 +135,7 @@ def run_server(conn, args):
             conn.send(("GET_RESULTS", ""))
             res = conn.recv()
             if res[0] != previous_status:
-                logging.info("Status: ", res[0])
+                print("status: " + res[0])
                 previous_status = res[0]
                 await websocket.send_json(
                     {
@@ -140,4 +145,4 @@ def run_server(conn, args):
                     }
                 )
 
-    uvicorn.run(app, host="localhost", port=8000)  # type: ignore
+    uvicorn.run(app, host="localhost", port=args.port)  # type: ignore

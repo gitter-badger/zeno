@@ -4,6 +4,13 @@ from pathlib import Path
 
 from .server import run_background_processor, run_server
 
+TASK_TYPES = [
+    "image-classification",
+    "object-detection",
+    "text-classification",
+    "audio-classification",
+]
+
 
 def __create_parser():
     parser = argparse.ArgumentParser(description="Evaluate ML systems.")
@@ -14,6 +21,13 @@ def __create_parser():
         type=Path,
         help="Directory or Python files with annotated functions"
         + "such as slicers and metrics.",
+    )
+    parser.add_argument(
+        "--task",
+        nargs=1,
+        choices=TASK_TYPES,
+        type=str,
+        help="The type of task to be analyzed.",
     )
     parser.add_argument(
         "--metadata",
@@ -69,6 +83,14 @@ def __create_parser():
         type=Path,
         default="./.zeno_cache/",
         help="Folder for caching results of slicers and metrics.",
+    )
+    parser.add_argument(
+        "--port",
+        dest="port",
+        nargs="?",
+        type=int,
+        default=8000,
+        help="IP port to run Zeno on.",
     )
     return parser
 
