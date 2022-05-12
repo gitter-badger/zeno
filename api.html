@@ -362,39 +362,39 @@ const thebe_selector_output = ".output, .cell_output"
 <span id="api"></span><h1>Running Tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h1>
 <p><p>Evaluate ML systems.</p>
 </p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">zeno</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">zeno</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">tests</span> <span class="n">TESTS</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">metadata</span> <span class="n">METADATA</span><span class="p">]</span>
+            <span class="p">[</span><span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="n">path</span> <span class="p">[</span><span class="n">DATA_PATH</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="n">models</span> <span class="n">MODELS</span> <span class="p">[</span><span class="n">MODELS</span> <span class="o">...</span><span class="p">]]</span>
+            <span class="p">[</span><span class="o">--</span><span class="nb">id</span><span class="o">-</span><span class="n">column</span> <span class="p">[</span><span class="n">ID_COLUMN</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="n">label</span><span class="o">-</span><span class="n">column</span> <span class="p">[</span><span class="n">LABEL_COLUMN</span><span class="p">]]</span>
             <span class="p">[</span><span class="o">--</span><span class="n">task</span> <span class="p">{</span><span class="n">image</span><span class="o">-</span><span class="n">classification</span><span class="p">,</span><span class="nb">object</span><span class="o">-</span><span class="n">detection</span><span class="p">,</span><span class="n">text</span><span class="o">-</span><span class="n">classification</span><span class="p">,</span><span class="n">audio</span><span class="o">-</span><span class="n">classification</span><span class="p">}]</span>
-            <span class="p">[</span><span class="o">--</span><span class="n">metadata</span> <span class="n">METADATA</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="n">path</span> <span class="p">[</span><span class="n">DATA_PATH</span><span class="p">]]</span>
-            <span class="p">[</span><span class="o">--</span><span class="n">models</span> <span class="n">MODELS</span> <span class="p">[</span><span class="n">MODELS</span> <span class="o">...</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="nb">id</span><span class="o">-</span><span class="n">column</span> <span class="p">[</span><span class="n">ID_COLUMN</span><span class="p">]]</span>
-            <span class="p">[</span><span class="o">--</span><span class="n">label</span><span class="o">-</span><span class="n">column</span> <span class="p">[</span><span class="n">LABEL_COLUMN</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="n">batch</span><span class="o">-</span><span class="n">size</span> <span class="p">[</span><span class="n">BATCH_SIZE</span><span class="p">]]</span>
-            <span class="p">[</span><span class="o">--</span><span class="n">cache</span><span class="o">-</span><span class="n">path</span> <span class="p">[</span><span class="n">CACHE_PATH</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="n">port</span> <span class="p">[</span><span class="n">PORT</span><span class="p">]]</span>
-            <span class="n">test_files</span> <span class="p">[</span><span class="n">test_files</span> <span class="o">...</span><span class="p">]</span>
+            <span class="p">[</span><span class="o">--</span><span class="n">batch</span><span class="o">-</span><span class="n">size</span> <span class="p">[</span><span class="n">BATCH_SIZE</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="n">cache</span><span class="o">-</span><span class="n">path</span> <span class="p">[</span><span class="n">CACHE_PATH</span><span class="p">]]</span>
+            <span class="p">[</span><span class="o">--</span><span class="n">port</span> <span class="p">[</span><span class="n">PORT</span><span class="p">]]</span>
+            <span class="n">operation</span>
 </pre></div>
 </div>
 <div class="section" id="Positional Arguments">
 <h2>Positional Arguments<a class="headerlink" href="#Positional Arguments" title="Permalink to this headline">¶</a></h2>
 <dl class="option-list">
-<dt><kbd>test_files</kbd></dt>
-<dd><p>Directory or Python files with annotated functionssuch as slicers and metrics.</p>
+<dt><kbd>operation</kbd></dt>
+<dd><p>Possible choices: run, preprocess</p>
+<p>Whether to run Zeno or preprocess data.</p>
 </dd>
 </dl>
 </div>
 <div class="section" id="Named Arguments">
 <h2>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h2>
 <dl class="option-list">
-<dt><kbd>--task</kbd></dt>
-<dd><p>Possible choices: image-classification, object-detection, text-classification, audio-classification</p>
-<p>The type of task to be analyzed.</p>
+<dt><kbd>--tests</kbd></dt>
+<dd><p>Path to folder with Zeno function files.</p>
 </dd>
 <dt><kbd>--metadata</kbd></dt>
 <dd><p>CSV or Parquet file with metadata for each instance, at minimum a column with file names.</p>
 </dd>
 <dt><kbd>--data-path</kbd></dt>
-<dd><p>Folder with data instances identifiedby the id-column option in the metadata file.</p>
+<dd><p>Folder or URL with data instances identifiedby the id-column option in the metadata file.</p>
 <p>Default: “”</p>
 </dd>
 <dt><kbd>--models</kbd></dt>
-<dd><p>Paths to models for testing</p>
+<dd><p>Directory with model files or list of model files/names.</p>
 </dd>
 <dt><kbd>--id-column</kbd></dt>
 <dd><p>Column with the ID used retrieve data files AND for caching</p>
@@ -403,6 +403,10 @@ const thebe_selector_output = ".output, .cell_output"
 <dt><kbd>--label-column</kbd></dt>
 <dd><p>Column with the ground truth label for instances.</p>
 <p>Default: “label”</p>
+</dd>
+<dt><kbd>--task</kbd></dt>
+<dd><p>Possible choices: image-classification, object-detection, text-classification, audio-classification</p>
+<p>The type of task to be analyzed.</p>
 </dd>
 <dt><kbd>--batch-size</kbd></dt>
 <dd><p>Batch size of passed model predictions</p>
