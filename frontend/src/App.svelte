@@ -1,39 +1,45 @@
 <script lang="ts">
-  import { mdiApi, mdiGithub } from "@mdi/js";
+  import {
+    mdiApi,
+    mdiGithub,
+    mdiGraphql,
+    mdiListStatus,
+    mdiTestTube,
+  } from "@mdi/js";
   import CircularProgress from "@smui/circular-progress";
   import { Svg } from "@smui/common/elements";
   import IconButton, { Icon } from "@smui/icon-button";
-  import List, {
-    Item,
-    PrimaryText,
-    SecondaryText,
-    Separator,
-    Text,
-  } from "@smui/list";
+  import List, { Item, Separator } from "@smui/list";
   import Tooltip, { Wrapper } from "@smui/tooltip";
+  import * as aq from "arquero";
   import { onMount } from "svelte";
   import Router, { location } from "svelte-spa-router";
-  import Home from "./Home.svelte";
+
+  import Embed from "./Embed.svelte";
   import Results from "./Results.svelte";
-  import { status } from "./stores";
+  import Tests from "./Tests.svelte";
+
   import { initialFetch, updateTab } from "./util";
+  import { status, table, wsResponse } from "./stores";
 
   let runningAnalysis = true;
   let tab = $location.split("/")[1];
   if (!tab) {
-    tab = "home";
+    tab = "results";
   }
 
   const routes = {
-    "/": Home,
+    "/": Results,
     "/results/": Results,
-    "*": Home,
+    "/embed/": Embed,
+    "/tests/": Tests,
+    "*": Results,
   };
 
   location.subscribe((d) => {
     tab = d.split("/")[1];
     if (!tab) {
-      tab = "home";
+      tab = "results";
     }
   });
 
@@ -44,15 +50,58 @@
       runningAnalysis = true;
     }
   });
+
+  wsResponse.subscribe((w) => {
+    let tableColumns = $table.columnNames();
+    let missingColumns = w.columns.filter((c) => !tableColumns.includes(c));
+    if (missingColumns.length > 0) {
+      fetch("/api/table", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({ columns: missingColumns }),
+      })
+        .then((d) => d.json())
+        .then((d) => {
+          const x = {};
+          Object.keys(d).forEach((k) => {
+            x[k] = Object.values(d[k]);
+          });
+          if ($table.size === 0) {
+            table.set(aq.fromJSON(x));
+          } else {
+            table.update((t) => t.assign(aq.fromJSON(x)));
+          }
+        });
+    }
+  });
+
   onMount(() => initialFetch());
 </script>
 
 <header>
-  <img
-    style="width:150px"
-    src="zeno.png"
-    alt="Square spiral logo next to 'Zeno'"
-  />
+  <div
+    style="display:flex; flex-direction:inline; align-items:center; justify-content: center;"
+  >
+    <img
+      style="width:100px; margin-right: 50px;"
+      src="zeno.png"
+      alt="Square spiral logo next to 'Zeno'"
+    />
+    <div
+      class="status"
+      style="display:flex; flex-direction:inline; align-items:center; justify-content: center;"
+    >
+      {#if runningAnalysis}
+        <CircularProgress
+          style="height: 32px; width: 32px; margin-right:20px"
+          indeterminate
+        />
+        <span>{@html $status}</span>
+      {/if}
+    </div>
+  </div>
 
   <div>
     <Wrapper>
@@ -75,35 +124,41 @@
 </header>
 <main>
   <div id="side-menu">
-    <List class="demo-list">
-      <Item
-        activated={tab === "home"}
-        on:SMUI:action={() => (tab = updateTab("home"))}
-      >
-        <Text>
-          <PrimaryText>Home</PrimaryText>
-          <SecondaryText>Overview of tests</SecondaryText>
-        </Text>
-      </Item>
-      <Separator />
+    <List class="demo-list" iconList={true}>
       <Item
         activated={tab === "results"}
         on:SMUI:action={() => (tab = updateTab("results"))}
       >
-        <Text>
-          <PrimaryText>Results</PrimaryText>
-          <SecondaryText>Test results on slices</SecondaryText>
-        </Text>
+        <IconButton>
+          <Icon component={Svg} viewBox="0 0 24 24">
+            <path fill="currentColor" d={mdiListStatus} />
+          </Icon>
+        </IconButton>
+      </Item>
+      <Separator />
+      <Item
+        activated={tab === "embed"}
+        on:SMUI:action={() => (tab = updateTab("embed"))}
+      >
+        <IconButton>
+          <Icon component={Svg} viewBox="0 0 24 24">
+            <path fill="currentColor" d={mdiGraphql} />
+          </Icon>
+        </IconButton>
+      </Item>
+      <Separator />
+      <Item
+        activated={tab === "tests"}
+        on:SMUI:action={() => (tab = updateTab("tests"))}
+      >
+        <IconButton>
+          <Icon component={Svg} viewBox="0 0 24 24">
+            <path fill="currentColor" d={mdiTestTube} />
+          </Icon>
+        </IconButton>
       </Item>
       <Separator />
     </List>
-    <div class="status">
-      {#if runningAnalysis}
-        <CircularProgress style="height: 32px; width: 32px;" indeterminate />
-        <br />
-        <p>{@html $status}</p>
-      {/if}
-    </div>
   </div>
   <div id="main">
     <Router {routes} />
@@ -111,15 +166,17 @@
 </main>
 
 <style>
+  * :global(.demo-list) {
+    max-width: 50px;
+  }
+  * :global(.mdc-deprecated-list-item) {
+    padding-left: 0px;
+  }
   main {
     display: flex;
     flex-direction: row;
     text-align: left;
     padding-bottom: 50px;
-  }
-
-  .status {
-    padding: 15px;
   }
 
   header {
@@ -129,21 +186,24 @@
   }
 
   #side-menu {
-    width: 200px;
+    width: 50px;
     border-right: 1px solid #e0e0e0;
     height: calc(100vh - 74px);
   }
 
   #main {
-    margin-left: 20px;
-    width: calc(100vw - 300px);
+    padding-left: 10px;
+    width: calc(100vw - 50px);
   }
 
   header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding-right: 50px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 20px;
+    padding-left: 20px;
   }
 
   @media (min-width: 640px) {
