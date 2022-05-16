@@ -1,5 +1,5 @@
 import collections, torch, torchvision, numpy
-import models.breast_cancer.vgg as vgg
+import examples.models.breast_cancer.vgg as vgg
 
 
 # Return a version of vgg11 where the layers are given their research names.

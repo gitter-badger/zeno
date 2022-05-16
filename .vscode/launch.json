@@ -110,7 +110,9 @@
         "--data-path",
         "./examples/breast_cancer/extract_subsets_10_10_10",
         "--id-column",
-        "patch_dir"
+        "patch_dir",
+        "--task",
+        "image-classification",
       ]
     }
   ]
