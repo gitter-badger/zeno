@@ -1,9 +1,9 @@
 <script lang="ts">
   import type ColumnTable from "arquero/dist/types/table/column-table";
+  import type { InternMap } from "internmap";
 
   import Button from "@smui/button";
   import Select, { Option } from "@smui/select";
-  import { InternMap, InternSet } from "internmap";
   import * as aq from "arquero";
 
   import { metrics, models, ready, settings, slices, table } from "./stores";
@@ -29,10 +29,8 @@
   let filterError: string = "";
 
   let selected: string = "";
-  let checked: InternSet<string> = new InternSet();
+  let checked: Set<string> = new Set();
   let metadataSelections = [];
-
-  let generatedSlices: Slice[] = [];
 
   let sliceTree: SliceNode = new SliceNode("root", 0, {});
 
@@ -58,10 +56,6 @@
     updateFilteredTable($table);
   }
 
-  $: if (checked.size > 2) {
-    checked.delete([...checked.values()][0]);
-  }
-
   function setupTree(slices: InternMap<string, Slice>) {
     const slis: Slice[] = [...slices.values()];
     let programmaticSlices = slis.filter((s) => s.type === "programmatic");
@@ -81,9 +75,7 @@
     if (selected) {
       let slice = $slices.get(selected);
       if (slice && slice.type === "programmatic") {
-        tempTable = t.filter(
-          aq.escape((r) => r["zenoslice_" + slice.name] === 1)
-        );
+        tempTable = t.filter(`(r) => r["${"zenoslice_" + slice.name}"] === 1`);
       } else {
         tempTable = getFilteredTable(
           selected,
@@ -109,7 +101,7 @@
 
         if (sel[0] === "range") {
           tempTable = tempTable.filter(
-            aq.escape((r) => r[name] > sel[1] && r[name] < sel[2])
+            `(r) => r["${name}"] > ${sel[1]} && r["${name}"] < ${sel[2]}`
           );
         } else {
           tempTable = tempTable.filter(
@@ -144,12 +136,14 @@
           idxs: newTable.array($settings.idColumn) as string[],
         },
       ]);
-      generatedSlices.push({
-        name: filter,
-        size: newTable.column($settings.idColumn).length,
-        type: "generated",
+      slices.update((s) => {
+        s.set(filter, {
+          name: filter,
+          size: newTable.size,
+          type: "generated",
+        });
+        return s;
       });
-      generatedSlices = [...generatedSlices];
       filter = "";
     } catch (e) {
       filterError = e;
@@ -159,10 +153,14 @@
 
 <div class="style-div">
   <div style:display="flex" style:flex-direction="inline">
-    <div style:display="flex" style:flex-direction="column">
+    <div
+      style:margin-right="10px"
+      style:display="flex"
+      style:flex-direction="column"
+    >
       <Filter bind:filter {createSlice} />
     </div>
-    <Button on:click={createSlice}>Create Slice</Button>
+    <Button variant="outlined" on:click={createSlice}>Create Slice</Button>
     <span>{filterError}</span>
   </div>
   <div>
@@ -195,7 +193,7 @@
 <div id="container">
   <div class="side-container">
     <h4>Generated Slices</h4>
-    {#each generatedSlices as s}
+    {#each [...$slices.values()].filter((d) => d.type === "generated") as s}
       <LeafNode
         name={s.name}
         fullName={s.name}
@@ -246,6 +244,7 @@
   {#if filteredTable}
     <div id="results">
       <Samples
+        bind:checked
         {modelA}
         {modelB}
         table={filteredTable}
@@ -258,6 +257,7 @@
 <style>
   #results {
     margin-top: 10px;
+    width: 100%;
     margin-right: 20px;
   }
   #container {
@@ -266,7 +266,7 @@
   }
   .style-div {
     padding-bottom: 15px;
-    padding-top: 15px;
+    padding-top: 5px;
     border-bottom: 1px solid #e0e0e0;
     width: 100%;
     display: flex;
@@ -276,7 +276,7 @@
   }
   .side-container {
     height: calc(100vh - 178px);
-    overflow-y: scroll;
+    overflow-y: auto;
     min-width: 450px;
     padding-right: 35px;
     margin-right: 15px;

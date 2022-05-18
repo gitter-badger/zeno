@@ -22,7 +22,7 @@ export class SliceNode {
 
 // Recursive function for creating result tree.
 export function appendChild(parent: SliceNode, child: Slice) {
-  let name = child.name;
+  const name = child.name;
   const name_parts = name.split(".");
 
   // Add a leaf node.
@@ -80,8 +80,29 @@ export function initialFetch() {
   const fetchMetrics = fetch("/api/metrics")
     .then((d) => d.json())
     .then((d) => metrics.set(JSON.parse(d)));
+  const fetchSlices = fetch("/api/slices")
+    .then((d) => d.json())
+    .then((d) => {
+      const sliceNames = JSON.parse(d);
+      const sliceObjects = sliceNames.map(
+        (s) =>
+          ({
+            name: s,
+            type: "programmatic",
+            size: 0,
+          } as Slice)
+      );
+      const sliceMap = new Map<string, Slice>();
+      sliceNames.forEach((s, i) => sliceMap.set(s, sliceObjects[i]));
+      return sliceMap;
+    });
 
-  const allRequests = Promise.all([fetchSettings, fetchModels, fetchMetrics]);
+  const allRequests = Promise.all([
+    fetchSettings,
+    fetchModels,
+    fetchMetrics,
+    fetchSlices,
+  ]);
 
   allRequests.then(() => ready.set(true));
 }
