@@ -403,17 +403,15 @@ The UI then allows you to explore and compare the results across models.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install zenoml
 </pre></div>
 </div>
-<p>Next, create at least one testing file with both a <code class="docutils literal notranslate"><span class="pre">load_model</span></code> and <code class="docutils literal notranslate"><span class="pre">load_data</span></code> function.
-Additionally add any number of tests using the <code class="docutils literal notranslate"><span class="pre">preprocess</span></code>, <code class="docutils literal notranslate"><span class="pre">slicer</span></code>, <code class="docutils literal notranslate"><span class="pre">transform</span></code> and <code class="docutils literal notranslate"><span class="pre">metric</span></code> functions.
-See <a class="reference internal" href="decorators.html#writing-tests"><span class="std std-ref">Writing Tests</span></a> for details on each of these functions.</p>
-<p>Run the tests and load the ui with the zeno command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>zeno test.py
-    --metadata data.csv
-    --data-path data
-    --models model.pth
+<p>Create a folder with at least one Python file including a <code class="docutils literal notranslate"><span class="pre">load_model</span></code> and <code class="docutils literal notranslate"><span class="pre">load_data</span></code> function.
+Add any number of Zeno modules, including the <code class="docutils literal notranslate"><span class="pre">preprocess</span></code>, <code class="docutils literal notranslate"><span class="pre">slicer</span></code>, and <code class="docutils literal notranslate"><span class="pre">metric</span></code> functions.
+See <a class="reference internal" href="decorators.html#writing-tests"><span class="std std-ref">Writing Tests</span></a> for details on each of these modules.</p>
+<p>Next, create a configuration <code class="docutils literal notranslate"><span class="pre">TOML</span></code> file with the required options such as metadata and model file paths. See <a class="reference internal" href="api.html#api"><span class="std std-ref">API</span></a> for the configuration options.</p>
+<p>Lastly, run Zeno:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>zeno config.toml
 </pre></div>
 </div>
-<p>See <a class="reference internal" href="api.html#api"><span class="std std-ref">Running Tests</span></a> for the various command line options and <a class="reference internal" href="example_test_functions.html#test-examples"><span class="std std-ref">Test Examples</span></a> for various example tests.</p>
+<p>See <a class="reference internal" href="example_test_functions.html#test-examples"><span class="std std-ref">Test Examples</span></a> for various example tests.</p>
 </div>
 <div class="section" id="table-of-contents">
 <h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
