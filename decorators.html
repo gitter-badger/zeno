@@ -7,8 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Writing Tests &#8212; Zeno</title>
     
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -18,20 +19,16 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
     
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
@@ -39,12 +36,13 @@
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script src="_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
@@ -63,7 +61,21 @@ const thebe_selector_output = ".output, .cell_output"
     <!-- Google Analytics -->
     
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
     
     <div class="container-fluid" id="banner"></div>
 
@@ -72,9 +84,10 @@ const thebe_selector_output = ".output, .cell_output"
     <div class="container-xl">
       <div class="row">
           
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="index.html">
       
         <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
@@ -130,68 +143,22 @@ const thebe_selector_output = ".output, .cell_output"
      </li>
     </ul>
    </li>
-   <li class="toctree-l2 has-children">
-    <a class="reference internal" href="data_loaders/data_loaders.html">
-     Data Loaders
-    </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-    <label for="toctree-checkbox-3">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="data_loaders/image_loader.html">
-       Image Loader
-      </a>
-     </li>
-    </ul>
-   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="preprocessors/preprocessors.html">
      Preprocessors
     </a>
    </li>
-   <li class="toctree-l2 has-children">
-    <a class="reference internal" href="slicers/slicers.html">
-     Slicers
+   <li class="toctree-l2">
+    <a class="reference internal" href="postprocessors/postprocessors.html">
+     Postprocessors
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-    <label for="toctree-checkbox-4">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="slicers/images.html">
-       Image Slicers
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toctree-l2 has-children">
-    <a class="reference internal" href="transforms/transforms.html">
-     Transforms
-    </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-    <label for="toctree-checkbox-5">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="transforms/images.html">
-       Image Transforms
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toctree-l2 has-children">
     <a class="reference internal" href="metrics/metrics.html">
      Metrics
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
-    <label for="toctree-checkbox-6">
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -209,8 +176,8 @@ const thebe_selector_output = ".output, .cell_output"
   <a class="reference internal" href="example_analyses/example_analyses.html">
    Example Analyses
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-  <label for="toctree-checkbox-7">
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -225,142 +192,212 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-</div>
-
-</div>
-
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
             
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="_sources/decorators.md"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.md</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
-    </div>
-</div>
-
-            <!-- Source interaction buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/cabreraalex/zeno/"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
-        <a class="issues-button"
-            href="https://github.com/cabreraalex/zeno//issues/new?title=Issue%20on%20page%20%2Fdecorators.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        
-    </div>
-</div>
-
-            <!-- Full screen (wrap in <a> to have style consistency -->
-
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
-
-            <!-- Launch buttons -->
-
-        </div>
-
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
-            
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/cabreraalex/zeno/"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/cabreraalex/zeno//issues/new?title=Issue%20on%20page%20%2Fdecorators.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/decorators.md"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.md</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#loading-functions">
-   Loading Functions
+  <a class="reference internal nav-link" href="#options">
+   Options
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#load-model">
-     Load Model
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#load-data">
-     Load Data
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#testing-functions">
-   Testing Functions
+  <a class="reference internal nav-link" href="#load-model">
+   Load Model
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#preprocess">
-     Preprocess
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#slicer">
-     Slicer
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#transform">
-     Transform
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#metric">
-     Metric
-    </a>
-   </li>
-  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#preprocess">
+   Preprocess
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#postprocess">
+   Postprocess
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#metric">
+   Metric
+  </a>
  </li>
 </ul>
 
-            </nav>
-        </div>
-    </div>
+    </nav>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
                 <h1>Writing Tests</h1>
@@ -374,48 +411,29 @@ const thebe_selector_output = ".output, .cell_output"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#loading-functions">
-   Loading Functions
+  <a class="reference internal nav-link" href="#options">
+   Options
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#load-model">
-     Load Model
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#load-data">
-     Load Data
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#testing-functions">
-   Testing Functions
+  <a class="reference internal nav-link" href="#load-model">
+   Load Model
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#preprocess">
-     Preprocess
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#slicer">
-     Slicer
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#transform">
-     Transform
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#metric">
-     Metric
-    </a>
-   </li>
-  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#preprocess">
+   Preprocess
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#postprocess">
+   Postprocess
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#metric">
+   Metric
+  </a>
  </li>
 </ul>
 
@@ -423,19 +441,48 @@ const thebe_selector_output = ".output, .cell_output"
                     </div>
                 </div>
             </div>
-            
+            <main id="main-content" role="main">
+                
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="writing-tests">
-<span id="id1"></span><h1>Writing Tests<a class="headerlink" href="#writing-tests" title="Permalink to this headline">¶</a></h1>
-<p>The Zeno API has 5 decorator functions: two for loading data and models, and three for defining tests.</p>
-<p>You can pass any number of files with decorated functions to Zeno, but you <strong>must have one and only one of both the load_model and load_data function</strong>.
+<span id="id1"></span><h1>Writing Tests<a class="headerlink" href="#writing-tests" title="Permalink to this headline">#</a></h1>
+<p>The Zeno API has 4 decorator functions: one for loading models and three for defining tests.</p>
+<p>You can pass any number of files with decorated functions to Zeno, but you <strong>must have one and only one <code class="docutils literal notranslate"><span class="pre">load_model</span></code> function</strong>.
 You may have as many of the testing functions as you may like.</p>
-<div class="section" id="loading-functions">
-<h2>Loading Functions<a class="headerlink" href="#loading-functions" title="Permalink to this headline">¶</a></h2>
-<p>There are two functions for describing how Zeno should run models and load data.</p>
+<div class="section" id="options">
+<h2>Options<a class="headerlink" href="#options" title="Permalink to this headline">#</a></h2>
+<p>Every Zeno test module is passed a ZenoOptions object with the following parameters:</p>
+<span class="target" id="module-zeno"></span><dl class="py class">
+<dt class="sig sig-object py" id="zeno.ZenoOptions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ZenoOptions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/api.html#ZenoOptions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.ZenoOptions" title="Permalink to this definition">#</a></dt>
+<dd><p>Parameters passed to Zeno test functions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id_column</strong> (<em>str</em>) – Column in dataframe with unique identifiers.</p></li>
+<li><p><strong>data_column</strong> (<em>str</em>) – Column in dataframe with either raw data or path to data.</p></li>
+<li><p><strong>label_column</strong> (<em>str</em>) – Column in dataframe with
+either raw labels or path to labels.</p></li>
+<li><p><strong>output_column</strong> (<em>str</em>) – Column in dataframe with a given
+model’s raw output or path to output</p></li>
+<li><p><strong>data_type</strong> (<em>str</em>) – Either “raw” or “path”.</p></li>
+<li><p><strong>output_type</strong> (<em>str</em>) – Either “raw” or “path”.</p></li>
+<li><p><strong>data_path</strong> (<em>str</em>) – Path to directory with data, concatenated with
+data_column for ‘path’ data_type.</p></li>
+<li><p><strong>output_path</strong> (<em>str</em>) – Path to directory with a given model’s output, concatenated
+with output_column for ‘path’ data_type</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
 <div class="section" id="load-model">
-<h3>Load Model<a class="headerlink" href="#load-model" title="Permalink to this headline">¶</a></h3>
+<h2>Load Model<a class="headerlink" href="#load-model" title="Permalink to this headline">#</a></h2>
 <p>Functions with the <code class="docutils literal notranslate"><span class="pre">load_model</span></code> decorator should return a function that takes a list of data in the format returned by <code class="docutils literal notranslate"><span class="pre">load_data</span></code> and returns a list of outputs used by <code class="docutils literal notranslate"><span class="pre">metric</span></code> functions.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@load_model</span>
 <span class="k">def</span> <span class="nf">load_model</span><span class="p">(</span><span class="n">model_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="n">Any</span><span class="p">[],</span> <span class="n">Any</span><span class="p">[]]</span>
@@ -455,94 +502,53 @@ You may have as many of the testing functions as you may like.</p>
 </div>
 <p>See <a class="reference internal" href="model_loaders/model_loaders.html#model-loaders"><span class="std std-ref">Model Loaders</span></a> for real-world examples.</p>
 </div>
-<div class="section" id="load-data">
-<h3>Load Data<a class="headerlink" href="#load-data" title="Permalink to this headline">¶</a></h3>
-<p>Functions with the <code class="docutils literal notranslate"><span class="pre">load_data</span></code> decorator should return a list of data instances, e.g. images or text strings, that are passed to the function returned from <code class="docutils literal notranslate"><span class="pre">load_model</span></code>.
-Use the index of the dataframe, e.g. <code class="docutils literal notranslate"><span class="pre">metadata.index</span></code> to get the column with instance paths in the <code class="docutils literal notranslate"><span class="pre">data_path</span></code> folder, e.g. <code class="docutils literal notranslate"><span class="pre">data/train/0.jpg</span></code> in <code class="docutils literal notranslate"><span class="pre">images/</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@load_data</span>
-<span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="n">metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">data_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>Example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@load_data</span>
-<span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="n">df_metadata</span><span class="p">,</span> <span class="n">data_path</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">PIL</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">img</span><span class="p">))</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">df_metadata</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>See <a class="reference internal" href="data_loaders/data_loaders.html#data-loaders"><span class="std std-ref">Data Loaders</span></a> for real-world examples.</p>
-</div>
-</div>
-<div class="section" id="testing-functions">
-<h2>Testing Functions<a class="headerlink" href="#testing-functions" title="Permalink to this headline">¶</a></h2>
-<p>The four core functions for writing tests are <code class="docutils literal notranslate"><span class="pre">preprocess</span></code>, <code class="docutils literal notranslate"><span class="pre">slicer</span></code>, <code class="docutils literal notranslate"><span class="pre">transform</span></code> and <code class="docutils literal notranslate"><span class="pre">metric</span></code>.
-<code class="docutils literal notranslate"><span class="pre">preprocess</span></code> runs a function, e.g. extracting metadata, on each instance.
-The <code class="docutils literal notranslate"><span class="pre">slicer</span></code> function return subsets of data for which certain <code class="docutils literal notranslate"><span class="pre">metric</span></code> functions should be calculated.
-An optional <code class="docutils literal notranslate"><span class="pre">transform</span></code> function can be provided to modify instances before they are passed to the <code class="docutils literal notranslate"><span class="pre">metric</span></code> functions.</p>
 <div class="section" id="preprocess">
-<h3>Preprocess<a class="headerlink" href="#preprocess" title="Permalink to this headline">¶</a></h3>
+<h2>Preprocess<a class="headerlink" href="#preprocess" title="Permalink to this headline">#</a></h2>
 <p>Functions with the <code class="docutils literal notranslate"><span class="pre">preprocess</span></code> decorator return a new column derived from the original data and metadata.
 It can be used to extract metadata from an instance</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@preprocess</span>
-<span class="k">def</span> <span class="nf">preprocessor</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">List</span><span class="p">]:</span>
+<span class="k">def</span> <span class="nf">preprocessor</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">ops</span><span class="p">:</span> <span class="n">ZenoOptions</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">List</span><span class="p">]:</span>
 </pre></div>
 </div>
 <p>Example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@preprocess</span>
-<span class="k">def</span> <span class="nf">get_objects</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">ObjectDetector</span><span class="p">(</span><span class="n">inst</span><span class="p">)</span> <span class="k">for</span> <span class="n">inst</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
+<span class="k">def</span> <span class="nf">get_objects</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ops</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">ObjectDetector</span><span class="p">(</span><span class="n">inst</span><span class="p">)</span> <span class="k">for</span> <span class="n">inst</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="n">ops</span><span class="o">.</span><span class="n">data_column</span><span class="p">]]</span>
 </pre></div>
 </div>
 <p>See <a class="reference internal" href="preprocessors/preprocessors.html#preprocessors"><span class="std std-ref">Preprocessors</span></a> for real-world examples.</p>
 </div>
-<div class="section" id="slicer">
-<h3>Slicer<a class="headerlink" href="#slicer" title="Permalink to this headline">¶</a></h3>
-<p>Functions with the <code class="docutils literal notranslate"><span class="pre">slicer</span></code> decorator return a subset of data derived form metadata values.
-The parameters to the decorator should either be the name of a metric or a tuple specifying a transform function and metric function.
-The function should return either a list of indices or the sliced DataFrame.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@slicer</span>
-<span class="k">def</span> <span class="nf">slicing_func</span><span class="p">(</span><span class="n">metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">]:</span>
+<div class="section" id="postprocess">
+<h2>Postprocess<a class="headerlink" href="#postprocess" title="Permalink to this headline">#</a></h2>
+<p>Functions with the <code class="docutils literal notranslate"><span class="pre">postprocess</span></code> decorator return a new column derived from the original data, metadata, and <em>a given model’s output</em>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@postprocess</span>
+<span class="k">def</span> <span class="nf">postprocessor</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">ops</span><span class="p">:</span> <span class="n">ZenoOptions</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">List</span><span class="p">]:</span>
 </pre></div>
 </div>
 <p>Example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@slicer</span>
-<span class="k">def</span> <span class="nf">small_sample</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">metadata</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">index</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@postprocess</span>
+<span class="k">def</span> <span class="nf">get_objects</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ops</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">ObjectDetector</span><span class="p">(</span><span class="n">inst</span><span class="p">)</span> <span class="k">for</span> <span class="n">inst</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="n">ops</span><span class="o">.</span><span class="n">data_column</span><span class="p">]]</span>
 </pre></div>
 </div>
-<p>See <a class="reference internal" href="slicers/slicers.html#slicers"><span class="std std-ref">Slicers</span></a> for real-world examples.</p>
-</div>
-<div class="section" id="transform">
-<h3>Transform<a class="headerlink" href="#transform" title="Permalink to this headline">¶</a></h3>
-<p>Functions with the <code class="docutils literal notranslate"><span class="pre">transform</span></code> decorator take a list of instances and return transformed data.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@transform</span>
-<span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">T</span><span class="p">]:</span>
-</pre></div>
-</div>
-<p>Example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@transform</span>
-<span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="n">images</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">img</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">images</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>See <a class="reference internal" href="transforms/transforms.html#transforms"><span class="std std-ref">Transforms</span></a> for real-world examples.</p>
+<p>See <a class="reference internal" href="postprocessors/postprocessors.html#postprocessors"><span class="std std-ref">Postprocessors</span></a> for real-world examples.</p>
 </div>
 <div class="section" id="metric">
-<h3>Metric<a class="headerlink" href="#metric" title="Permalink to this headline">¶</a></h3>
+<h2>Metric<a class="headerlink" href="#metric" title="Permalink to this headline">#</a></h2>
 <p>Functions with the <code class="docutils literal notranslate"><span class="pre">metric</span></code> decorator return a float between 0 and 1.
 Metrics can be classic functions such as accuracy, or specific measures such as switch percentage or word prevalence.
 Optionally, metric functions can take the original output and metadata for instances that had a transformation applied to calculate metrics such as switch percentage.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@metric</span>
-<span class="k">def</span> <span class="nf">metric_func</span><span class="p">(</span><span class="n">output</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">label_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]]:</span>
+<span class="k">def</span> <span class="nf">metric_func</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">ops</span><span class="p">:</span> <span class="n">ZenoOptions</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 </pre></div>
 </div>
 <p>Example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@metric</span>
-<span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">label_col</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">metadata</span><span class="p">[</span><span class="n">metadata</span><span class="p">[</span><span class="n">label_col</span><span class="p">]</span> <span class="o">==</span> <span class="n">output</span><span class="p">]]</span>
+<span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ops</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">ops</span><span class="o">.</span><span class="n">label_column</span><span class="p">]</span> <span class="o">==</span> <span class="n">df</span><span class="p">[</span><span class="n">ops</span><span class="o">.</span><span class="n">output_column</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>See <a class="reference internal" href="metrics/metrics.html#metrics"><span class="std std-ref">Metrics</span></a> for real-world examples.</p>
-</div>
 </div>
 </div>
 
@@ -568,9 +574,11 @@ Optionally, metric functions can take the original output and metadata for insta
 
               </div>
               
-            
-                <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
     <a class='left-prev' id="prev-link" href="intro.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
@@ -586,24 +594,28 @@ Optionally, metric functions can take the original output and metadata for insta
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-            
+            </footer>
         </div>
     </div>
-    <footer class="footer">
-  <p>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Ángel Alexander Cabrera<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
     
-      By Ángel Alexander Cabrera<br/>
-    
-        &copy; Copyright 2021.<br/>
-  </p>
-</footer>
-</main>
+</div>
 
 
       </div>
     </div>
   
-  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
 
   </body>
 </html>
