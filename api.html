@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Running Tests &#8212; Zeno</title>
     
   <!-- Loaded before other Sphinx assets -->
@@ -557,23 +558,23 @@ title="Print to PDF"
                 
               <div>
                 
-  <div class="section" id="running-tests">
+  <section id="running-tests">
 <h1>Running Tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">#</a></h1>
 <p>Zeno options are set using a <code class="docutils literal notranslate"><span class="pre">TOML</span></code> file:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">zeno</span> <span class="n">zeno_config</span><span class="o">.</span><span class="n">toml</span>
 </pre></div>
 </div>
 <p>The configuration file has the the following options.</p>
-<div class="section" id="tests">
+<section id="tests">
 <h2><code class="docutils literal notranslate"><span class="pre">tests</span></code><a class="headerlink" href="#tests" title="Permalink to this headline">#</a></h2>
 <p>Path to a directory with Python files defining Zeno modules. <strong>Required</strong></p>
-</div>
-<div class="section" id="metadata">
+</section>
+<section id="metadata">
 <h2><code class="docutils literal notranslate"><span class="pre">metadata</span></code><a class="headerlink" href="#metadata" title="Permalink to this headline">#</a></h2>
 <p>Path to a <code class="docutils literal notranslate"><span class="pre">csv</span></code> or <code class="docutils literal notranslate"><span class="pre">parquet</span></code> file with metadata for data instances. <strong>Required</strong></p>
 <p>Must have a column with unique identifiers for each instance that corresponds with their filename relative to <code class="docutils literal notranslate"><span class="pre">data_path</span></code>.</p>
-</div>
-<div class="section" id="task">
+</section>
+<section id="task">
 <h2><code class="docutils literal notranslate"><span class="pre">task</span></code><a class="headerlink" href="#task" title="Permalink to this headline">#</a></h2>
 <p>The type of model being analyzed. <strong>Required</strong></p>
 <p>One of the following:</p>
@@ -584,36 +585,36 @@ title="Print to PDF"
 <li><p><code class="docutils literal notranslate"><span class="pre">text-classification</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">audio-classification</span></code></p></li>
 </ul>
-</div>
-<div class="section" id="models">
+</section>
+<section id="models">
 <h2><code class="docutils literal notranslate"><span class="pre">models</span></code><a class="headerlink" href="#models" title="Permalink to this headline">#</a></h2>
 <p>List of models to test. <strong>Required</strong></p>
 <p>Can either be paths or names, passed directly to the <code class="docutils literal notranslate"><span class="pre">load_model</span></code> function.</p>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="data-path">
+<section id="data-path">
 <h2><code class="docutils literal notranslate"><span class="pre">data_path</span></code><a class="headerlink" href="#data-path" title="Permalink to this headline">#</a></h2>
 <p>The directory with data instances. <strong>Optional</strong></p>
-</div>
-<div class="section" id="port">
+</section>
+<section id="port">
 <h2><code class="docutils literal notranslate"><span class="pre">port</span></code><a class="headerlink" href="#port" title="Permalink to this headline">#</a></h2>
 <p>The port to run Zeno on. <strong>Optional</strong></p>
-</div>
-<div class="section" id="batch-size">
+</section>
+<section id="batch-size">
 <h2><code class="docutils literal notranslate"><span class="pre">batch_size</span></code><a class="headerlink" href="#batch-size" title="Permalink to this headline">#</a></h2>
 <p>The batch size used when running inference. <strong>Optional</strong></p>
-</div>
-<div class="section" id="id-column">
+</section>
+<section id="id-column">
 <h2><code class="docutils literal notranslate"><span class="pre">id_column</span></code><a class="headerlink" href="#id-column" title="Permalink to this headline">#</a></h2>
 <p>The column with unique identifiers in the metadata file. <strong>Optional</strong></p>
 <p>By default it is <code class="docutils literal notranslate"><span class="pre">id</span></code>.</p>
-</div>
-<div class="section" id="cache-path">
+</section>
+<section id="cache-path">
 <h2><code class="docutils literal notranslate"><span class="pre">cache_path</span></code><a class="headerlink" href="#cache-path" title="Permalink to this headline">#</a></h2>
 <p>Where cache outputs are stored. <strong>Optional</strong></p>
 <p>By default it is <code class="docutils literal notranslate"><span class="pre">.zeno_cache</span></code> in the same directory as the <code class="docutils literal notranslate"><span class="pre">TOML</span></code> file. Cache stores preprocesssing and model outputs.</p>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

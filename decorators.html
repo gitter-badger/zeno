@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Writing Tests &#8212; Zeno</title>
     
   <!-- Loaded before other Sphinx assets -->
@@ -445,12 +446,12 @@ title="Print to PDF"
                 
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="writing-tests">
+  <section class="tex2jax_ignore mathjax_ignore" id="writing-tests">
 <span id="id1"></span><h1>Writing Tests<a class="headerlink" href="#writing-tests" title="Permalink to this headline">#</a></h1>
 <p>The Zeno API has 4 decorator functions: one for loading models and three for defining tests.</p>
 <p>You can pass any number of files with decorated functions to Zeno, but you <strong>must have one and only one <code class="docutils literal notranslate"><span class="pre">load_model</span></code> function</strong>.
 You may have as many of the testing functions as you may like.</p>
-<div class="section" id="options">
+<section id="options">
 <h2>Options<a class="headerlink" href="#options" title="Permalink to this headline">#</a></h2>
 <p>Every Zeno test module is passed a ZenoOptions object with the following parameters:</p>
 <span class="target" id="module-zeno"></span><dl class="py class">
@@ -480,8 +481,8 @@ with output_column for ‘path’ data_type</p></li>
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="load-model">
+</section>
+<section id="load-model">
 <h2>Load Model<a class="headerlink" href="#load-model" title="Permalink to this headline">#</a></h2>
 <p>Functions with the <code class="docutils literal notranslate"><span class="pre">load_model</span></code> decorator should return a function that takes a list of data in the format returned by <code class="docutils literal notranslate"><span class="pre">load_data</span></code> and returns a list of outputs used by <code class="docutils literal notranslate"><span class="pre">metric</span></code> functions.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@load_model</span>
@@ -501,8 +502,8 @@ with output_column for ‘path’ data_type</p></li>
 </pre></div>
 </div>
 <p>See <a class="reference internal" href="model_loaders/model_loaders.html#model-loaders"><span class="std std-ref">Model Loaders</span></a> for real-world examples.</p>
-</div>
-<div class="section" id="preprocess">
+</section>
+<section id="preprocess">
 <h2>Preprocess<a class="headerlink" href="#preprocess" title="Permalink to this headline">#</a></h2>
 <p>Functions with the <code class="docutils literal notranslate"><span class="pre">preprocess</span></code> decorator return a new column derived from the original data and metadata.
 It can be used to extract metadata from an instance</p>
@@ -517,8 +518,8 @@ It can be used to extract metadata from an instance</p>
 </pre></div>
 </div>
 <p>See <a class="reference internal" href="preprocessors/preprocessors.html#preprocessors"><span class="std std-ref">Preprocessors</span></a> for real-world examples.</p>
-</div>
-<div class="section" id="postprocess">
+</section>
+<section id="postprocess">
 <h2>Postprocess<a class="headerlink" href="#postprocess" title="Permalink to this headline">#</a></h2>
 <p>Functions with the <code class="docutils literal notranslate"><span class="pre">postprocess</span></code> decorator return a new column derived from the original data, metadata, and <em>a given model’s output</em>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@postprocess</span>
@@ -532,8 +533,8 @@ It can be used to extract metadata from an instance</p>
 </pre></div>
 </div>
 <p>See <a class="reference internal" href="postprocessors/postprocessors.html#postprocessors"><span class="std std-ref">Postprocessors</span></a> for real-world examples.</p>
-</div>
-<div class="section" id="metric">
+</section>
+<section id="metric">
 <h2>Metric<a class="headerlink" href="#metric" title="Permalink to this headline">#</a></h2>
 <p>Functions with the <code class="docutils literal notranslate"><span class="pre">metric</span></code> decorator return a float between 0 and 1.
 Metrics can be classic functions such as accuracy, or specific measures such as switch percentage or word prevalence.
@@ -549,8 +550,8 @@ Optionally, metric functions can take the original output and metadata for insta
 </pre></div>
 </div>
 <p>See <a class="reference internal" href="metrics/metrics.html#metrics"><span class="std std-ref">Metrics</span></a> for real-world examples.</p>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
