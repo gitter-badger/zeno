@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>ML Testing with Zeno &#8212; Zeno</title>
+    <title>Zeno: A Unified Testing Platform for ML &#8212; Zeno</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -126,49 +126,20 @@ const thebe_selector_output = ".output, .cell_output"
    </i>
   </label>
   <ul>
-   <li class="toctree-l2 has-children">
-    <a class="reference internal" href="model_loaders/model_loaders.html">
-     Model Loaders
-    </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-    <label for="toctree-checkbox-2">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="model_loaders/pytorch.html">
-       Pytorch Loader
-      </a>
-     </li>
-    </ul>
-   </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="preprocessors/preprocessors.html">
-     Preprocessors
+    <a class="reference internal" href="predict_functions/predict_functions.html">
+     Predict Functions
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="postprocessors/postprocessors.html">
-     Postprocessors
+    <a class="reference internal" href="distill_functions/distill_functions.html">
+     Distill Functions
     </a>
    </li>
-   <li class="toctree-l2 has-children">
-    <a class="reference internal" href="metrics/metrics.html">
-     Metrics
+   <li class="toctree-l2">
+    <a class="reference internal" href="metric_functions/metric_functions.html">
+     Metric Functions
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-    <label for="toctree-checkbox-3">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="metrics/classification.html">
-       Classification
-      </a>
-     </li>
-    </ul>
    </li>
   </ul>
  </li>
@@ -176,8 +147,8 @@ const thebe_selector_output = ".output, .cell_output"
   <a class="reference internal" href="example_analyses/example_analyses.html">
    Example Analyses
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -385,7 +356,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>ML Testing with Zeno</h1>
+                <h1>Zeno: A Unified Testing Platform for ML</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -415,20 +386,49 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="ml-testing-with-zeno">
-<h1>ML Testing with Zeno<a class="headerlink" href="#ml-testing-with-zeno" title="Permalink to this headline">#</a></h1>
-<p>Zeno is an API and interface for evaluating machine learning models.
-You first define how you expect a model to behave for subsets of data, and optionally after transformations.
-The UI then allows you to explore and compare the results across models.</p>
-<p>The tests are connected as follows. Slices are optionally passed to transforms, which are then passed to have metrics calculated.</p>
-<a class="reference internal image-reference" href="_images/flow.png"><img alt="flow" class="align-center" src="_images/flow.png" style="width: 500px;" /></a>
+  <section class="tex2jax_ignore mathjax_ignore" id="zeno-a-unified-testing-platform-for-ml">
+<h1>Zeno: A Unified Testing Platform for ML<a class="headerlink" href="#zeno-a-unified-testing-platform-for-ml" title="Permalink to this headline">#</a></h1>
+<p>Zeno is a platform for behavioral evaluation of machine learning models using Python functions and an interactive UI.
+The Python API runs model inference and derives new metadata for analysis of unstructured data.
+The interactive UI lets users explore model performance, create behavioral tests, and compare model performance.</p>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-g-2 sd-g-xs-2 sd-g-sm-2 sd-g-md-2 sd-g-lg-2 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Python processing functions:</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@distill_function</span>
+<span class="k">def</span> <span class="nf">brightness</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ops</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">lum</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">ops</span><span class="o">.</span><span class="n">data_column</span><span class="p">]))</span>
+
+<span class="nd">@metric_function</span>
+<span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ops</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="n">ops</span><span class="o">.</span><span class="n">label_column</span><span class="p">]</span>
+           <span class="o">==</span> <span class="n">df</span><span class="p">[</span><span class="n">ops</span><span class="o">.</span><span class="n">output_column</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Interactive UI:</div>
+<p class="sd-card-text"><img alt="teaser" src="_images/teaser.png" /></p>
+</div>
+</div>
+</div>
+</div>
+</div>
 <section id="quickstart">
 <h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">#</a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install zenoml
 </pre></div>
 </div>
-<p>Create a folder with at least one Python file including a <code class="docutils literal notranslate"><span class="pre">load_model</span></code> and <code class="docutils literal notranslate"><span class="pre">load_data</span></code> function.
-Add any number of Zeno modules, including the <code class="docutils literal notranslate"><span class="pre">preprocess</span></code>, <code class="docutils literal notranslate"><span class="pre">slicer</span></code>, and <code class="docutils literal notranslate"><span class="pre">metric</span></code> functions.
+<p>Create a folder with at least one Python file with a <code class="docutils literal notranslate"><span class="pre">predict_function</span></code>.
+Add any number of Zeno modules using the <code class="docutils literal notranslate"><span class="pre">distill</span></code> and <code class="docutils literal notranslate"><span class="pre">metric</span></code> functions.
 See <a class="reference internal" href="decorators.html#writing-tests"><span class="std std-ref">Writing Tests</span></a> for details on each of these modules.</p>
 <p>Next, create a configuration <code class="docutils literal notranslate"><span class="pre">TOML</span></code> file with the required options such as metadata and model file paths. See <a class="reference internal" href="api.html#api"><span class="std std-ref">API</span></a> for the configuration options.</p>
 <p>Lastly, run Zeno:</p>
@@ -444,16 +444,9 @@ See <a class="reference internal" href="decorators.html#writing-tests"><span cla
 <li class="toctree-l1"><a class="reference internal" href="decorators.html">Writing Tests</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">Running Tests</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example_test_functions.html">Example Test Functions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="model_loaders/model_loaders.html">Model Loaders</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="model_loaders/pytorch.html">Pytorch Loader</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="preprocessors/preprocessors.html">Preprocessors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="postprocessors/postprocessors.html">Postprocessors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metrics/metrics.html">Metrics</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="metrics/classification.html">Classification</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="predict_functions/predict_functions.html">Predict Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="distill_functions/distill_functions.html">Distill Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metric_functions/metric_functions.html">Metric Functions</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="example_analyses/example_analyses.html">Example Analyses</a><ul>

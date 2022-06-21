@@ -54,7 +54,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Running Tests" href="api.html" />
-    <link rel="prev" title="ML Testing with Zeno" href="intro.html" />
+    <link rel="prev" title="Zeno: A Unified Testing Platform for ML" href="intro.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -127,49 +127,20 @@ const thebe_selector_output = ".output, .cell_output"
    </i>
   </label>
   <ul>
-   <li class="toctree-l2 has-children">
-    <a class="reference internal" href="model_loaders/model_loaders.html">
-     Model Loaders
-    </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-    <label for="toctree-checkbox-2">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="model_loaders/pytorch.html">
-       Pytorch Loader
-      </a>
-     </li>
-    </ul>
-   </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="preprocessors/preprocessors.html">
-     Preprocessors
+    <a class="reference internal" href="predict_functions/predict_functions.html">
+     Predict Functions
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="postprocessors/postprocessors.html">
-     Postprocessors
+    <a class="reference internal" href="distill_functions/distill_functions.html">
+     Distill Functions
     </a>
    </li>
-   <li class="toctree-l2 has-children">
-    <a class="reference internal" href="metrics/metrics.html">
-     Metrics
+   <li class="toctree-l2">
+    <a class="reference internal" href="metric_functions/metric_functions.html">
+     Metric Functions
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-    <label for="toctree-checkbox-3">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="metrics/classification.html">
-       Classification
-      </a>
-     </li>
-    </ul>
    </li>
   </ul>
  </li>
@@ -177,8 +148,8 @@ const thebe_selector_output = ".output, .cell_output"
   <a class="reference internal" href="example_analyses/example_analyses.html">
    Example Analyses
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -373,18 +344,13 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#load-model">
-   Load Model
+  <a class="reference internal nav-link" href="#predict">
+   Predict
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#preprocess">
-   Preprocess
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#postprocess">
-   Postprocess
+  <a class="reference internal nav-link" href="#distill">
+   Distill
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -417,18 +383,13 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#load-model">
-   Load Model
+  <a class="reference internal nav-link" href="#predict">
+   Predict
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#preprocess">
-   Preprocess
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#postprocess">
-   Postprocess
+  <a class="reference internal nav-link" href="#distill">
+   Distill
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -448,9 +409,8 @@ title="Print to PDF"
                 
   <section class="tex2jax_ignore mathjax_ignore" id="writing-tests">
 <span id="id1"></span><h1>Writing Tests<a class="headerlink" href="#writing-tests" title="Permalink to this headline">#</a></h1>
-<p>The Zeno API has 4 decorator functions: one for loading models and three for defining tests.</p>
-<p>You can pass any number of files with decorated functions to Zeno, but you <strong>must have one and only one <code class="docutils literal notranslate"><span class="pre">load_model</span></code> function</strong>.
-You may have as many of the testing functions as you may like.</p>
+<p>Zeno has 3 primary decorator functions: <code class="docutils literal notranslate"><span class="pre">predict_function</span></code>, <code class="docutils literal notranslate"><span class="pre">distill_function</span></code> and <code class="docutils literal notranslate"><span class="pre">metric_function</span></code>.</p>
+<p>You can pass any number of files with decorated functions to Zeno, but you <strong>must have one and only one <code class="docutils literal notranslate"><span class="pre">predict_function</span></code></strong>.</p>
 <section id="options">
 <h2>Options<a class="headerlink" href="#options" title="Permalink to this headline">#</a></h2>
 <p>Every Zeno test module is passed a ZenoOptions object with the following parameters:</p>
@@ -482,65 +442,47 @@ with output_column for ‘path’ data_type</p></li>
 </dd></dl>
 
 </section>
-<section id="load-model">
-<h2>Load Model<a class="headerlink" href="#load-model" title="Permalink to this headline">#</a></h2>
-<p>Functions with the <code class="docutils literal notranslate"><span class="pre">load_model</span></code> decorator should return a function that takes a list of data in the format returned by <code class="docutils literal notranslate"><span class="pre">load_data</span></code> and returns a list of outputs used by <code class="docutils literal notranslate"><span class="pre">metric</span></code> functions.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@load_model</span>
-<span class="k">def</span> <span class="nf">load_model</span><span class="p">(</span><span class="n">model_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="n">Any</span><span class="p">[],</span> <span class="n">Any</span><span class="p">[]]</span>
+<section id="predict">
+<h2>Predict<a class="headerlink" href="#predict" title="Permalink to this headline">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">predict_function</span></code> functions should return a function that returns a list of model outputs for a given model name.</p>
+<p>The function returned by <code class="docutils literal notranslate"><span class="pre">predict_function</span></code> should take two parameters: a Pandas DataFrame and a ZenoOptions object.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@predict_function</span>
+<span class="k">def</span> <span class="nf">predict_function</span><span class="p">(</span><span class="n">model_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">df</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">ops</span><span class="p">:</span> <span class="n">ZenoOptions</span><span class="p">],</span> <span class="n">Any</span><span class="p">[]]</span>
 </pre></div>
 </div>
 <p>Example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@load_model</span>
-<span class="k">def</span> <span class="nf">load_model</span><span class="p">(</span><span class="n">model_path</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;We return a new function to be able to process the output of the model correctly&quot;&quot;&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@predict_function</span>
+<span class="k">def</span> <span class="nf">predict_function</span><span class="p">(</span><span class="n">model_path</span><span class="p">):</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">pred</span><span class="p">(</span><span class="n">instances</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">pred</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">ops</span><span class="p">:</span> <span class="n">ZenoOptions</span><span class="p">):</span>
         <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">instances</span><span class="p">)</span>
-        <span class="n">processed</span> <span class="o">=</span> <span class="n">process</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">processed</span>
-    <span class="k">return</span> <span class="n">model</span>
+        <span class="k">return</span> <span class="n">model</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">ops</span><span class="o">.</span><span class="n">data_column</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">pred</span>
 </pre></div>
 </div>
-<p>See <a class="reference internal" href="model_loaders/model_loaders.html#model-loaders"><span class="std std-ref">Model Loaders</span></a> for real-world examples.</p>
+<p>See <a class="reference internal" href="predict_functions/predict_functions.html#predict-functions"><span class="std std-ref">Predict Functions</span></a> for real-world examples.</p>
 </section>
-<section id="preprocess">
-<h2>Preprocess<a class="headerlink" href="#preprocess" title="Permalink to this headline">#</a></h2>
-<p>Functions with the <code class="docutils literal notranslate"><span class="pre">preprocess</span></code> decorator return a new column derived from the original data and metadata.
-It can be used to extract metadata from an instance</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@preprocess</span>
-<span class="k">def</span> <span class="nf">preprocessor</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">ops</span><span class="p">:</span> <span class="n">ZenoOptions</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">List</span><span class="p">]:</span>
+<section id="distill">
+<h2>Distill<a class="headerlink" href="#distill" title="Permalink to this headline">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">distill</span></code> functions return a derived metadata column from input data and/or model outputs.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@distill_function</span>
+<span class="k">def</span> <span class="nf">distill</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">ops</span><span class="p">:</span> <span class="n">ZenoOptions</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">List</span><span class="p">]:</span>
 </pre></div>
 </div>
 <p>Example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@preprocess</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@distill</span>
 <span class="k">def</span> <span class="nf">get_objects</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ops</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">ObjectDetector</span><span class="p">(</span><span class="n">inst</span><span class="p">)</span> <span class="k">for</span> <span class="n">inst</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="n">ops</span><span class="o">.</span><span class="n">data_column</span><span class="p">]]</span>
 </pre></div>
 </div>
-<p>See <a class="reference internal" href="preprocessors/preprocessors.html#preprocessors"><span class="std std-ref">Preprocessors</span></a> for real-world examples.</p>
-</section>
-<section id="postprocess">
-<h2>Postprocess<a class="headerlink" href="#postprocess" title="Permalink to this headline">#</a></h2>
-<p>Functions with the <code class="docutils literal notranslate"><span class="pre">postprocess</span></code> decorator return a new column derived from the original data, metadata, and <em>a given model’s output</em>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@postprocess</span>
-<span class="k">def</span> <span class="nf">postprocessor</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">ops</span><span class="p">:</span> <span class="n">ZenoOptions</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">List</span><span class="p">]:</span>
-</pre></div>
-</div>
-<p>Example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@postprocess</span>
-<span class="k">def</span> <span class="nf">get_objects</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ops</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">ObjectDetector</span><span class="p">(</span><span class="n">inst</span><span class="p">)</span> <span class="k">for</span> <span class="n">inst</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="n">ops</span><span class="o">.</span><span class="n">data_column</span><span class="p">]]</span>
-</pre></div>
-</div>
-<p>See <a class="reference internal" href="postprocessors/postprocessors.html#postprocessors"><span class="std std-ref">Postprocessors</span></a> for real-world examples.</p>
+<p>See <a class="reference internal" href="distill_functions/distill_functions.html#distill-functions"><span class="std std-ref">Distill Functions</span></a> for real-world examples.</p>
 </section>
 <section id="metric">
 <h2>Metric<a class="headerlink" href="#metric" title="Permalink to this headline">#</a></h2>
-<p>Functions with the <code class="docutils literal notranslate"><span class="pre">metric</span></code> decorator return a float between 0 and 1.
-Metrics can be classic functions such as accuracy, or specific measures such as switch percentage or word prevalence.
-Optionally, metric functions can take the original output and metadata for instances that had a transformation applied to calculate metrics such as switch percentage.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@metric</span>
-<span class="k">def</span> <span class="nf">metric_func</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">ops</span><span class="p">:</span> <span class="n">ZenoOptions</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<p>Functions with the <code class="docutils literal notranslate"><span class="pre">metric</span></code> decorator return a continuous number given a subset of data.
+Metrics can be classic functions such as accuracy, or specific measures such as word prevalence.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@metric_function</span>
+<span class="k">def</span> <span class="nf">metric_func</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">ops</span><span class="p">:</span> <span class="n">ZenoOptions</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 </pre></div>
 </div>
 <p>Example:</p>
@@ -549,7 +491,7 @@ Optionally, metric functions can take the original output and metadata for insta
     <span class="k">return</span> <span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">ops</span><span class="o">.</span><span class="n">label_column</span><span class="p">]</span> <span class="o">==</span> <span class="n">df</span><span class="p">[</span><span class="n">ops</span><span class="o">.</span><span class="n">output_column</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>See <a class="reference internal" href="metrics/metrics.html#metrics"><span class="std std-ref">Metrics</span></a> for real-world examples.</p>
+<p>See <a class="reference internal" href="metric_functions/metric_functions.html#metric-functions"><span class="std std-ref">Metric Functions</span></a> for real-world examples.</p>
 </section>
 </section>
 
@@ -584,7 +526,7 @@ Optionally, metric functions can take the original output and metadata for insta
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">ML Testing with Zeno</p>
+            <p class="prev-next-title">Zeno: A Unified Testing Platform for ML</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="api.html" title="next page">

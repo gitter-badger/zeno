@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Pytorch Loader &#8212; Zeno</title>
+    <title>Distill Functions &#8212; Zeno</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -53,8 +53,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="../_static/favicon.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Preprocessors" href="../preprocessors/preprocessors.html" />
-    <link rel="prev" title="Model Loaders" href="model_loaders.html" />
+    <link rel="next" title="Metric Functions" href="../metric_functions/metric_functions.html" />
+    <link rel="prev" title="Predict Functions" href="../predict_functions/predict_functions.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -127,49 +127,20 @@ const thebe_selector_output = ".output, .cell_output"
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2 current active has-children">
-    <a class="reference internal" href="model_loaders.html">
-     Model Loaders
-    </a>
-    <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-    <label for="toctree-checkbox-2">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul class="current">
-     <li class="toctree-l3 current active">
-      <a class="current reference internal" href="#">
-       Pytorch Loader
-      </a>
-     </li>
-    </ul>
-   </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../preprocessors/preprocessors.html">
-     Preprocessors
+    <a class="reference internal" href="../predict_functions/predict_functions.html">
+     Predict Functions
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Distill Functions
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../postprocessors/postprocessors.html">
-     Postprocessors
+    <a class="reference internal" href="../metric_functions/metric_functions.html">
+     Metric Functions
     </a>
-   </li>
-   <li class="toctree-l2 has-children">
-    <a class="reference internal" href="../metrics/metrics.html">
-     Metrics
-    </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-    <label for="toctree-checkbox-3">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../metrics/classification.html">
-       Classification
-      </a>
-     </li>
-    </ul>
    </li>
   </ul>
  </li>
@@ -177,8 +148,8 @@ const thebe_selector_output = ".output, .cell_output"
   <a class="reference internal" href="../example_analyses/example_analyses.html">
    Example Analyses
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -280,7 +251,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://github.com/cabreraalex/zeno//issues/new?title=Issue%20on%20page%20%2Fmodel_loaders/pytorch.html&body=Your%20issue%20content%20here."
+        <a href="https://github.com/cabreraalex/zeno//issues/new?title=Issue%20on%20page%20%2Fdistill_functions/distill_functions.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -308,7 +279,7 @@ title="Open an issue"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="../_sources/model_loaders/pytorch.md"
+        <a href="../_sources/distill_functions/distill_functions.md"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -357,7 +328,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Pytorch Loader</h1>
+                <h1>Distill Functions</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -369,27 +340,8 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="pytorch-loader">
-<h1>Pytorch Loader<a class="headerlink" href="#pytorch-loader" title="Permalink to this headline">#</a></h1>
-<p>PyTorch model loader for image models using PIL image inputs:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span><span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">()])</span>
-
-<span class="nd">@load_model</span>
-<span class="k">def</span> <span class="nf">load_model</span><span class="p">(</span><span class="n">model_path</span><span class="p">):</span>
-    <span class="c1"># Load the saved weights for a defined model</span>
-    <span class="n">net</span> <span class="o">=</span> <span class="n">Net</span><span class="p">()</span>
-    <span class="n">net</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_path</span><span class="p">))</span>
-
-    <span class="c1"># Given PIL images, return predictions</span>
-    <span class="k">def</span> <span class="nf">pred</span><span class="p">(</span><span class="n">instances</span><span class="p">):</span>
-        <span class="n">imgs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">T</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">instances</span><span class="p">])</span>
-        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-            <span class="n">out</span> <span class="o">=</span> <span class="n">net</span><span class="p">(</span><span class="n">imgs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()]</span>
-
-    <span class="k">return</span> <span class="n">pred</span>
-</pre></div>
-</div>
+  <section class="tex2jax_ignore mathjax_ignore" id="distill-functions">
+<span id="id1"></span><h1>Distill Functions<a class="headerlink" href="#distill-functions" title="Permalink to this headline">#</a></h1>
 </section>
 
     <script type="text/x-thebe-config">
@@ -405,7 +357,7 @@ title="Print to PDF"
         },
         kernelOptions: {
             kernelName: "python3",
-            path: "./model_loaders"
+            path: "./distill_functions"
         },
         predefinedOutput: true
     }
@@ -419,17 +371,17 @@ title="Print to PDF"
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="model_loaders.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="../predict_functions/predict_functions.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Model Loaders</p>
+            <p class="prev-next-title">Predict Functions</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="../preprocessors/preprocessors.html" title="next page">
+    <a class='right-next' id="next-link" href="../metric_functions/metric_functions.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Preprocessors</p>
+        <p class="prev-next-title">Metric Functions</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
