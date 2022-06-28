@@ -384,6 +384,42 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#label-path">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     label_path
+    </span>
+   </code>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id-column">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     id_column
+    </span>
+   </code>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#data-column">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     data_column
+    </span>
+   </code>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#label-column">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     label_column
+    </span>
+   </code>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#port">
    <code class="docutils literal notranslate">
     <span class="pre">
@@ -397,15 +433,6 @@ title="Print to PDF"
    <code class="docutils literal notranslate">
     <span class="pre">
      batch_size
-    </span>
-   </code>
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#id-column">
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     id_column
     </span>
    </code>
   </a>
@@ -484,6 +511,42 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#label-path">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     label_path
+    </span>
+   </code>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id-column">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     id_column
+    </span>
+   </code>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#data-column">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     data_column
+    </span>
+   </code>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#label-column">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     label_column
+    </span>
+   </code>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#port">
    <code class="docutils literal notranslate">
     <span class="pre">
@@ -497,15 +560,6 @@ title="Print to PDF"
    <code class="docutils literal notranslate">
     <span class="pre">
      batch_size
-    </span>
-   </code>
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#id-column">
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     id_column
     </span>
    </code>
   </a>
@@ -567,6 +621,25 @@ title="Print to PDF"
 <h2><code class="docutils literal notranslate"><span class="pre">data_path</span></code><a class="headerlink" href="#data-path" title="Permalink to this headline">#</a></h2>
 <p>The directory with data instances. <strong>Optional</strong></p>
 </section>
+<section id="label-path">
+<h2><code class="docutils literal notranslate"><span class="pre">label_path</span></code><a class="headerlink" href="#label-path" title="Permalink to this headline">#</a></h2>
+<p>The directory with label files. <strong>Optional</strong></p>
+</section>
+<section id="id-column">
+<h2><code class="docutils literal notranslate"><span class="pre">id_column</span></code><a class="headerlink" href="#id-column" title="Permalink to this headline">#</a></h2>
+<p>The column with unique identifiers in the metadata file. <strong>Optional</strong></p>
+<p>By default it is <code class="docutils literal notranslate"><span class="pre">id</span></code>.</p>
+</section>
+<section id="data-column">
+<h2><code class="docutils literal notranslate"><span class="pre">data_column</span></code><a class="headerlink" href="#data-column" title="Permalink to this headline">#</a></h2>
+<p>The column with either file names for data instances or raw data (e.g. text). <strong>Optional</strong></p>
+<p>By default it is <code class="docutils literal notranslate"><span class="pre">id</span></code>.</p>
+</section>
+<section id="label-column">
+<h2><code class="docutils literal notranslate"><span class="pre">label_column</span></code><a class="headerlink" href="#label-column" title="Permalink to this headline">#</a></h2>
+<p>The column with either file names for data instances or raw data (e.g. text). <strong>Optional</strong></p>
+<p>By default it is <code class="docutils literal notranslate"><span class="pre">label</span></code>.</p>
+</section>
 <section id="port">
 <h2><code class="docutils literal notranslate"><span class="pre">port</span></code><a class="headerlink" href="#port" title="Permalink to this headline">#</a></h2>
 <p>The port to run Zeno on. <strong>Optional</strong></p>
@@ -574,11 +647,6 @@ title="Print to PDF"
 <section id="batch-size">
 <h2><code class="docutils literal notranslate"><span class="pre">batch_size</span></code><a class="headerlink" href="#batch-size" title="Permalink to this headline">#</a></h2>
 <p>The batch size used when running inference. <strong>Optional</strong></p>
-</section>
-<section id="id-column">
-<h2><code class="docutils literal notranslate"><span class="pre">id_column</span></code><a class="headerlink" href="#id-column" title="Permalink to this headline">#</a></h2>
-<p>The column with unique identifiers in the metadata file. <strong>Optional</strong></p>
-<p>By default it is <code class="docutils literal notranslate"><span class="pre">id</span></code>.</p>
 </section>
 <section id="cache-path">
 <h2><code class="docutils literal notranslate"><span class="pre">cache_path</span></code><a class="headerlink" href="#cache-path" title="Permalink to this headline">#</a></h2>
