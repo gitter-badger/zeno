@@ -1,0 +1,9 @@
+tests = "./"
+task = "image-classification"
+metadata = "./examples/breast_cancer/extract_subsets_10_10_10_2/data_2.csv"
+models = [
+    "./examples/breast_cancer/best_model.pth"
+]
+data_path = "./examples/breast_cancer/extract_subsets_10_10_10_2"
+data_column = "patch_dir"
+port = 8000

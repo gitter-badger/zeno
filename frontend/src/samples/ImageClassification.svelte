@@ -3,15 +3,14 @@
   import { settings } from "../stores";
 
   export let table;
-  export let modelACol;
-  export let modelBCol;
+  export let modelCol;
 </script>
 
 {#each table as row}
   <div class="box">
     <Wrapper>
       <img
-        src="/static/{row[$settings.idColumn]}"
+        src="/data/{row[$settings.idColumn]}"
         style:max-width="200px"
         alt="Image thumbnail for instance {row[$settings.idColumn]}"
       />
@@ -26,15 +25,10 @@
     <span class="label">label: </span><span class="value">
       {row[$settings.labelColumn]}
     </span>
-    {#if modelACol && row[modelACol]}
+    {#if modelCol && row[modelCol]}
       <br />
-      <span class="label">A: </span>
-      <span class="value">{row[modelACol]} </span>
-    {/if}
-    {#if modelBCol && row[modelBCol]}
-      <br />
-      <span class="label">B: </span>
-      <span class="value">{row[modelBCol]} </span>
+      <span class="label">pred: </span>
+      <span class="value">{row[modelCol]} </span>
     {/if}
   </div>
 {/each}

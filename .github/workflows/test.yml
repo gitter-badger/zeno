@@ -20,7 +20,7 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@v1.3
       - name: Cache Poetry virtualenv
-        uses: actions/cache@v3.0.1
+        uses: actions/cache@v3.0.3
         id: cache
         with:
           path: ~/.virtualenvs
@@ -41,7 +41,7 @@ jobs:
           npm i
 
       - name: Run tests
-        run: poetry run pytest --cov=./ --cov-report=xml zeno
+        run: poetry run pytest --cov=./ --cov-report=xml ./zeno/tests/*
       - name: Check types
         run: make typecheck
       - name: Check Poetry

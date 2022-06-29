@@ -4,20 +4,14 @@ interface Settings {
   task: string;
   idColumn: string;
   labelColumn: string;
-  metadata: string[];
+  dataColumn: string;
+  metadataColumns: string[];
 }
 
 interface WSResponse {
   status: string;
-  slices: Slice[];
-  columns: string[];
-}
-
-interface Slice {
-  name: string;
-  // One of "programmatic", "generated"
-  type: string;
-  size: number;
+  doneProcessing: boolean;
+  completeColumns: string[];
 }
 
 interface ResultKey {
@@ -27,7 +21,44 @@ interface ResultKey {
   model: string;
 }
 
-interface ResultsRequest {
-  sli: string;
-  idxs: string[];
+interface MetadataSelection {
+  name: string;
+  type: string;
+  values: Array;
+}
+
+interface FilterPredicate {
+  name: string;
+  // 'metadata' or 'slice'
+  predicateType: string;
+  operation: string;
+  value: string;
+  join: string;
+  // 'start' or 'end'
+  groupIndicator?: string;
+}
+
+interface Slice {
+  sliceName: string;
+  filterPredicates: FilterPredicate[];
+  idxs?: string[];
+}
+
+interface ReportPredicate {
+  sliceName: string;
+  metric: string;
+  operation: string;
+  value: string;
+}
+
+interface Report {
+  name: string;
+  reportPredicates: ReportPredicate[];
+}
+
+declare namespace svelte.JSX {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  interface DOMAttributes<T> {
+    onclick_outside?: CompositionEventHandler<T>;
+  }
 }

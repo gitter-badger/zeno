@@ -1,90 +1,61 @@
 <script lang="ts">
-  import { mdiGraphql, mdiListStatus, mdiTestTube } from "@mdi/js";
+  import {
+    mdiCircleOutline,
+    mdiCheckboxMultipleMarkedCircleOutline,
+    mdiChartPie,
+  } from "@mdi/js";
   import { Svg } from "@smui/common/elements";
   import IconButton, { Icon } from "@smui/icon-button";
   import List, { Item, Separator } from "@smui/list";
-  import * as aq from "arquero";
-  import type ColumnTable from "arquero/dist/types/table/column-table";
   import { onMount } from "svelte";
   import Router, { location } from "svelte-spa-router";
 
-  import Embed from "./Embed.svelte";
-  import Header from "./Header.svelte";
-  import Results from "./Results.svelte";
-  import Tests from "./Tests.svelte";
-  import { settings, slices, table, wsResponse } from "./stores";
-  import { initialFetch, updateResults, updateTab } from "./util";
+  import {
+    tab,
+    metric,
+    metrics,
+    model,
+    models,
+    ready,
+    wsResponse,
+  } from "./stores";
+  import { initialFetch, updateTab, updateTableColumns } from "./util";
 
-  let tab = $location.split("/")[1];
-  if (!tab) {
-    tab = "results";
+  import Header from "./Header.svelte";
+  import Discovery from "./Discovery.svelte";
+  import Exploration from "./Exploration.svelte";
+  import Analysis from "./Analysis.svelte";
+
+  tab.set($location.split("/")[1]);
+
+  if (!$tab) {
+    tab.set("results");
   }
 
   const routes = {
-    "/": Results,
-    "/results/": Results,
-    "/embed/": Embed,
-    "/tests/": Tests,
-    "*": Results,
+    "/": Exploration,
+    "/discovery/": Discovery,
+    "/exploration/": Exploration,
+    "/analysis/": Analysis,
+    "*": Exploration,
   };
 
   location.subscribe((d) => {
-    tab = d.split("/")[1];
+    tab.set(d.split("/")[1]);
     if (!tab) {
-      tab = "results";
+      tab.set("exploration");
     }
   });
 
-  wsResponse.subscribe((w) => {
-    let tableColumns = $table.columnNames();
-    let missingColumns = w.columns.filter((c) => !tableColumns.includes(c));
-    if (missingColumns.length > 0) {
-      fetch("/api/table", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({ columns: missingColumns }),
-      })
-        .then((d) => d.json())
-        .then((d) => {
-          const x = {};
-          Object.keys(d).forEach((k) => {
-            x[k] = Object.values(d[k]);
-          });
-
-          let t: ColumnTable;
-          if ($table.size === 0) {
-            t = aq.fromJSON(x);
-          } else {
-            t = $table.assign(aq.fromJSON(x));
-          }
-          table.set(t);
-
-          let requests: ResultsRequest[] = [];
-          missingColumns.forEach((c) => {
-            if (c.startsWith("zenoslice_")) {
-              let idxs = t.filter(`d => d["${c}"] !== null`);
-              slices.update((s) => {
-                s.set(c.slice(10), {
-                  name: c.slice(10),
-                  type: "programmatic",
-                  size: idxs.size,
-                });
-                return s;
-              });
-              requests.push({
-                sli: c,
-                idxs: idxs.array($settings.idColumn) as string[],
-              });
-            }
-          });
-          updateResults(requests);
-        });
-    }
-  });
-
+  wsResponse.subscribe((w) => updateTableColumns(w));
   onMount(() => initialFetch());
+
+  ready.subscribe((r) => {
+    if (r) {
+      model.set($models[0]);
+      metric.set($metrics[0]);
+    }
+  });
 </script>
 
 <Header />
@@ -92,34 +63,37 @@
   <div id="side-menu">
     <List class="demo-list" iconList={true}>
       <Item
-        activated={tab === "results"}
-        on:SMUI:action={() => (tab = updateTab("results"))}
+        activated={$tab === "discovery"}
+        on:SMUI:action={() => updateTab("discovery")}
       >
         <IconButton>
           <Icon component={Svg} viewBox="0 0 24 24">
-            <path fill="currentColor" d={mdiListStatus} />
+            <path fill="currentColor" d={mdiCircleOutline} />
           </Icon>
         </IconButton>
       </Item>
       <Separator />
       <Item
-        activated={tab === "embed"}
-        on:SMUI:action={() => (tab = updateTab("embed"))}
+        activated={$tab === "exploration"}
+        on:SMUI:action={() => updateTab("exploration")}
       >
         <IconButton>
           <Icon component={Svg} viewBox="0 0 24 24">
-            <path fill="currentColor" d={mdiGraphql} />
+            <path fill="currentColor" d={mdiChartPie} />
           </Icon>
         </IconButton>
       </Item>
       <Separator />
       <Item
-        activated={tab === "tests"}
-        on:SMUI:action={() => (tab = updateTab("tests"))}
+        activated={$tab === "analysis"}
+        on:SMUI:action={() => updateTab("analysis")}
       >
         <IconButton>
           <Icon component={Svg} viewBox="0 0 24 24">
-            <path fill="currentColor" d={mdiTestTube} />
+            <path
+              fill="currentColor"
+              d={mdiCheckboxMultipleMarkedCircleOutline}
+            />
           </Icon>
         </IconButton>
       </Item>
@@ -155,11 +129,10 @@
   #side-menu {
     width: 50px;
     border-right: 1px solid #e0e0e0;
-    height: calc(100vh - 74px);
+    height: calc(100vh - 60px);
   }
 
   #main {
-    padding-left: 10px;
     width: calc(100vw - 50px);
   }
 </style>

@@ -1,10 +1,11 @@
-import torchvision.transforms as transforms
-import PIL
+import os
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import os
-from zeno import load_data, load_model, metric
+import torchvision.transforms as transforms
+from PIL import Image
+from zeno import predict_function
 
 transform_image = transforms.Compose(
     [transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
@@ -45,13 +46,16 @@ classes = (
 )
 
 
-@load_model
+@predict_function
 def load_model(model_path):
     net = Net()
     net.load_state_dict(torch.load(model_path))
 
-    def pred(instances):
-        imgs = torch.stack([transform_image(img) for img in instances])
+    def pred(df, ops):
+        imgs = [
+            Image.open(os.path.join(ops.data_path, img)) for img in df[ops.data_column]
+        ]
+        imgs = torch.stack([transform_image(img) for img in imgs])
         with torch.no_grad():
             out, emb = net(imgs)
         return [
@@ -59,18 +63,3 @@ def load_model(model_path):
         ], emb.detach().numpy()
 
     return pred
-
-
-@load_data
-def load_data(df_metadata, data_path):
-    return [PIL.Image.open(os.path.join(data_path, img)) for img in df_metadata.index]
-
-
-@metric
-def accuracy(output, metadata, label_col):
-    return metadata[label_col] == output
-
-
-@metric
-def failure(output, metadata, label_col):
-    return metadata[label_col] != output

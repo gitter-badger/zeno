@@ -7,47 +7,7 @@
       "request": "launch",
       "cwd": "${workspaceFolder}",
       "module": "zeno",
-      "args": [
-        "run",
-        "--tests",
-        "./examples/cifar/tests/",
-        "--task",
-        "image-classification",
-        "--metadata",
-        "./examples/cifar/cifar_pred.csv",
-        "--models",
-        "./examples/cifar/cifar_net_1.pth",
-        "./examples/cifar/cifar_net_2.pth",
-        "./examples/cifar/cifar_net_5.pth",
-        "./examples/cifar/cifar_net_10.pth",
-        "--data-path",
-        "./data/CIFAR-10-images/test/",
-        "--port",
-        "8000"
-      ]
-    },
-    {
-      "name": "zenocifarpreprocess",
-      "type": "python",
-      "request": "launch",
-      "cwd": "${workspaceFolder}",
-      "module": "zeno",
-      "args": [
-        "preprocess",
-        "--tests",
-        "./examples/cifar",
-        "--task",
-        "image-classification",
-        "--metadata",
-        "./examples/cifar/cifar_pred.csv",
-        "--models",
-        "./examples/cifar/cifar_net_1.pth",
-        "./examples/cifar/cifar_net_2.pth",
-        "./examples/cifar/cifar_net_5.pth",
-        "./examples/cifar/cifar_net_10.pth",
-        "--data-path",
-        "./data/CIFAR-10-images/test/"
-      ]
+      "args": ["./examples/cifar/tests/zeno.toml"]
     },
     {
       "name": "zenococo",
@@ -55,47 +15,7 @@
       "request": "launch",
       "cwd": "${workspaceFolder}",
       "module": "zeno",
-      "args": [
-        "run",
-        "--tests",
-        "./examples/coco",
-        "--metadata",
-        "./examples/coco/coco.parquet",
-        "--task",
-        "object-detection",
-        "--models",
-        "yolov3",
-        "yolov5",
-        "--data-path",
-        "/Users/acabrera/dev/data/coco-2014/val2014",
-        "--batch-size",
-        "20",
-        "--id-column",
-        "file_name",
-        "--port",
-        "8001"
-      ]
-    },
-    {
-      "name": "zenoreviewspreprocess",
-      "type": "python",
-      "request": "launch",
-      "cwd": "${workspaceFolder}",
-      "module": "zeno",
-      "args": [
-        "preprocess",
-        "--tests",
-        "./examples/reviews/",
-        "--metadata",
-        "./examples/sentiment/amazon_pred.parquet",
-        "--task",
-        "text-classification",
-        "--models",
-        "distilbert-base-uncased-finetuned-sst-2-english",
-        "fabriceyhc/bert-base-uncased-amazon_polarity",
-        "--batch-size",
-        "64"
-      ]
+      "args": ["examples/coco/zeno.toml"]
     },
     {
       "name": "zenoreviews",
@@ -103,22 +23,7 @@
       "request": "launch",
       "cwd": "${workspaceFolder}",
       "module": "zeno",
-      "args": [
-        "run",
-        "--tests",
-        "./examples/reviews/",
-        "--metadata",
-        "./examples/sentiment/amazon_pred.parquet",
-        "--task",
-        "text-classification",
-        "--models",
-        "distilbert-base-uncased-finetuned-sst-2-english",
-        "fabriceyhc/bert-base-uncased-amazon_polarity",
-        "--batch-size",
-        "20",
-        "--port",
-        "8002"
-      ]
+      "args": ["./examples/reviews/tests/zeno.toml"]
     },
     {
       "name": "zenofsdd",
@@ -126,23 +31,15 @@
       "request": "launch",
       "cwd": "${workspaceFolder}",
       "module": "zeno",
-      "args": [
-        "run",
-        "--tests",
-        "./examples/fsdd",
-        "--metadata",
-        "./examples/fsdd/fsdd.csv",
-        "--task",
-        "audio-classification",
-        "--models",
-        "a",
-        "--data-path",
-        "/Users/acabrera/dev/data/free-spoken-digit-dataset/recordings",
-        "--batch-size",
-        "20",
-        "--port",
-        "8003"
-      ]
+      "args": ["./examples/fsdd/tests/zeno.toml"]
+    },
+    {
+      "name": "zenosegment",
+      "type": "python",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "module": "zeno",
+      "args": ["./examples/segmentation/tests/zeno.toml"]
     },
     {
       "name": "zenobreastcancer",
@@ -150,21 +47,7 @@
       "request": "launch",
       "cwd": "${workspaceFolder}",
       "module": "zeno",
-      "args": [
-        "run",
-        "--tests",
-        "./examples/breast_cancer/test/",
-        "--metadata",
-        "./examples/breast_cancer/extract_subsets_10_10_10/data.csv",
-        "--models",
-        "./examples/breast_cancer/best_model.pth",
-        "--data-path",
-        "./examples/breast_cancer/extract_subsets_10_10_10",
-        "--id-column",
-        "patch_dir",
-        "--task",
-        "image-classification"
-      ]
+      "args": ["./examples/breast_cancer/tests/zeno.toml"]
     }
   ]
 }

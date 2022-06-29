@@ -1,144 +1,148 @@
-import argparse
 import asyncio
 import json
 import os
+import sys
 from pathlib import Path
+from urllib.parse import unquote
 
+import tomli
 import uvicorn  # type: ignore
 from fastapi import FastAPI, WebSocket
 from fastapi.responses import Response
 from fastapi.staticfiles import StaticFiles
 
-from .classes import ProjectionRequest, ResultsRequest, TableRequest
+from .classes import ProjectionRequest, ReportsRequest, ResultsRequest, TableRequest
 from .zeno import Zeno
 
 TASK_TYPES = [
     "image-classification",
+    "image-segmentation",
     "object-detection",
     "text-classification",
     "audio-classification",
 ]
 
 
-def __create_parser():
-    parser = argparse.ArgumentParser(description="Evaluate ML systems.")
-    parser.add_argument(
-        "operation",
-        metavar="operation",
-        nargs=1,
-        type=str,
-        choices=["run", "preprocess"],
-        help="Whether to run Zeno or preprocess data.",
-    )
-    parser.add_argument(
-        "--tests",
-        dest="tests",
-        type=Path,
-        nargs=1,
-        help="Path to folder with Zeno function files.",
-    )
-    parser.add_argument(
-        "--metadata",
-        nargs=1,
-        type=Path,
-        help="CSV or Parquet file with metadata for each instance,"
-        + " at minimum a column with file names.",
-    )
-    parser.add_argument(
-        "--data-path",
-        dest="data_path",
-        nargs="?",
-        type=Path,
-        default="",
-        help="Folder or URL with data instances identified"
-        + "by the id-column option in the metadata file.",
-    )
-    parser.add_argument(
-        "--models",
-        dest="models",
-        nargs="+",
-        help="Directory with model files or list of model files/names.",
-    )
-    parser.add_argument(
-        "--id-column",
-        dest="id_column",
-        default="id",
-        type=str,
-        nargs="?",
-        help="Column with the ID used retrieve data files AND for caching",
-    )
-    parser.add_argument(
-        "--label-column",
-        dest="label_column",
-        default="label",
-        type=str,
-        nargs="?",
-        help="Column with the ground truth label for instances.",
-    )
-    parser.add_argument(
-        "--task",
-        nargs=1,
-        choices=TASK_TYPES,
-        type=str,
-        help="The type of task to be analyzed.",
-    )
-    parser.add_argument(
-        "--batch-size",
-        dest="batch_size",
-        nargs="?",
-        default=64,
-        type=int,
-        help="Batch size of passed model predictions",
-    )
-    parser.add_argument(
-        "--cache-path",
-        dest="cache_path",
-        nargs="?",
-        type=Path,
-        default="./.zeno_cache/",
-        help="Folder for caching results of slicers and metrics.",
-    )
-    parser.add_argument(
-        "--port",
-        dest="port",
-        nargs="?",
-        type=int,
-        default=8000,
-        help="IP port to run Zeno on.",
-    )
-    return parser
-
-
 def main():
-    parser = __create_parser()
-    args = parser.parse_args()
+    if len(sys.argv) != 2:
+        print(
+            "ERROR: Zeno take one argument, a configuration TOML file."
+            + "{0} arguments were passed.",
+            len(sys.argv),
+        )
+        sys.exit(1)
+
+    args = {}
+    try:
+        with open(sys.argv[1], "rb") as f:
+            args = tomli.load(f)
+    except Exception:
+        print("ERROR: Failed to read TOML configuration file.")
+        sys.exit(1)
+
+    toml_path = os.path.dirname(os.path.abspath(sys.argv[1]))
+
+    if "tests" not in args or not os.path.exists(args["tests"]):
+        print("ERROR: Must have 'tests' entry which is a valid directory.")
+        sys.exit(1)
+    else:
+        args["tests"] = Path(os.path.realpath(os.path.join(toml_path, args["tests"])))
+
+    if "task" not in args or args["task"] not in TASK_TYPES:
+        print("ERROR: Must have 'task' entry which is one of the following:")
+        for t in TASK_TYPES:
+            print(t)
+        sys.exit(1)
+
+    if "metadata" not in args:
+        print("ERROR: Must have 'metadata' entry which must be a CSV or Parquet file.")
+        sys.exit(1)
+    else:
+        args["metadata"] = Path(
+            os.path.realpath(os.path.join(toml_path, args["metadata"]))
+        )
+
+    if "models" not in args or len(args["models"]) < 1:
+        print("ERROR: Must have 'models' entry which have at least one model.")
+        sys.exit(1)
+    else:
+        if Path(os.path.realpath(os.path.join(toml_path, args["models"][0]))).exists():
+            args["models"] = [
+                Path(os.path.realpath(os.path.join(toml_path, m)))
+                for m in args["models"]
+            ]
+
+    if "data_path" not in args:
+        args["data_path"] = ""
+    else:
+        args["data_path"] = Path(
+            os.path.realpath(os.path.join(toml_path, args["data_path"]))
+        )
+
+    if "label_path" not in args:
+        args["label_path"] = ""
+    else:
+        args["label_path"] = Path(
+            os.path.realpath(os.path.join(toml_path, args["label_path"]))
+        )
+
+    if "id_column" not in args:
+        args["id_column"] = "id"
+
+    if "data_column" not in args:
+        args["data_column"] = "id"
+
+    if "label_column" not in args:
+        args["label_column"] = "label"
+
+    if "port" not in args:
+        args["port"] = 8000
+
+    if "batch_size" not in args:
+        args["batch_size"] = 1
+
+    if "cache_path" not in args:
+        args["cache_path"] = Path(
+            os.path.realpath(os.path.join(toml_path, "./.zeno_cache/"))
+        )
+    else:
+        args["cache_path"] = Path(
+            os.path.realpath(os.path.join(toml_path, args["cache_path"]))
+        )
+
     run_zeno(args)
 
 
 def run_zeno(args):
     zeno = Zeno(
-        metadata_path=args.metadata[0],
-        task=args.task[0],
-        test_files=args.tests,
-        models=args.models,
-        batch_size=args.batch_size,
-        id_column=args.id_column,
-        label_column=args.label_column,
-        data_path=args.data_path,
-        cache_path=args.cache_path,
+        metadata_path=args["metadata"],
+        task=args["task"],
+        tests=args["tests"],
+        models=args["models"],
+        batch_size=args["batch_size"],
+        id_column=args["id_column"],
+        data_column=args["data_column"],
+        label_column=args["label_column"],
+        data_path=args["data_path"],
+        label_path=args["label_path"],
+        cache_path=args["cache_path"],
     )
 
     zeno.start_processing()
-    if args.operation[0] == "preprocess":
-        zeno.done_inference.wait()
-        return
 
     app = FastAPI(title="Frontend API")
     api_app = FastAPI(title="Backend API")
 
-    if args.data_path != "":
-        app.mount("/static", StaticFiles(directory=args.data_path), name="static")
+    if args["data_path"] != "":
+        app.mount("/data", StaticFiles(directory=args["data_path"]), name="static")
+    if args["label_path"] != "":
+        app.mount("/labels", StaticFiles(directory=args["label_path"]), name="static")
 
+    app.mount(
+        "/cache",
+        StaticFiles(directory=args["cache_path"]),
+        name="cache",
+    )
     app.mount("/api", api_app)
     app.mount(
         "/",
@@ -156,14 +160,14 @@ def run_zeno(args):
                 "task": zeno.task,
                 "idColumn": zeno.id_column,
                 "labelColumn": zeno.label_column,
-                "metadata": zeno.metadata,
-                "port": args.port,
+                "dataColumn": zeno.data_column,
+                "metadataColumns": zeno.columns,
             }
         )
 
     @api_app.get("/metrics")
     def get_metrics():
-        return json.dumps([s.__name__ for s in zeno.metrics.values()])
+        return json.dumps([s.__name__ for s in zeno.metric_functions.values()])
 
     @api_app.get("/models")
     def get_models():
@@ -171,7 +175,11 @@ def run_zeno(args):
 
     @api_app.get("/slices")
     def get_slices():
-        return json.dumps([str(n) for n in zeno.slices.keys()])
+        return json.dumps(zeno.get_slices())
+
+    @api_app.get("/delete-slice/{slice_id}")
+    def delete_slice(slice_id: str):
+        return json.dumps(zeno.delete_slice(unquote(slice_id)))
 
     @api_app.post("/table")
     def get_table(columns: TableRequest):
@@ -180,6 +188,14 @@ def run_zeno(args):
     @api_app.post("/results")
     def get_results(reqs: ResultsRequest):
         return json.dumps(zeno.get_results(reqs))
+
+    @api_app.get("/reports")
+    def get_reports():
+        return json.dumps(zeno.get_reports())
+
+    @api_app.post("/update-reports")
+    def update_reports(reqs: ReportsRequest):
+        return json.dumps(zeno.update_reports(reqs))
 
     @api_app.post("/projection")
     def run_projection(model: ProjectionRequest):
@@ -196,8 +212,9 @@ def run_zeno(args):
                 await websocket.send_json(
                     {
                         "status": zeno.status,
-                        "columns": list(zeno.complete_columns),
+                        "doneProcessing": zeno.done_processing,
+                        "completeColumns": list(zeno.complete_columns),
                     }
                 )
 
-    uvicorn.run(app, host="localhost", port=args.port)  # type: ignore
+    uvicorn.run(app, host="localhost", port=args["port"])  # type: ignore
