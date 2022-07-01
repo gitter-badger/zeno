@@ -13,7 +13,6 @@ from typing import Dict, List
 
 import numpy as np
 import pandas as pd
-import umap  # type: ignore
 
 from .api import ZenoOptions
 from .classes import (
@@ -26,6 +25,8 @@ from .classes import (
     ZenoFunction,
     ZenoFunctionType,
 )
+
+from .projection.parametric_umap import ParametricUMAP
 from .util import (
     columnHash,
     get_arrow_bytes,
@@ -427,8 +428,8 @@ class Zeno(object):
             pickle.dump(self.reports, f)
 
     def __run_umap(self, embeds):
-        reducer = umap.UMAP()
-        projection = reducer.fit_transform(embeds)
+        reducer = ParametricUMAP().new(n_epochs=40)
+        projection = reducer.fit(embeds).transform().outputs()
         self.status = "Done projecting"
         if isinstance(projection, (np.ndarray)):
             return projection.tolist()
@@ -442,11 +443,15 @@ class Zeno(object):
             return []
         return dataframe[dataframe[column].isin(list_to_get)]
 
-    def run_projection(self, model, instance_ids):
+    def run_projection(
+        self,
+        model,
+        instance_ids,
+    ):
         filtered_rows = self.__get_df_rows(
             self.df, self.id_column, list_to_get=instance_ids
         )
-        embeds = np.stack(filtered_rows["zenoembedding_" + model].to_numpy())
+        embeds = np.stack(filtered_rows["3" + model + model].to_numpy())
         projection = self.__run_umap(embeds)
         payload = [
             {"proj": proj, "id": id} for proj, id in zip(projection, instance_ids)

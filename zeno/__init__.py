@@ -5,6 +5,7 @@ from .api import (
     transform_function,
     ZenoOptions,
 )
+from .projection.parametric_umap import ParametricUMAP
 
 __all__ = [
     "predict_function",
@@ -12,4 +13,5 @@ __all__ = [
     "metric_function",
     "transform_function",
     "ZenoOptions",
+    "ParametricUMAP",
 ]
