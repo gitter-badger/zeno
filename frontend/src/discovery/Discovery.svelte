@@ -43,6 +43,8 @@
 		$settings.metadataColumns.length > 0 || $filteredTable._names.length > 0;
 
 	$: pointsExist = projection2D.length > 0;
+	$: console.log($filteredTable);
+	$: console.log(colorBy);
 
 	// absolutely cursed reactive stuff here
 	// whenever stuff is mentioned as the parameter it will update/recompute for that variable
@@ -89,6 +91,7 @@
 		}
 	}
 	function getMetadata(table: ColumnTable, colorBy: string) {
+		console.log(colorBy, table);
 		return table.columnArray(colorBy) as Array<unknown>;
 	}
 
@@ -183,8 +186,14 @@
 		<div id="color-by">
 			{#if metadataExists}
 				<Select bind:value={colorBy} label={"Color Points By"}>
-					{#each $settings.metadataColumns as metadataName, i}
-						<Option value={metadataName}>{metadataName}</Option>
+					{#each $settings.metadataColumns.filter((item) => item.model === "" || item.model === $model) as metadataName, i}
+						<Option
+							value={(metadataName.columnType !== 0
+								? metadataName.columnType
+								: "") +
+								metadataName.name +
+								metadataName.model}>
+							{metadataName.name + metadataName.model}</Option>
 					{/each}
 				</Select>
 			{/if}
@@ -219,6 +228,7 @@
 				on:click={async () => {
 					if ($filteredTable) {
 						const filteredIds = $filteredTable.columnArray($settings.idColumn);
+						console.log($model);
 						const _projection = await projectEmbeddings2D($model, filteredIds);
 						projection2D = _projection.data.map(({ proj }) => proj);
 					}
