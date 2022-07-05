@@ -33,7 +33,7 @@
 	let projection2D: number[][] = [];
 	let colorValues: number[] = [];
 	let opacityValues: number[] = [];
-	let colorBy: string = "label";
+	let colorBy: string = "0label";
 	// eslint-disable-next-line
 	let dataType: dataType = "categorical";
 	let colorRange: string[] = colorsCategorical;
@@ -175,6 +175,10 @@
 		legendaryScatterLegend = legend;
 		legendaryScatterPoints = scatter;
 	}
+	$: console.log($settings.metadataColumns);
+	$: metadataWithModelOptions = $settings.metadataColumns.filter(
+		(metadata) => metadata.model === $model || metadata.model === ""
+	);
 </script>
 
 <div id="main">
@@ -184,8 +188,8 @@
 		<div id="color-by">
 			{#if metadataExists}
 				<Select bind:value={colorBy} label={"Color Points By"}>
-					{#each $settings.metadataColumns as metadataName, i}
-						<Option value={metadataName}>{metadataName}</Option>
+					{#each metadataWithModelOptions as metadata, i}
+						<Option value={columnHash(metadata)}>{metadata.name}</Option>
 					{/each}
 				</Select>
 			{/if}
