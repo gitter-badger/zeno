@@ -6,6 +6,7 @@
 	import Samples from "../samples/Samples.svelte";
 	import SampleOptions from "../samples/SampleOptions.svelte";
 	import * as d3chromatic from "d3-scale-chromatic";
+	import * as aq from "arquero";
 	import {
 		projectEmbeddings2D,
 		reformatAPI,
@@ -14,7 +15,12 @@
 		binContinuous,
 		getDataRange as uniqueOutputs,
 	} from "./discovery";
-	import { filteredTable, model, settings } from "../stores";
+	import {
+		filteredTable,
+		model,
+		settings,
+		table as globalTable,
+	} from "../stores";
 	import { columnHash } from "../util";
 
 	import type { dataType } from "./discovery";
@@ -23,6 +29,7 @@
 		LegendaryLegendEntry,
 	} from "./scatter/scatter";
 	import type ColumnTable from "arquero/dist/types/table/column-table";
+	import { onMount } from "svelte";
 
 	// props
 	export let scatterWidth = 900;
@@ -30,7 +37,7 @@
 	export let colorsCategorical = d3chromatic.schemeCategory10 as string[];
 	export let colorsContinuous = d3chromatic.interpolateBuPu;
 
-	let projection2D: number[][] = [];
+	let projection2D: object[] = [];
 	let colorValues: number[] = [];
 	let opacityValues: number[] = [];
 	let colorBy: string = "0label";
@@ -45,32 +52,32 @@
 
 	$: pointsExist = projection2D.length > 0;
 
-	// absolutely cursed reactive stuff here
-	// whenever stuff is mentioned as the parameter it will update/recompute for that variable
-	// so I hid stuff (global variables) within the function so they don't call the reactive on update
-	// this cursed black magic can be removed once I get a better copying and caching system down
-	// for the pipeline
-	let oldIds = [],
-		newIds = [];
-	$: {
-		oldIds = saveIds();
-		updateColors({ colorBy });
-	}
-	$: {
-		if (metadataExists && $filteredTable) {
-			newIds = saveIds();
+	onMount(() => {
+		if ($globalTable) {
+			updateColors({ colorBy, table: $globalTable });
+			const colorColumn = aq.table({ color: colorValues });
+			globalTable.set($globalTable.assign(colorColumn));
 		}
-	}
+	});
+
 	$: {
-		opacityValues = oldIds.map((id) => (newIds.includes(id) ? 0.75 : 0.15));
-	}
-	$: {
-		if (metadataExists && pointsExist) {
+		if (metadataExists && pointsExist && $filteredTable) {
+			const curr_ids = $filteredTable.columnArray(
+				columnHash($settings.idColumn)
+			);
+			const filtered_proj = projection2D.filter((proj) =>
+				curr_ids.includes(proj["instance_id"])
+			);
+			const coordinates = filtered_proj.map((projObj) => projObj["projection"]);
+
+			opacityValues = new Array(coordinates.length).fill(1.0);
+			const colors = $filteredTable.columnArray("color");
+
 			updateLegendaryScatter({
+				projection2D: coordinates,
 				colorRange,
-				colorValues,
+				colorValues: colors,
 				dataRange,
-				projection2D,
 				opacityValues,
 			});
 		}
@@ -82,9 +89,9 @@
 	}
 	function saveIds() {
 		if ($filteredTable) {
-			return $filteredTable
-				.columnArray(columnHash($settings.idColumn))
-				.map((d) => d) as string[];
+			return $filteredTable.columnArray(
+				columnHash($settings.idColumn)
+			) as unknown[];
 		} else {
 			return [];
 		}
@@ -175,7 +182,6 @@
 		legendaryScatterLegend = legend;
 		legendaryScatterPoints = scatter;
 	}
-	$: console.log($settings.metadataColumns);
 	$: metadataWithModelOptions = $settings.metadataColumns.filter(
 		(metadata) => metadata.model === $model || metadata.model === ""
 	);
@@ -226,8 +232,12 @@
 						const filteredIds = $filteredTable.columnArray(
 							columnHash($settings.idColumn)
 						);
-						const _projection = await projectEmbeddings2D($model, filteredIds);
-						projection2D = _projection.data.map(({ proj }) => proj);
+						const projection_result = await projectEmbeddings2D(
+							$model,
+							filteredIds
+						);
+						projection2D = projection_result["data"];
+						console.log(projection2D);
 					}
 				}}
 				>Compute projection

@@ -426,16 +426,31 @@ class Zeno(object):
             return []
         return dataframe[dataframe[column].isin(list_to_get)]
 
-    def run_projection(self, model, instance_ids):
+    def __package_projection_export(self, projection, instance_ids):
+        payload = []
+        for projection, instance_id in zip(projection, instance_ids):
+            packaged_projection = {"projection": projection, "instance_id": instance_id}
+            payload.append(packaged_projection)
+        return payload
+
+    def run_projection(self, model_name, instance_ids):
+
         filtered_rows = self.__get_df_rows(
             self.df, str(self.id_column), list_to_get=instance_ids
         )
-        embeds = np.stack(filtered_rows["zenoembedding_" + model].to_numpy())
-        projection = self.__run_umap(embeds)
-        payload = [
-            {"proj": proj, "id": id} for proj, id in zip(projection, instance_ids)
-        ]
-        return payload
+        embedding_col = ZenoColumn(
+            column_type=ZenoColumnType.EMBEDDING,
+            name=model_name,
+            model=model_name,
+            transform="",
+        )
+        embedding_col_name = str(embedding_col)
+
+        embeddings = np.stack(filtered_rows[embedding_col_name].to_numpy())
+        projection = self.__run_umap(embeddings)
+        projections_export = self.__package_projection_export(projection, instance_ids)
+
+        return projections_export
 
     def get_table(self, columns):
         """Get the metadata DataFrame for a given slice.
