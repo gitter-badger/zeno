@@ -75,6 +75,7 @@
 			dispatch("create", scatterRef);
 		}
 	}
+
 	function opacifyPoints(
 		scatter,
 		opacities = availableOpacities,
@@ -102,12 +103,19 @@
 	function deselectPoints() {
 		dispatch("deselect", { deseleted: true });
 	}
+	let mounted = false;
 	onMount(() => {
-		createScatter(canvasEl, createScatterConfig);
+		// createScatter(canvasEl, createScatterConfig);
+		mounted = true;
 	});
 	onDestroy(() => {
 		scatterRef.destroy();
 	});
+	$: {
+		if (canvasEl && mounted) {
+			createScatter(canvasEl, createScatterConfig);
+		}
+	}
 	$: {
 		const pointsPopulated = points.length > 0;
 		const scatterCreated = scatterRef !== undefined;
