@@ -193,6 +193,7 @@
 	$: metadataWithModelOptions = $settings.metadataColumns.filter(
 		(metadata) => metadata.model === $model || metadata.model === ""
 	);
+	let regionMode = false;
 </script>
 
 <div id="main">
@@ -214,7 +215,8 @@
 			<div
 				class="paper"
 				style:width="{scatterWidth}px"
-				style:height="{scatterHeight}px">
+				style:height="{scatterHeight}px"
+				style:position="relative">
 				<LegendaryScatter
 					width={scatterWidth}
 					height={scatterHeight}
@@ -228,8 +230,9 @@
 						lassoSelectTable = indexTable($filteredTable, indexInstances);
 					}}
 					on:mousemove={(e) => {
-						console.log(e.detail);
-					}} />
+						// console.log(e.detail);
+					}}
+					{regionMode} />
 			</div>
 			<div>
 				<p>{$filteredTable.size} instances</p>
@@ -237,6 +240,12 @@
 			</div>
 		</div>
 		<div>
+			<button
+				on:click={() => {
+					regionMode = !regionMode;
+				}}
+				>Region mode
+			</button>
 			<button
 				on:click={async () => {
 					if ($filteredTable) {

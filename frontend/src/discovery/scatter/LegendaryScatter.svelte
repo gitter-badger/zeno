@@ -2,6 +2,7 @@
 	import Legend from "../legend/Legend.svelte";
 	import AutoscaledRegl from "./AutoscaledRegl.svelte";
 	import { schemeCategory10 } from "d3-scale-chromatic";
+	import { color, HSLColor, RGBColor } from "d3-color";
 	import { createEventDispatcher } from "svelte";
 	const dispatch = createEventDispatcher();
 
@@ -21,19 +22,62 @@
 	$: colorRange = legend.map((item) => item.color);
 	let mousePos = [0, 0];
 	let conversion;
+
+	let mouseDown = false;
+	let keyDown = false;
+	export let regionMode = true;
+	let polygon = [];
+	$: polygonString = polygon.reduce(
+		(acc, item) => acc + " " + item.toString(),
+		""
+	);
+	let intervalSample = 5;
+	let currInterval = 0;
+
+	function opacify(colorObj: RGBColor | HSLColor, opacity: number) {
+		const colorCopy = colorObj.copy();
+		colorCopy.opacity = opacity;
+		return colorCopy;
+	}
+	let regionStroke = color("salmon");
+	let regionFill = opacify(regionStroke, 0.25);
 </script>
 
+<svelte:window
+	on:keyup={(e) => {
+		keyDown = false;
+	}}
+	on:keydown={(e) => {
+		keyDown = e.key === "Shift";
+		polygon = [];
+		currInterval = 0;
+	}} />
 <div id="legendary" style:width="{width}px" style:height="{height}px">
 	{#if points.length > 0}
 		<div
 			id="bottom-scatter"
+			on:mousedown={() => {
+				polygon = [];
+				currInterval = 0;
+				mouseDown = true;
+			}}
+			on:mouseup={() => {
+				mouseDown = false;
+			}}
 			on:mousemove={(e) => {
 				mousePos[0] = e.offsetX;
 				mousePos[1] = e.offsetY;
 				dispatch("mousemove", {
 					mousePos,
-					screenPos: conversion.screenSpaceToPointSpace(mousePos),
+					pointPos: conversion.screenSpaceToPointSpace(mousePos),
 				});
+				if (keyDown && mouseDown) {
+					currInterval++;
+					if (currInterval >= intervalSample) {
+						polygon = [...polygon, [...mousePos]];
+						currInterval = 0;
+					}
+				}
 			}}>
 			<AutoscaledRegl
 				{width}
@@ -47,6 +91,18 @@
 				on:draw
 				on:select
 				on:deselect />
+			{#if regionMode}
+				<svg
+					style="border: 3px dashed lightgreen; position:absolute; left:0; top: 0;"
+					{width}
+					{height}>
+					<polygon
+						points={polygonString}
+						stroke={regionStroke.toString()}
+						fill={regionFill.toString()}
+						stroke-width={2} />
+				</svg>
+			{/if}
 		</div>
 	{/if}
 	<div id="top-legend">
