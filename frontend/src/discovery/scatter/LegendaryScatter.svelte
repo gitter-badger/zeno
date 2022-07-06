@@ -27,7 +27,12 @@
 	let keyDown = false;
 	export let regionMode = true;
 	let polygon = [];
-	$: polygonString = polygon.reduce(
+	let actualPolygon = [];
+	$: svgPolygon = polygon.map(([x, y]) => [
+		conversion.xViewScale(x),
+		conversion.yViewScale(y),
+	]);
+	$: polygonString = svgPolygon.reduce(
 		(acc, item) => acc + " " + item.toString(),
 		""
 	);
@@ -45,37 +50,58 @@
 
 <svelte:window
 	on:keyup={(e) => {
-		keyDown = false;
+		if (regionMode) {
+			keyDown = false;
+		}
 	}}
 	on:keydown={(e) => {
-		keyDown = e.key === "Shift";
-		polygon = [];
-		currInterval = 0;
+		if (regionMode) {
+			keyDown = e.key === "Shift";
+			polygon = [];
+			currInterval = 0;
+		}
 	}} />
 <div id="legendary" style:width="{width}px" style:height="{height}px">
 	{#if points.length > 0}
 		<div
 			id="bottom-scatter"
 			on:mousedown={() => {
-				polygon = [];
-				currInterval = 0;
-				mouseDown = true;
+				if (regionMode) {
+					if (keyDown) {
+						polygon = [];
+						currInterval = 0;
+					}
+					mouseDown = true;
+				}
 			}}
 			on:mouseup={() => {
-				mouseDown = false;
+				if (regionMode) {
+					mouseDown = false;
+				}
 			}}
 			on:mousemove={(e) => {
 				mousePos[0] = e.offsetX;
 				mousePos[1] = e.offsetY;
+				const pointPos = conversion.screenSpaceToPointSpace(mousePos);
 				dispatch("mousemove", {
 					mousePos,
-					pointPos: conversion.screenSpaceToPointSpace(mousePos),
+					pointPos,
 				});
-				if (keyDown && mouseDown) {
-					currInterval++;
-					if (currInterval >= intervalSample) {
-						polygon = [...polygon, [...mousePos]];
-						currInterval = 0;
+				if (regionMode) {
+					if (keyDown && mouseDown) {
+						currInterval++;
+						if (currInterval >= intervalSample) {
+							polygon = [
+								...polygon,
+								[
+									conversion.xViewScale.invert(mousePos[0]),
+									conversion.yViewScale.invert(mousePos[1]),
+								],
+							];
+							actualPolygon = [...actualPolygon, [...pointPos]];
+							console.log(polygon);
+							currInterval = 0;
+						}
 					}
 				}
 			}}>
