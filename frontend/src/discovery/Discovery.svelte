@@ -226,6 +226,9 @@
 					on:select={({ detail }) => {
 						const indexInstances = detail.map(({ index }) => index);
 						lassoSelectTable = indexTable($filteredTable, indexInstances);
+					}}
+					on:mousemove={(e) => {
+						console.log(e.detail);
 					}} />
 			</div>
 			<div>

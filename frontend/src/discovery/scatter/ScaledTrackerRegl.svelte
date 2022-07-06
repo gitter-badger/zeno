@@ -29,8 +29,17 @@
 	$: formattedPoints = points.map((p) => {
 		return [xScale(p.x), yScale(p.y), p.color, p.opacity];
 	});
-	export let xScaleTracker = scaleLinear();
-	export let yScaleTracker = scaleLinear();
+	export let xScaleTracker = scaleLinear().domain([-1, 1]);
+	export let yScaleTracker = scaleLinear().domain([-1, 1]);
+
+	function screenSpaceToPointSpace(screenSpacePoint: [number, number]) {
+		const [x, y] = screenSpacePoint;
+		const pointSpacePoint = [
+			xScale.invert(xScaleTracker.invert(x)),
+			yScale.invert(yScaleTracker.invert(y)),
+		];
+		return pointSpacePoint;
+	}
 </script>
 
 <BaseRegl
@@ -44,7 +53,13 @@
 		e.detail.subscribe(
 			"view",
 			() => {
-				dispatch("view", { xScale: xScaleTracker, yScale: yScaleTracker });
+				dispatch("view", {
+					xViewScale: xScaleTracker,
+					yViewScale: yScaleTracker,
+					xPointScale: xScale,
+					yPointScale: yScale,
+					screenSpaceToPointSpace,
+				});
 			},
 			null
 		);

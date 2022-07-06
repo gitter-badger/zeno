@@ -63,9 +63,7 @@
 	{colorRange}
 	{xMinMax}
 	{yMinMax}
-	on:view={(e) => {
-		//
-	}}
+	on:view
 	on:create
 	on:draw
 	on:select
