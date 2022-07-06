@@ -2,7 +2,9 @@
 	import BaseRegl from "./BaseRegl.svelte";
 	import { scaleLinear } from "d3-scale";
 	import { schemeCategory10 } from "d3-scale-chromatic";
+	import { createEventDispatcher } from "svelte";
 	import type { LegendaryScatterPoint } from "./scatter";
+	const dispatch = createEventDispatcher();
 
 	export let canvasStyle = "";
 	export let width = 500;
@@ -27,6 +29,8 @@
 	$: formattedPoints = points.map((p) => {
 		return [xScale(p.x), yScale(p.y), p.color, p.opacity];
 	});
+	export let xScaleTracker = scaleLinear();
+	export let yScaleTracker = scaleLinear();
 </script>
 
 <BaseRegl
@@ -35,7 +39,16 @@
 	availableColors={colorRange}
 	points={formattedPoints}
 	{canvasStyle}
-	on:create
+	createScatterConfig={{ xScale: xScaleTracker, yScale: yScaleTracker }}
+	on:create={(e) => {
+		e.detail.subscribe(
+			"view",
+			() => {
+				dispatch("view", { xScale: xScaleTracker, yScale: yScaleTracker });
+			},
+			null
+		);
+	}}
 	on:draw
 	on:select
 	on:deselect />
