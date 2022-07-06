@@ -445,8 +445,8 @@ class Zeno(object):
             transform="",
         )
         embedding_col_name = str(embedding_col)
-
-        embeddings = np.stack(filtered_rows[embedding_col_name].to_numpy())
+        embeddings_pd_col = filtered_rows[embedding_col_name]  # type: ignore
+        embeddings = np.stack(embeddings_pd_col.to_numpy())
         projection = self.__run_umap(embeddings)
         projections_export = self.__package_projection_export(projection, instance_ids)
 
