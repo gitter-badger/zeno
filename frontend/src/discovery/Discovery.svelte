@@ -51,15 +51,24 @@
 		$settings.metadataColumns.length > 0 || $filteredTable._names.length > 0;
 
 	$: pointsExist = projection2D.length > 0;
+	$: filteredTableEmpty = $filteredTable._nrows === 0;
+	$: tableEmpty = $globalTable._nrows === 0;
 
+	let ranOnce = false;
+	let mounted = false;
 	onMount(() => {
-		if ($globalTable) {
+		mounted = true;
+	});
+
+	$: {
+		if (!filteredTableEmpty && !tableEmpty && !ranOnce && mounted) {
 			updateColors({ colorBy, table: $globalTable });
 			const colorColumn = aq.table({ color: colorValues });
 			globalTable.set($globalTable.assign(colorColumn));
+			console.log($globalTable);
+			ranOnce = true;
 		}
-	});
-
+	}
 	$: {
 		if (metadataExists && pointsExist && $filteredTable) {
 			const curr_ids = $filteredTable.columnArray(
@@ -71,12 +80,11 @@
 			const coordinates = filtered_proj.map((projObj) => projObj["projection"]);
 
 			opacityValues = new Array(coordinates.length).fill(1.0);
-			const colors = $filteredTable.columnArray("color");
 
 			updateLegendaryScatter({
 				projection2D: coordinates,
 				colorRange,
-				colorValues: colors,
+				colorValues: $filteredTable.columnArray("color"),
 				dataRange,
 				opacityValues,
 			});
