@@ -34,6 +34,7 @@ from .util import (
     predistill_data,
     run_inference,
 )
+from .pipeline.projection.parametric_umap import ParametricUMAPNode
 
 
 class Zeno(object):
@@ -52,6 +53,8 @@ class Zeno(object):
         cache_path: Path,
     ):
         logging.basicConfig(level=logging.INFO)
+
+        self.pipeline = []
 
         self.task = task
         self.tests = tests
@@ -421,6 +424,28 @@ class Zeno(object):
         else:
             return []
 
+    def run_pipeline(self):
+        pass
+
+    def __run_parametric_umap(self, embeds):
+        if len(self.pipeline) > 0:
+            send_to_frontend = self.pipeline[0].export_outputs_js()
+        else:
+            p_umap = ParametricUMAPNode()
+            p_umap.new_executable(n_epochs=20, n_neighbors=100, n_components=2)
+            self.pipeline.append(p_umap)
+            p_umap.execute(embeds)
+            send_to_frontend = p_umap.export_outputs_js()
+        projection = send_to_frontend["projection2D"]
+
+        self.status = "Done projecting"
+        if isinstance(projection, (np.ndarray)):
+            return projection.tolist()
+        elif isinstance(projection, (list)):
+            return projection
+        else:
+            return []
+
     def __get_df_rows(self, dataframe, column, list_to_get=None):
         if list_to_get is None:
             return []
@@ -447,7 +472,7 @@ class Zeno(object):
         embedding_col_name = str(embedding_col)
         embeddings_pd_col = filtered_rows[embedding_col_name]  # type: ignore
         embeddings = np.stack(embeddings_pd_col.to_numpy())
-        projection = self.__run_umap(embeddings)
+        projection = self.__run_parametric_umap(embeddings)
         projections_export = self.__package_projection_export(projection, instance_ids)
 
         return projections_export

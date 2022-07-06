@@ -3,7 +3,7 @@ from umap.parametric_umap import (  # type: ignore
     ParametricUMAP,  # type: ignore
 )  # type: ignore
 
-from .executable_api import Executable
+from ..executable_api import Executable
 
 
 class ParametricUMAPNode(Executable):
