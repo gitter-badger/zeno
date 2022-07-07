@@ -35,6 +35,7 @@ from .util import (
     run_inference,
 )
 from .pipeline.projection.parametric_umap import ParametricUMAPNode
+from .pipeline.lableler.region_based_labler import RegionBasedLabelerNode
 
 
 class Zeno(object):
@@ -54,7 +55,8 @@ class Zeno(object):
     ):
         logging.basicConfig(level=logging.INFO)
 
-        self.pipeline = []
+        self.projection = None
+        self.labeler = None
 
         self.task = task
         self.tests = tests
@@ -424,17 +426,21 @@ class Zeno(object):
         else:
             return []
 
-    def run_pipeline(self):
-        pass
+    def run_pipeline(self, input_table: pd.DataFrame):
+        # memory = {"io": input_table}
+
+        # run projection first
+        self.projection.execute()
 
     def __run_parametric_umap(self, embeds):
-        if len(self.pipeline) > 0:
-            send_to_frontend = self.pipeline[0].export_outputs_js()
+        if self.projection is not None:
+            send_to_frontend = self.projection.export_outputs_js()
         else:
             p_umap = ParametricUMAPNode()
-            p_umap.new_executable(n_epochs=20, n_neighbors=100, n_components=2)
-            self.pipeline.append(p_umap)
-            p_umap.execute(embeds)
+            p_umap.init(n_epochs=20, n_neighbors=100, n_components=2)
+            self.projection = p_umap
+            p_umap.fit(embeds)
+            p_umap.transform(embeds)
             send_to_frontend = p_umap.export_outputs_js()
         projection = send_to_frontend["projection2D"]
 
@@ -463,19 +469,37 @@ class Zeno(object):
         filtered_rows = self.__get_df_rows(
             self.df, str(self.id_column), list_to_get=instance_ids
         )
-        embedding_col = ZenoColumn(
-            column_type=ZenoColumnType.EMBEDDING,
-            name=model_name,
-            model=model_name,
-            transform="",
+        projection = self.__run_parametric_umap(
+            {"table": filtered_rows, "model": model_name}
         )
-        embedding_col_name = str(embedding_col)
-        embeddings_pd_col = filtered_rows[embedding_col_name]  # type: ignore
-        embeddings = np.stack(embeddings_pd_col.to_numpy())
-        projection = self.__run_parametric_umap(embeddings)
         projections_export = self.__package_projection_export(projection, instance_ids)
 
         return projections_export
+
+    def __set_region_labeler(self, model_name, polygon_points):
+        self.labeler = RegionBasedLabelerNode()
+        self.labeler.init(polygon_points)
+
+    def run_labeler(self, model_name, polygon_points, labeler_name):
+        self.__set_region_labeler(model_name, polygon_points)
+        output = self.pipeline_it({"table": self.df, "model": model_name})
+        new_column_labels = ZenoColumn(
+            column_type=ZenoColumnType.PREDISTILL,
+            name=labeler_name,
+            model=model_name,
+            transform="",
+        )
+        self.df.loc[:, str(new_column_labels)] = output["labels"]
+        self.complete_columns.append(str(new_column_labels))
+        print(self.df.keys())
+        self.status = "Done projecting"
+
+        return output["labels"]
+
+    def pipeline_it(self, input_memory):
+        input_memory = self.projection.transform(input_memory).pipe_outputs()
+        input_memory = self.labeler.transform(input_memory).pipe_outputs()
+        return input_memory
 
     def get_table(self, columns):
         """Get the metadata DataFrame for a given slice.

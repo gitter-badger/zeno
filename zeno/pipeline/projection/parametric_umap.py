@@ -3,28 +3,51 @@ from umap.parametric_umap import (  # type: ignore
     ParametricUMAP,  # type: ignore
 )  # type: ignore
 
-from ..executable_api import Executable
+import numpy as np
+from ...classes import ZenoColumn, ZenoColumnType
 
 
-class ParametricUMAPNode(Executable):
+class ParametricUMAPNode:
     def __init__(self):
         self.status = ""
 
-    def execute(self, input):
-        self.projections = self.model.fit_transform(input)
+    def get_embeddings(self, table, model_name):
+        embedding_col = ZenoColumn(
+            column_type=ZenoColumnType.EMBEDDING,
+            name=model_name,
+            model=model_name,
+            transform="",
+        )
+        embedding_col_name = str(embedding_col)
+        embeddings_pd_col = table[embedding_col_name]  # type: ignore
+        embeddings = np.stack(embeddings_pd_col.to_numpy())
+        return embeddings
+
+    def fit(self, input: dict):
+        embeddings = self.get_embeddings(input["table"], input["model"])
+        self.model.fit(embeddings)
+
+        return self
+
+    def transform(self, input: dict):
+        embeddings = self.get_embeddings(input["table"], input["model"])
+        self.projections = self.model.transform(embeddings)
         self.input = input
 
+        return self
+
     def pipe_outputs(self):
-        return {"input": self.input, "projection2D": self.projections}
+        self.input["projection2D"] = self.projections
+        return self.input
 
     def export_outputs_js(self):
         return {"projection2D": self.projections}
 
-    def save_executable(self, path: str):
+    def save(self, path: str):
         self.model.save(path)
 
-    def load_executable(self, path: str):
+    def load(self, path: str):
         self.model = load_ParametricUMAP(path)
 
-    def new_executable(self, *args, **kwargs):
+    def init(self, *args, **kwargs):
         self.model = ParametricUMAP(*args, **kwargs)

@@ -18,6 +18,7 @@ from .classes import (
     StatusResponse,
     TableRequest,
     ZenoSettings,
+    RegionLabelerRequest,
 )
 from .zeno import Zeno
 
@@ -216,6 +217,11 @@ def run_zeno(args):
     def run_projection(proj_req: ProjectionRequest):
         projection = zeno.run_projection(proj_req.model, proj_req.instance_ids)
         return json.dumps({"data": projection, "model": proj_req.model})
+
+    @api_app.post("/region-labeler")
+    def run_region_labeler(region_req: RegionLabelerRequest):
+        output = zeno.run_labeler(region_req.model, region_req.polygon, region_req.name)
+        return json.dumps({"data": output, "model": region_req.model})
 
     @api_app.websocket("/status")
     async def results_websocket(websocket: WebSocket):

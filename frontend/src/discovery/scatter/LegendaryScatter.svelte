@@ -27,7 +27,7 @@
 	let keyDown = false;
 	export let regionMode = true;
 	let polygon = [];
-	let actualPolygon = [];
+	export let regionPolygon = [];
 	$: svgPolygon = polygon.map(([x, y]) => [
 		conversion.xViewScale(x),
 		conversion.yViewScale(y),
@@ -36,7 +36,7 @@
 		(acc, item) => acc + " " + item.toString(),
 		""
 	);
-	let intervalSample = 5;
+	let intervalSample = 1;
 	let currInterval = 0;
 
 	function opacify(colorObj: RGBColor | HSLColor, opacity: number) {
@@ -44,7 +44,7 @@
 		colorCopy.opacity = opacity;
 		return colorCopy;
 	}
-	let regionStroke = color("salmon");
+	let regionStroke = color("lightgreen");
 	let regionFill = opacify(regionStroke, 0.25);
 </script>
 
@@ -98,7 +98,7 @@
 									conversion.yViewScale.invert(mousePos[1]),
 								],
 							];
-							actualPolygon = [...actualPolygon, [...pointPos]];
+							regionPolygon = [...regionPolygon, [...pointPos]];
 							console.log(polygon);
 							currInterval = 0;
 						}

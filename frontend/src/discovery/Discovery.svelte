@@ -14,6 +14,7 @@
 		indexTable,
 		binContinuous,
 		getDataRange as uniqueOutputs,
+		post,
 	} from "./discovery";
 	import {
 		filteredTable,
@@ -193,7 +194,10 @@
 	$: metadataWithModelOptions = $settings.metadataColumns.filter(
 		(metadata) => metadata.model === $model || metadata.model === ""
 	);
+	$: console.log($globalTable);
 	let regionMode = false;
+	let regionName = "default";
+	let regionPolygon = [];
 </script>
 
 <div id="main">
@@ -222,6 +226,7 @@
 					height={scatterHeight}
 					legend={legendaryScatterLegend}
 					points={legendaryScatterPoints}
+					bind:regionPolygon
 					on:deselect={() => {
 						lassoSelectTable = null;
 					}}
@@ -241,12 +246,6 @@
 		</div>
 		<div>
 			<button
-				on:click={() => {
-					regionMode = !regionMode;
-				}}
-				>Region mode
-			</button>
-			<button
 				on:click={async () => {
 					if ($filteredTable) {
 						const filteredIds = $filteredTable.columnArray(
@@ -262,6 +261,27 @@
 				}}
 				>Compute projection
 			</button>
+			<button
+				on:click={() => {
+					regionMode = !regionMode;
+				}}
+				>Region mode
+			</button>
+			{#if regionPolygon.length > 0}
+				<input type="text" bind:value={regionName} />
+				<button
+					on:click={async () => {
+						// call the function in the backend
+						const output = await post("api/region-labeler", {
+							name: regionName,
+							polygon: regionPolygon,
+							model: $model,
+						});
+						console.log(output);
+					}}
+					>Compute Region Based Labeler
+				</button>
+			{/if}
 		</div>
 	</div>
 

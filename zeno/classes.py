@@ -111,3 +111,9 @@ class ResultsRequest(BaseModel):
 class ProjectionRequest(BaseModel):
     model: str
     instance_ids: List[str]
+
+
+class RegionLabelerRequest(BaseModel):
+    model: str
+    polygon: List[List[float]]
+    name: str
