@@ -19,6 +19,7 @@ from .classes import (
     TableRequest,
     ZenoSettings,
     RegionLabelerRequest,
+    HardFilterRequest,
 )
 from .zeno import Zeno
 
@@ -222,6 +223,12 @@ def run_zeno(args):
     def run_region_labeler(region_req: RegionLabelerRequest):
         output = zeno.run_labeler(region_req.model, region_req.polygon, region_req.name)
         return json.dumps({"data": output, "model": region_req.model})
+
+    @api_app.post("/hard-filter")
+    def run_harder_filter(req: HardFilterRequest):
+        print(req)
+        output = zeno.run_hard_filter(req.instance_ids, req.model)
+        return json.dumps({"data": output, "model": req.model})
 
     @api_app.websocket("/status")
     async def results_websocket(websocket: WebSocket):

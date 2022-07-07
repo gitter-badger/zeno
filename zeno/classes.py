@@ -117,3 +117,8 @@ class RegionLabelerRequest(BaseModel):
     model: str
     polygon: List[List[float]]
     name: str
+
+
+class HardFilterRequest(BaseModel):
+    model: str
+    instance_ids: List[str]

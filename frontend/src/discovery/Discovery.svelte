@@ -57,17 +57,16 @@
 
 	let ranOnce = false;
 	let mounted = false;
-	onMount(() => {
+	onMount(async () => {
 		mounted = true;
 	});
 
 	$: {
-		if (!filteredTableEmpty && !tableEmpty && !ranOnce && mounted) {
+		if (!filteredTableEmpty && !tableEmpty && mounted) {
 			updateColors({ colorBy, table: $globalTable });
 			const colorColumn = aq.table({ color: colorValues });
+			console.log(colorColumn);
 			globalTable.set($globalTable.assign(colorColumn));
-			console.log($globalTable);
-			ranOnce = true;
 		}
 	}
 	$: {
@@ -198,6 +197,37 @@
 	let regionMode = false;
 	let regionName = "default";
 	let regionPolygon = [];
+
+	let initialProjection2D = [];
+	async function project2D(table: ColumnTable) {
+		const allInstanceIds = table.columnArray(columnHash($settings.idColumn));
+		const projection_result = await projectEmbeddings2D($model, allInstanceIds);
+		return projection_result;
+	}
+	function goBackToInit() {
+		projection2D = initialProjection2D;
+	}
+	let ranInitProjection = false;
+	$: {
+		if (
+			mounted &&
+			!tableEmpty &&
+			$model.length > 0 &&
+			metadataExists &&
+			!ranInitProjection
+		) {
+			project2D($globalTable)
+				.then((d) => {
+					initialProjection2D = d["data"];
+					projection2D = initialProjection2D;
+					return d;
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+			ranInitProjection = true;
+		}
+	}
 </script>
 
 <div id="main">
@@ -282,6 +312,17 @@
 					>Compute Region Based Labeler
 				</button>
 			{/if}
+			<button
+				on:click={async () => {
+					const filteredIds = $filteredTable.columnArray(
+						columnHash($settings.idColumn)
+					);
+					const output = await post("api/hard-filter", {
+						instance_ids: filteredIds,
+						model: $model,
+					});
+					console.log(output);
+				}}>Hard Id filter</button>
 		</div>
 	</div>
 

@@ -24,13 +24,13 @@ class ParametricUMAPNode:
         return embeddings
 
     def fit(self, input: dict):
-        embeddings = self.get_embeddings(input["table"], input["model"])
+        embeddings = self.get_embeddings(input["input_table"], input["model"])
         self.model.fit(embeddings)
 
         return self
 
     def transform(self, input: dict):
-        embeddings = self.get_embeddings(input["table"], input["model"])
+        embeddings = self.get_embeddings(input["input_table"], input["model"])
         self.projections = self.model.transform(embeddings)
         self.input = input
 

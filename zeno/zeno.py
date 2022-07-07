@@ -36,6 +36,7 @@ from .util import (
 )
 from .pipeline.projection.parametric_umap import ParametricUMAPNode
 from .pipeline.lableler.region_based_labler import RegionBasedLabelerNode
+from .pipeline.filter.hard_id_filter import HardIdFilterNode
 
 
 class Zeno(object):
@@ -55,6 +56,8 @@ class Zeno(object):
     ):
         logging.basicConfig(level=logging.INFO)
 
+        self.initial_projection = None
+        self.filterer = None
         self.projection = None
         self.labeler = None
 
@@ -430,15 +433,15 @@ class Zeno(object):
         # memory = {"io": input_table}
 
         # run projection first
-        self.projection.execute()
+        self.initial_projection.execute()
 
     def __run_parametric_umap(self, embeds):
-        if self.projection is not None:
-            send_to_frontend = self.projection.export_outputs_js()
+        if self.initial_projection is not None:
+            send_to_frontend = self.initial_projection.export_outputs_js()
         else:
             p_umap = ParametricUMAPNode()
             p_umap.init(n_epochs=20, n_neighbors=100, n_components=2)
-            self.projection = p_umap
+            self.initial_projection = p_umap
             p_umap.fit(embeds)
             p_umap.transform(embeds)
             send_to_frontend = p_umap.export_outputs_js()
@@ -465,12 +468,8 @@ class Zeno(object):
         return payload
 
     def run_projection(self, model_name, instance_ids):
-
-        filtered_rows = self.__get_df_rows(
-            self.df, str(self.id_column), list_to_get=instance_ids
-        )
         projection = self.__run_parametric_umap(
-            {"table": filtered_rows, "model": model_name}
+            {"table": self.df, "input_table": self.df, "model": model_name}
         )
         projections_export = self.__package_projection_export(projection, instance_ids)
 
@@ -482,7 +481,9 @@ class Zeno(object):
 
     def run_labeler(self, model_name, polygon_points, labeler_name):
         self.__set_region_labeler(model_name, polygon_points)
-        output = self.pipeline_it({"table": self.df, "model": model_name})
+        output = self.pipeline_it(
+            {"global_table": self.df, "input_table": self.df, "model": model_name}
+        )
         new_column_labels = ZenoColumn(
             column_type=ZenoColumnType.PREDISTILL,
             name=labeler_name,
@@ -496,8 +497,15 @@ class Zeno(object):
 
         return output["labels"]
 
+    def run_hard_filter(self, instance_ids: List[str], model_name: str):
+        self.filterer = HardIdFilterNode()
+        self.filterer.init(instance_ids, self.id_column)
+        return instance_ids
+
     def pipeline_it(self, input_memory):
-        input_memory = self.projection.transform(input_memory).pipe_outputs()
+        input_memory = self.initial_projection.transform(input_memory).pipe_outputs()
+        if self.filterer is not None:
+            input_memory = self.filterer.transform(input_memory).pipe_outputs()
         input_memory = self.labeler.transform(input_memory).pipe_outputs()
         return input_memory
 
