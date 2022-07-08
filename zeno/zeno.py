@@ -491,9 +491,12 @@ class Zeno(object):
             transform="",
         )
         self.df.loc[:, str(new_column_labels)] = output["labels"]
-        self.complete_columns.append(str(new_column_labels))
-        print(self.df.keys())
-        self.status = "Done projecting"
+        if new_column_labels not in self.complete_columns:
+            self.complete_columns.append(new_column_labels)
+        if new_column_labels not in self.columns:
+            self.columns.append(new_column_labels)
+
+        self.status = "Done labeling"
 
         return output["labels"]
 
