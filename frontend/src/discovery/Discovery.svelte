@@ -6,6 +6,7 @@
 	import Samples from "../samples/Samples.svelte";
 	import SampleOptions from "../samples/SampleOptions.svelte";
 	import * as d3chromatic from "d3-scale-chromatic";
+	import Compose from "./compose/Compose.svelte";
 	import * as aq from "arquero";
 	import {
 		projectEmbeddings2D,
@@ -33,8 +34,8 @@
 	import { onMount } from "svelte";
 
 	// props
-	export let scatterWidth = 900;
-	export let scatterHeight = 700;
+	export let scatterWidth = 800;
+	export let scatterHeight = 500;
 	export let colorsCategorical = d3chromatic.schemeCategory10 as string[];
 	export let colorsContinuous = d3chromatic.interpolateBuPu;
 
@@ -54,6 +55,8 @@
 	$: pointsExist = projection2D.length > 0;
 	$: filteredTableEmpty = $filteredTable._nrows === 0;
 	$: tableEmpty = $globalTable._nrows === 0;
+
+	let pipeline = [];
 
 	let ranOnce = false;
 	let mounted = false;
@@ -208,26 +211,26 @@
 		projection2D = initialProjection2D;
 	}
 	let ranInitProjection = false;
-	$: {
-		if (
-			mounted &&
-			!tableEmpty &&
-			$model.length > 0 &&
-			metadataExists &&
-			!ranInitProjection
-		) {
-			project2D($globalTable)
-				.then((d) => {
-					initialProjection2D = d["data"];
-					projection2D = initialProjection2D;
-					return d;
-				})
-				.catch((err) => {
-					console.log(err);
-				});
-			ranInitProjection = true;
-		}
-	}
+	// $: {
+	// 	if (
+	// 		mounted &&
+	// 		!tableEmpty &&
+	// 		$model.length > 0 &&
+	// 		metadataExists &&
+	// 		!ranInitProjection
+	// 	) {
+	// 		project2D($globalTable)
+	// 			.then((d) => {
+	// 				initialProjection2D = d["data"];
+	// 				projection2D = initialProjection2D;
+	// 				return d;
+	// 			})
+	// 			.catch((err) => {
+	// 				console.log(err);
+	// 			});
+	// 		ranInitProjection = true;
+	// 	}
+	// }
 </script>
 
 <div id="main">
@@ -245,7 +248,7 @@
 		</div>
 
 		<!-- Scatter View -->
-		<div id="scatter-view" style:margin-top="10px">
+		<div id="scatter-view" style:margin-top="10px" style:padding="20px">
 			<div
 				class="paper"
 				style:width="{scatterWidth}px"
@@ -269,12 +272,12 @@
 					}}
 					{regionMode} />
 			</div>
-			<div>
+			<!-- <div>
 				<p>{$filteredTable.size} instances</p>
 				<SelectionBar />
-			</div>
+			</div> -->
 		</div>
-		<div>
+		<!-- <div>
 			<button
 				on:click={async () => {
 					if ($filteredTable) {
@@ -322,8 +325,17 @@
 						model: $model,
 					});
 					console.log(output);
+					console.log($filteredTable, $settings);
 				}}>Hard Id filter</button>
-		</div>
+		</div> -->
+		{#if !filteredTableEmpty}
+			<div>
+				<Compose
+					on:init={({ detail }) => {
+						projection2D = detail;
+					}} />
+			</div>
+		{/if}
 	</div>
 
 	<!-- Instances view -->

@@ -31,7 +31,7 @@ class ParametricUMAPNode:
 
     def transform(self, input: dict):
         embeddings = self.get_embeddings(input["input_table"], input["model"])
-        self.projections = self.model.transform(embeddings)
+        self.projections = self.model.transform(embeddings).tolist()
         self.input = input
 
         return self
@@ -40,8 +40,20 @@ class ParametricUMAPNode:
         self.input["projection2D"] = self.projections
         return self.input
 
+    def __package_projection_export(self, projection, instance_ids):
+        payload = []
+        for projection, instance_id in zip(projection, instance_ids):
+            packaged_projection = {"projection": projection, "instance_id": instance_id}
+            payload.append(packaged_projection)
+        return payload
+
     def export_outputs_js(self):
-        return {"projection2D": self.projections}
+        print(self.input.keys())
+        print(self.input["id_column"])
+        id_column = self.input["id_column"]
+        table = self.input["input_table"]
+        ids = table[str(id_column)].tolist()
+        return self.__package_projection_export(self.projections, ids)
 
     def save(self, path: str):
         self.model.save(path)
@@ -51,3 +63,6 @@ class ParametricUMAPNode:
 
     def init(self, *args, **kwargs):
         self.model = ParametricUMAP(*args, **kwargs)
+
+    def __repr__(self):
+        return "ParametricUMAPNode"

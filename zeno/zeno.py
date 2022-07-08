@@ -37,6 +37,7 @@ from .util import (
 from .pipeline.projection.parametric_umap import ParametricUMAPNode
 from .pipeline.lableler.region_based_labler import RegionBasedLabelerNode
 from .pipeline.filter.hard_id_filter import HardIdFilterNode
+from .pipeline import pipeline
 
 
 class Zeno(object):
@@ -56,7 +57,9 @@ class Zeno(object):
     ):
         logging.basicConfig(level=logging.INFO)
 
-        self.initial_projection = None
+        self.pipeline = None
+
+        self.init_projection = None
         self.filterer = None
         self.projection = None
         self.labeler = None
@@ -433,15 +436,15 @@ class Zeno(object):
         # memory = {"io": input_table}
 
         # run projection first
-        self.initial_projection.execute()
+        self.init_projection.execute()
 
     def __run_parametric_umap(self, embeds):
-        if self.initial_projection is not None:
-            send_to_frontend = self.initial_projection.export_outputs_js()
+        if self.init_projection is not None:
+            send_to_frontend = self.init_projection.export_outputs_js()
         else:
             p_umap = ParametricUMAPNode()
             p_umap.init(n_epochs=20, n_neighbors=100, n_components=2)
-            self.initial_projection = p_umap
+            self.init_projection = p_umap
             p_umap.fit(embeds)
             p_umap.transform(embeds)
             send_to_frontend = p_umap.export_outputs_js()
@@ -466,6 +469,14 @@ class Zeno(object):
             packaged_projection = {"projection": projection, "instance_id": instance_id}
             payload.append(packaged_projection)
         return payload
+
+    def add_node(self, node):
+        self.pipeline.append(node)
+
+    def add_projection_pipeline(self, spec_args={}):
+        node = ParametricUMAPNode()
+        node.init(n_epochs=20, n_components=2, **spec_args)
+        self.add_node(node)
 
     def run_projection(self, model_name, instance_ids):
         projection = self.__run_parametric_umap(
@@ -506,11 +517,22 @@ class Zeno(object):
         return instance_ids
 
     def pipeline_it(self, input_memory):
-        input_memory = self.initial_projection.transform(input_memory).pipe_outputs()
+        input_memory = self.init_projection.transform(input_memory).pipe_outputs()
         if self.filterer is not None:
             input_memory = self.filterer.transform(input_memory).pipe_outputs()
         input_memory = self.labeler.transform(input_memory).pipe_outputs()
         return input_memory
+
+    def init_pipeline(self, model_name: str):
+        output = None
+        if self.pipeline is None:
+            self.pipeline = pipeline.Pipeline(
+                model_name=model_name, table=self.df, id_column=self.id_column
+            )
+            output = self.pipeline.set_init_projection()
+        else:
+            output = self.pipeline.init_projection.export_outputs_js()
+        return output
 
     def get_table(self, columns):
         """Get the metadata DataFrame for a given slice.

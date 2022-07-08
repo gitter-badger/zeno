@@ -12,6 +12,8 @@ from fastapi.responses import Response
 from fastapi.staticfiles import StaticFiles
 
 from .classes import (
+    InitPipeline,
+    PipelineProjection,
     ProjectionRequest,
     ReportsRequest,
     ResultsRequest,
@@ -214,6 +216,17 @@ def run_zeno(args):
     def update_reports(reqs: ReportsRequest):
         return json.dumps(zeno.update_reports(reqs))
 
+    @api_app.post("/pipeline/projection")
+    def add_projection(proj_req: PipelineProjection):
+        zeno.add_projection_pipeline(proj_req.projection_kwargs)
+        print(zeno.pipeline)
+        return json.dumps(
+            {
+                "status": "added parametric umap",
+                "kwargs": proj_req.projection_kwargs,
+            }
+        )
+
     @api_app.post("/projection")
     def run_projection(proj_req: ProjectionRequest):
         projection = zeno.run_projection(proj_req.model, proj_req.instance_ids)
@@ -228,6 +241,11 @@ def run_zeno(args):
     def run_harder_filter(req: HardFilterRequest):
         print(req)
         output = zeno.run_hard_filter(req.instance_ids, req.model)
+        return json.dumps({"data": output, "model": req.model})
+
+    @api_app.post("/init-pipeline")
+    def init_pipeline(req: InitPipeline):
+        output = zeno.init_pipeline(req.model)
         return json.dumps({"data": output, "model": req.model})
 
     @api_app.websocket("/status")

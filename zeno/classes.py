@@ -122,3 +122,11 @@ class RegionLabelerRequest(BaseModel):
 class HardFilterRequest(BaseModel):
     model: str
     instance_ids: List[str]
+
+
+class PipelineProjection(BaseModel):
+    projection_kwargs: dict = {}
+
+
+class InitPipeline(BaseModel):
+    model: str
