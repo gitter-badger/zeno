@@ -1,8 +1,10 @@
-class HardIdFilterNode:
+class HardFilterNode:
     def __init__(self):
         self.status = ""
 
-    def fit(self, input):
+    def fit(self, input: dict):
+        self.input = input
+
         return self
 
     def __get_df_rows(self, dataframe, column, list_to_get=None):
@@ -10,28 +12,29 @@ class HardIdFilterNode:
             return []
         return dataframe[dataframe[column].isin(list_to_get)]
 
-    def get_ids(self, table, id_column, ids):
-        return self.__get_df_rows(table, id_column, ids)
-
-    def transform(self, input):
-        self.input = input
-        self.filter = self.get_ids(input["input_table"], **self.model)
+    def transform(self, input: dict):
+        input_table = input["input_table"]
+        id_column = self.input["id_column"]
+        self.filtered_table = self.__get_df_rows(
+            input_table, str(id_column), self.instance_ids
+        )
         return self
 
     def pipe_outputs(self):
-        self.input["input_table"] = self.filter
-        return {**self.input}
+        self.input["input_table"] = self.filtered_table
+        return self.input
 
     def export_outputs_js(self):
-        return {"filter": self.model["ids"]}
+        return {"status": "added hard id filter"}
 
     def save(self, path: str):
-        with open(path, "w") as out_file:
-            out_file.write(self.model)
+        pass
 
     def load(self, path: str):
-        with open(path, "r") as in_file:
-            self.model = in_file.readline()
+        pass
 
-    def init(self, ids: list, id_column: str):
-        self.model = {"ids": ids, "id_column": id_column}
+    def init(self, instance_ids: list):
+        self.instance_ids = instance_ids
+
+    def __repr__(self):
+        return "HardFilterNode"

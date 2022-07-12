@@ -37,7 +37,7 @@ class ParametricUMAPNode:
         return self
 
     def pipe_outputs(self):
-        self.input["projection2D"] = self.projections
+        self.input["projection2D"] = [proj for proj in self.projections]
         return self.input
 
     def __package_projection_export(self, projection, instance_ids):
@@ -48,8 +48,6 @@ class ParametricUMAPNode:
         return payload
 
     def export_outputs_js(self):
-        print(self.input.keys())
-        print(self.input["id_column"])
         id_column = self.input["id_column"]
         table = self.input["input_table"]
         ids = table[str(id_column)].tolist()

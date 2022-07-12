@@ -130,3 +130,16 @@ class PipelineProjection(BaseModel):
 
 class InitPipeline(BaseModel):
     model: str
+
+
+class HardFilterPipelineRequest(BaseModel):
+    instance_ids: list[str]
+
+
+class EmbeddingProjectionPipelineRequest(BaseModel):
+    projection_kwargs: dict = {}
+
+
+class RegionLabelerPipelineRequest(BaseModel):
+    polygon: list[list[float]]
+    name: str

@@ -71,3 +71,5 @@ export const currentColumns: Readable<ZenoColumn[]> = derived(
 );
 
 export const recentResultHash: Writable<string> = writable("0");
+
+export const globalColorBy: Writable<string> = writable("0label");

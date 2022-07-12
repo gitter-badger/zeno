@@ -22,6 +22,7 @@
 		model,
 		settings,
 		table as globalTable,
+		globalColorBy,
 	} from "../stores";
 	import { columnHash } from "../util";
 
@@ -42,7 +43,6 @@
 	let projection2D: object[] = [];
 	let colorValues: number[] = [];
 	let opacityValues: number[] = [];
-	let colorBy: string = "0label";
 	// eslint-disable-next-line
 	let dataType: dataType = "categorical";
 	let colorRange: string[] = colorsCategorical;
@@ -64,11 +64,14 @@
 		mounted = true;
 	});
 
+	$: console.log(projection2D);
 	$: {
 		if (!filteredTableEmpty && !tableEmpty && mounted) {
-			updateColors({ colorBy, table: $globalTable });
+			updateColors({ colorBy: $globalColorBy, table: $globalTable });
 			const colorColumn = aq.table({ color: colorValues });
+			console.log(colorValues.length);
 			console.log(colorColumn);
+			console.log(colorColumn, $globalColorBy);
 			globalTable.set($globalTable.assign(colorColumn));
 		}
 	}
@@ -84,6 +87,7 @@
 
 			opacityValues = new Array(coordinates.length).fill(1.0);
 
+			console.log("scatter updated");
 			updateLegendaryScatter({
 				projection2D: coordinates,
 				colorRange,
@@ -237,15 +241,15 @@
 	<MetadataBar />
 	<div>
 		<!-- Color Dropdown -->
-		<div id="color-by">
+		<!-- <div id="color-by">
 			{#if metadataExists}
-				<Select bind:value={colorBy} label={"Color Points By"}>
+				<Select bind:value={$globalColorBy} label={"Color Points By"}>
 					{#each metadataWithModelOptions as metadata, i}
 						<Option value={columnHash(metadata)}>{metadata.name}</Option>
 					{/each}
 				</Select>
 			{/if}
-		</div>
+		</div> -->
 
 		<!-- Scatter View -->
 		<div id="scatter-view" style:margin-top="10px" style:padding="20px">
@@ -294,12 +298,6 @@
 				}}
 				>Compute projection
 			</button>
-			<button
-				on:click={() => {
-					regionMode = !regionMode;
-				}}
-				>Region mode
-			</button>
 			{#if regionPolygon.length > 0}
 				<input type="text" bind:value={regionName} />
 				<button
@@ -328,12 +326,19 @@
 					console.log($filteredTable, $settings);
 				}}>Hard Id filter</button>
 		</div> -->
+		<button
+			on:click={() => {
+				regionMode = !regionMode;
+			}}
+			>Region mode
+		</button>
 		{#if !filteredTableEmpty}
 			<div>
 				<Compose
 					on:init={({ detail }) => {
 						projection2D = detail;
-					}} />
+					}}
+					polygon={regionPolygon} />
 			</div>
 		{/if}
 	</div>

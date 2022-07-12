@@ -12,9 +12,12 @@ from fastapi.responses import Response
 from fastapi.staticfiles import StaticFiles
 
 from .classes import (
+    EmbeddingProjectionPipelineRequest,
+    HardFilterPipelineRequest,
     InitPipeline,
     PipelineProjection,
     ProjectionRequest,
+    RegionLabelerPipelineRequest,
     ReportsRequest,
     ResultsRequest,
     StatusResponse,
@@ -243,10 +246,32 @@ def run_zeno(args):
         output = zeno.run_hard_filter(req.instance_ids, req.model)
         return json.dumps({"data": output, "model": req.model})
 
-    @api_app.post("/init-pipeline")
+    @api_app.post("/pipeline/init")
     def init_pipeline(req: InitPipeline):
         output = zeno.init_pipeline(req.model)
         return json.dumps({"data": output, "model": req.model})
+
+    @api_app.post("/pipeline/clear")
+    def clear_pipeline():
+        zeno.pipeline.clear()
+        return json.dumps({"status": "cleared"})
+
+    @api_app.post("/pipeline/hard-filter")
+    def hard_filter_pipeline(req: HardFilterPipelineRequest):
+        output = zeno.set_hard_filter(req.instance_ids)
+        print("memory", len(zeno.pipeline.io_memory["input_table"]))
+        return json.dumps({"data": output})
+
+    @api_app.post("/pipeline/embedding-projection")
+    def embedding_projection_pipeline(req: EmbeddingProjectionPipelineRequest):
+        output = zeno.set_embedding_projection(req.projection_kwargs)
+        print("pipeline", zeno.pipeline.mutators)
+        return json.dumps({"data": output})
+
+    @api_app.post("/pipeline/region-labeler")
+    def region_labeler_pipeline(req: RegionLabelerPipelineRequest):
+        output = zeno.set_region_labeler(req.polygon, req.name)
+        return json.dumps({"data": output})
 
     @api_app.websocket("/status")
     async def results_websocket(websocket: WebSocket):

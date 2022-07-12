@@ -36,7 +36,7 @@ from .util import (
 )
 from .pipeline.projection.parametric_umap import ParametricUMAPNode
 from .pipeline.lableler.region_based_labler import RegionBasedLabelerNode
-from .pipeline.filter.hard_id_filter import HardIdFilterNode
+from .pipeline.filter.hard_id_filter import HardFilterNode
 from .pipeline import pipeline
 
 
@@ -512,7 +512,7 @@ class Zeno(object):
         return output["labels"]
 
     def run_hard_filter(self, instance_ids: List[str], model_name: str):
-        self.filterer = HardIdFilterNode()
+        self.filterer = HardFilterNode()
         self.filterer.init(instance_ids, self.id_column)
         return instance_ids
 
@@ -524,14 +524,37 @@ class Zeno(object):
         return input_memory
 
     def init_pipeline(self, model_name: str):
-        output = None
-        if self.pipeline is None:
-            self.pipeline = pipeline.Pipeline(
-                model_name=model_name, table=self.df, id_column=self.id_column
-            )
-            output = self.pipeline.set_init_projection()
-        else:
-            output = self.pipeline.init_projection.export_outputs_js()
+        self.pipeline = pipeline.Pipeline(
+            model_name=model_name, table=self.df, id_column=self.id_column
+        )
+        output = self.pipeline.set_init_projection()
+        return output
+
+    def set_embedding_projection(self, args):
+        output = self.pipeline.add_embedding_projection(args)
+        return output
+
+    def set_hard_filter(self, instance_ids: list):
+        output = self.pipeline.add_filter_node(instance_ids)
+        return output
+
+    def set_region_labeler(self, polygon: list, name: str):
+        self.pipeline.add_weak_labeler(polygon)
+        output = self.pipeline.transform_all()
+        new_column_labels = ZenoColumn(
+            column_type=ZenoColumnType.PREDISTILL,
+            name=name,
+            model=self.pipeline.model_name,
+            transform="",
+        )
+
+        self.df.loc[:, str(new_column_labels)] = self.pipeline.io_memory["labels"]
+        if new_column_labels not in self.complete_columns:
+            self.complete_columns.append(new_column_labels)
+        if new_column_labels not in self.columns:
+            self.columns.append(new_column_labels)
+
+        self.status = "Done labeling"
         return output
 
     def get_table(self, columns):

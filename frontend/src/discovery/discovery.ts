@@ -131,6 +131,7 @@ export function binContinuous(values: unknown[], bins = 10) {
 			}
 		}
 	}
+	console.log(assignments);
 	return assignments;
 }
 
