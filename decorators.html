@@ -416,7 +416,7 @@ title="Print to PDF"
 <p>Every Zeno test module is passed a ZenoOptions object with the following parameters:</p>
 <span class="target" id="module-zeno"></span><dl class="py class">
 <dt class="sig sig-object py" id="zeno.ZenoOptions">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ZenoOptions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/api.html#ZenoOptions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.ZenoOptions" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ZenoOptions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distill_columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/zeno/api.html#ZenoOptions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#zeno.ZenoOptions" title="Permalink to this definition">#</a></dt>
 <dd><p>Parameters passed to Zeno test functions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -430,6 +430,7 @@ model’s raw output or path to output</p></li>
 <li><p><strong>data_path</strong> (<em>str</em>) – Path to directory with data files.</p></li>
 <li><p><strong>label_path</strong> (<em>str</em>) – Path to directory with label files.</p></li>
 <li><p><strong>output_path</strong> (<em>str</em>) – Path to directory with a given model’s output.</p></li>
+<li><p><strong>distill_columns</strong> (<em>map</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – Map from distiller name to distill column.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>

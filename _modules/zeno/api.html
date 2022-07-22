@@ -310,12 +310,14 @@ title="Open an issue"
 <span class="sd">        data_path (str): Path to directory with data files.</span>
 <span class="sd">        label_path (str): Path to directory with label files.</span>
 <span class="sd">        output_path (str): Path to directory with a given model&#39;s output.</span>
+<span class="sd">        distill_columns (map[str, str]): Map from distiller name to distill column.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">id_column</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">data_column</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">label_column</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">output_column</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">distill_columns</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
     <span class="n">data_path</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">label_path</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span></div>
