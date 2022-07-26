@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Writing Tests &#8212; Zeno</title>
+    <title>Python API &#8212; Zeno</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -53,8 +53,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/favicon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Running Tests" href="api.html" />
-    <link rel="prev" title="Zeno: Behavioral Evaluation Platform for ML" href="intro.html" />
+    <link rel="next" title="TOML configuration file" href="api.html" />
+    <link rel="prev" title="Getting started" href="getting_started.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -107,59 +107,25 @@ const thebe_selector_output = ".output, .cell_output"
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item active">
         <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="getting_started.html">
+   Getting started
+  </a>
+ </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   Writing Tests
+   Python API
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="api.html">
-   Running Tests
+   TOML configuration file
   </a>
  </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="example_test_functions.html">
-   Example Test Functions
+ <li class="toctree-l1">
+  <a class="reference internal" href="views.html">
+   Instance views
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="predict_functions/predict_functions.html">
-     Predict Functions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="distill_functions/distill_functions.html">
-     Distill Functions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metric_functions/metric_functions.html">
-     Metric Functions
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="example_analyses/example_analyses.html">
-   Example Analyses
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="example_analyses/cifar.html">
-     CIFAR Analysis Example
-    </a>
-   </li>
-  </ul>
  </li>
 </ul>
 
@@ -367,7 +333,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Writing Tests</h1>
+                <h1>Python API</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -407,8 +373,8 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="writing-tests">
-<span id="id1"></span><h1>Writing Tests<a class="headerlink" href="#writing-tests" title="Permalink to this headline">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="python-api">
+<span id="writing-tests"></span><h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this headline">#</a></h1>
 <p>Zeno has 3 primary decorator functions: <code class="docutils literal notranslate"><span class="pre">predict_function</span></code>, <code class="docutils literal notranslate"><span class="pre">distill_function</span></code> and <code class="docutils literal notranslate"><span class="pre">metric_function</span></code>.</p>
 <p>You can pass any number of files with decorated functions to Zeno, but you <strong>must have one and only one <code class="docutils literal notranslate"><span class="pre">predict_function</span></code></strong>.</p>
 <section id="options">
@@ -520,17 +486,17 @@ Metrics can be classic functions such as accuracy, or specific measures such as 
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="intro.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="getting_started.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Zeno: Behavioral Evaluation Platform for ML</p>
+            <p class="prev-next-title">Getting started</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="api.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Running Tests</p>
+        <p class="prev-next-title">TOML configuration file</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
