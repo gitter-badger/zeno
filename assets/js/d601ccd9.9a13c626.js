@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkzeno_docs=self.webpackChunkzeno_docs||[]).push([[324],{4342:e=>{e.exports=JSON.parse('{"permalink":"/zeno/blog/tags/welcome","page":1,"postsPerPage":10,"totalPages":1,"totalCount":1,"blogDescription":"Blog","blogTitle":"Blog"}')}}]);

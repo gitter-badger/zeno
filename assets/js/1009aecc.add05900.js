@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkzeno_docs=self.webpackChunkzeno_docs||[]).push([[481],{7070:e=>{e.exports=JSON.parse('[{"label":"welcome","permalink":"/zeno/blog/tags/welcome","count":1}]')}}]);
