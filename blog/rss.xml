@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
     <channel>
         <title>Zeno Blog</title>
-        <link>https://zenoml.com/blog</link>
+        <link>https://zenoml.com/zeno/blog</link>
         <description>Zeno Blog</description>
         <lastBuildDate>Fri, 26 Aug 2022 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
@@ -10,7 +10,7 @@
         <language>en</language>
         <item>
             <title><![CDATA[Welcome to Zeno]]></title>
-            <link>https://zenoml.com/blog/welcome-post</link>
+            <link>https://zenoml.com/zeno/blog/welcome-post</link>
             <guid>welcome-post</guid>
             <pubDate>Fri, 26 Aug 2022 00:00:00 GMT</pubDate>
             <description><![CDATA[Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet]]></description>
