@@ -87,15 +87,16 @@ class Slice:
         return slice_desc 
 
 class SliceFinder:
-    def __init__(self, data_xy, data_full, id_colname, output_colname, metric_fn):
+    def __init__(self, data_xy, data_full, id_colname, output_colname, metric_fn, size_min):
         # self.model = model
         self.data = data_xy
         self.data_full = data_full
         self.id_colname = id_colname
         self.output_colname = output_colname
         self.metric_fn = metric_fn
+        self.size_min = size_min
 
-    def find_slice(self, k=50, epsilon=0.2, alpha=0.05, degree=3, risk_control=True, max_workers=1):
+    def find_slice(self, k=50, epsilon=0.2, degree=3, risk_control=True, max_workers=1):
         ''' Find interesting slices '''
         ''' risk_control parameter is obsolete; we do post processing for it '''
         assert k > 0, 'Number of recommendation k should be greater than 0'
@@ -117,7 +118,7 @@ class SliceFinder:
                 candidates = self.crossing(uninteresting, i)
             print ('effect size filtering')
             interesting, uninteresting_ = self.filter_by_effect_size(candidates, reference, epsilon, 
-                                                                    max_workers=max_workers, alpha=alpha,
+                                                                    max_workers=max_workers,
                                                                     risk_control=risk_control)
             uninteresting += uninteresting_
             slices += interesting
@@ -201,7 +202,7 @@ class SliceFinder:
         # return (np.mean(m_tmp), np.std(m_tmp), len(m_tmp))
             # return [1-i for i in m_tmp]
 
-    def filter_by_effect_size(self, slices, reference, epsilon=0.3, max_workers=1, alpha=0.05, risk_control=True):
+    def filter_by_effect_size(self, slices, reference, epsilon=0.3, max_workers=1, risk_control=True):
         ''' Filter slices by the minimum effect size '''
         filtered_slices = []
         rejected = []
@@ -211,7 +212,7 @@ class SliceFinder:
             for s in slices:
                 if s.size == 0:
                     continue
-                batch_jobs.append(executor.submit(self.eff_size_job, s, reference, alpha))
+                batch_jobs.append(executor.submit(self.eff_size_job, s, reference))
             for job in concurrent.futures.as_completed(batch_jobs):
                 if job.cancelled():
                     continue
@@ -224,11 +225,11 @@ class SliceFinder:
                         rejected.append(s)
         return filtered_slices, rejected
 
-    def eff_size_job(self, s, reference, alpha=0.05):
+    def eff_size_job(self, s, reference):
         data = (self.data[0].loc[s.data_idx], self.data[1].loc[s.data_idx])
         # m_slice = self.evaluate_model(data)
         slice_reference = self.evaluate_model(data)
-        eff_size = effect_size(slice_reference, reference)
+        eff_size = effect_size(slice_reference, reference, self.size_min)
         #test_result = t_testing(m_slice, reference, alpha)
 
         s.set_metric(slice_reference[0])
@@ -236,7 +237,7 @@ class SliceFinder:
         return s  #, test_result
     
     def merge_slices(self, slices, reference, epsilon):
-        # never called
+        # never called 
         ''' Merge slices with the same filter attributes
             if the minimum effect size condition is satisfied '''
         merged_slices = []
