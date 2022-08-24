@@ -53,24 +53,28 @@
 	};
 	let hoveringCell = false;
 
-	$: hash = columnHash(col);
-	$: {
-		if (assignColors === true && $model) {
-			drawChart($table);
-		}
-	}
 	$: selectedHash = $colorByHash === hash;
 	$: selectedHashColor = shouldColor ? (selectedHash ? "#9B52DF" : "") : "";
-	$: {
-		col;
-		updateData($table, $filteredTable);
-	}
+	$: hash = columnHash(col);
 	$: dynamicSpec =
 		col.metadataType === MetadataType.CONTINUOUS
 			? generateHistogramSpec
 			: generateCountSpec;
+	$: tablesPopulated = $table.size > 0 && $filteredTable.size > 0;
 
-	table.subscribe((t) => drawChart(t));
+	// for changing colors when model changes
+	$: {
+		if (tablesPopulated && assignColors === true && $model) {
+			drawChart($table);
+		}
+	}
+
+	$: {
+		col;
+		if (tablesPopulated) {
+			updateData($table, $filteredTable);
+		}
+	}
 
 	onMount(() => {
 		selection.column = col;
