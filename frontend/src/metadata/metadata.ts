@@ -11,6 +11,16 @@ import { MetadataType } from "../globals";
 import { columnHash } from "../util/util";
 import { interpolateColorToArray } from "../discovery/discovery";
 
+export interface IDomainEntry<T> {
+	domainEntry: T;
+	count?: number;
+	filteredCount?: number;
+	color?: string;
+}
+
+export type domain<T> = IDomainEntry<T>[];
+export type assignments = number[] | Int32Array;
+
 interface IComputeDomain {
 	type: MetadataType;
 	table: ColumnTable;
@@ -55,7 +65,7 @@ export function computeDomain({ type, table, column }: IComputeDomain) {
 	return result;
 }
 
-function computeCategoricalDomain({ table, column }: ISpecificDomain) {
+export function computeCategoricalDomain({ table, column }: ISpecificDomain) {
 	const categoryGroups = table.groupby(column);
 	const categoryKeys = categoryGroups.groups().keys;
 	const categoryData = categoryGroups.count();
@@ -84,12 +94,15 @@ function computeCategoricalDomain({ table, column }: ISpecificDomain) {
 		assignments.push(correctIndex);
 	}
 
+	// major axis
 	const output = {
-		category: newCategories,
+		domainEntry: newCategories,
 		count: orderedCategoryData.columnArray("count"),
 	};
+	// transformed into an array of objects
+	const domainObj: domain<string> = combineOutputOneArray(output);
 
-	return { domain: combineOutputOneArray(output), assignments };
+	return { domain: domainObj, assignments };
 }
 
 function computeCountDomain({ table, column }: ISpecificDomain) {
@@ -97,23 +110,30 @@ function computeCountDomain({ table, column }: ISpecificDomain) {
 	return output;
 }
 
-function computeBinaryDomain({ table, column }: ISpecificDomain) {
+export function computeBinaryDomain({ table, column }: ISpecificDomain) {
 	const output = computeCategoricalDomain({ table, column });
 	return output;
 }
 
-function computeDateDomain({ table, column }: ISpecificDomain) {
+export function computeDateDomain({ table, column }: ISpecificDomain) {
 	const dates = table
 		.array(column)
 		.map((date) => new Date(date))
 		.sort((a, b) => a - b);
-	return { domain: [dates[0], dates[dates.length - 1]], assignments: [] };
+	const datesRange: domain<number | string> = [
+		{ domainEntry: dates[0] },
+		{ domainEntry: dates[dates.length - 1] },
+	];
+	return { domain: datesRange, assignments: [] };
 }
 
-function computeContinuousBinnedDomain({ table, column }: ISpecificDomain) {
+export function computeContinuousBinnedDomain({
+	table,
+	column,
+}: ISpecificDomain) {
 	const bins = binTable(table, column);
 	return {
-		domain: combineOutputOneArray(bins.output),
+		domain: combineOutputOneArray(bins.output) as domain<[number, number]>,
 		assignments: bins.assignments,
 	};
 }
@@ -128,7 +148,7 @@ function computeOtherDomain({ table, column }: ISpecificDomain) {
 	return { domain: [], assignments: [] };
 }
 
-function combineOutputOneArray(obj: object) {
+function combineOutputOneArray<T>(obj: T) {
 	const key = 0,
 		array = 1;
 	const entries = Object.entries(obj);
