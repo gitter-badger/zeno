@@ -62,21 +62,22 @@ def find_slice_main(data_name, X_colname, Y_colname, id_colname, output_colname,
     return recommendations
 
 
+# Cifar_zeon example
+data_name = "cifar_zeno.csv"
+X_colname = ['id', 'blue_border_count', 'red_count', 'border_brightness', 'brightness', 'label']
+Y_colname = 'label'
+id_colname = 'id'
+output_colname = 'output'
+metric_fn = accuracy_metric
+slice_num = 10
+size_min_val = 20
+epsilon_val = 0.4
+degree_val = 2
+max_workers_val = 4
 
-# data_name = "cifar_zeno.csv"
-# X_colname = ['id', 'blue_border_count', 'red_count', 'border_brightness', 'brightness', 'label']
-# Y_colname = 'label'
-# id_colname = 'id'
-# output_colname = 'output'
-# metric_fn = accuracy_metric
-# slice_num = 10
-# size_min_val = 20
-# epsilon_val = 0.4
-# degree_val = 2
-# max_workers_val = 4
+find_slice_main(data_name, X_colname, Y_colname, id_colname, output_colname, metric_fn, slice_num, degree_val, size_min_val, epsilon_val, max_workers_val=4)
 
-# find_slice_main(data_name, X_colname, Y_colname, id_colname, output_colname, metric_fn, slice_num, degree_val, size_min_val, epsilon_val, max_workers_val=4)
-
+# Audio example
 data_name = "audio.csv"
 X_colname = ['0id', '0label', '0speaker', '0take', '1amplitude', '1length']
 Y_colname = '0label'
