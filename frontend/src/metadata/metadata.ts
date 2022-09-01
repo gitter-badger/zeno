@@ -132,8 +132,16 @@ export function computeContinuousBinnedDomain({
 	column,
 }: ISpecificDomain) {
 	const bins = binTable(table, column);
+	let domain = combineOutputOneArray(bins.output);
+	domain = domain.map((d) => {
+		return {
+			count: d.count,
+			domainEntry: { binStart: d.binStart, binEnd: d.binEnd },
+		};
+	}) as domain<{ binStart: number; binEnd: number }>;
+
 	return {
-		domain: combineOutputOneArray(bins.output) as domain<[number, number]>,
+		domain,
 		assignments: bins.assignments,
 	};
 }
@@ -260,7 +268,11 @@ export function countDomainCategorical({
 }) {
 	const counts = domain.map((d) => {
 		return {
-			count: countColumnByCategory({ table, column, category: d["category"] }),
+			count: countColumnByCategory({
+				table,
+				column,
+				category: d["domainEntry"],
+			}),
 		};
 	});
 	return counts;
@@ -280,8 +292,8 @@ export function countDomainContinuousBins({
 			count: countColumnByBin({
 				table,
 				column,
-				binStart: d["binStart"],
-				binEnd: d["binEnd"],
+				binStart: d["domainEntry"]["binStart"],
+				binEnd: d["domainEntry"]["binEnd"],
 			}),
 		};
 	});

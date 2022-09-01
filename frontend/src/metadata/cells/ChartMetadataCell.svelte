@@ -44,14 +44,14 @@
 
 	$: if (view) {
 		if (metadataType === MetadataType.CONTINUOUS) {
-			view.addSignalListener(
-				"brush",
-				(...s) => (selection.values = s[1].binStart ? s[1].binStart : [])
-			);
+			view.addSignalListener("brush", (...s) => {
+				const binStart = s[1]["domainEntry\\.binStart"];
+				selection.values = binStart ? binStart : [];
+			});
 		} else if (metadataType === MetadataType.NOMINAL) {
 			view.addSignalListener(
 				"select",
-				(...s) => (selection.values = s[1].category ? s[1].category : [])
+				(...s) => (selection.values = s[1].domainEntry ? s[1].domainEntry : [])
 			);
 		}
 	}

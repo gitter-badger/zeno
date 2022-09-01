@@ -28,7 +28,7 @@ export function generateCountSpec({
 				mark: { type: "bar", opacity: opacity, fill: "#ddd" },
 				encoding: {
 					x: {
-						field: "category",
+						field: "domainEntry",
 						axis: {
 							title: "",
 							grid: false,
@@ -47,7 +47,7 @@ export function generateCountSpec({
 				mark: { type: "bar", opacity: opacity },
 				encoding: {
 					x: {
-						field: "category",
+						field: "domainEntry",
 					},
 					y: {
 						field: "filteredCount",
@@ -120,10 +120,10 @@ export function generateHistogramSpec({
 				mark: { type: "bar", opacity: opacity },
 				encoding: {
 					x: {
-						field: "binStart",
+						field: "domainEntry[binStart]",
 						bin: { binned: true },
 					},
-					x2: { field: "binEnd" },
+					x2: { field: "domainEntry[binEnd]" },
 					y: {
 						field: "count",
 						type: "quantitative",
@@ -138,12 +138,12 @@ export function generateHistogramSpec({
 						legend: null,
 					},
 					x: {
-						field: "binStart",
+						field: "domainEntry[binStart]",
 						bin: { binned: true },
 						title: "",
 						axis: { title: "", labelColor: "rgba(0, 0, 0, 0.6)" },
 					},
-					x2: { field: "binEnd" },
+					x2: { field: "domainEntry[binEnd]" },
 					y: {
 						field: "filteredCount",
 						type: "quantitative",

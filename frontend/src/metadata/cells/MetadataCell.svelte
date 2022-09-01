@@ -95,21 +95,18 @@
 				column: hash,
 				type: col.metadataType,
 			});
-			if (col.metadataType === MetadataType.NOMINAL) {
+
+			if (
+				col.metadataType === MetadataType.NOMINAL ||
+				col.metadataType === MetadataType.CONTINUOUS
+			) {
 				domain = domain.map((d, i) => ({
 					filteredCount: counts[i].count,
 					count: d["count"],
-					category: d["category"],
+					domainEntry: d["domainEntry"],
 					color: d["color"],
 				}));
-			} else if (col.metadataType === MetadataType.CONTINUOUS) {
-				domain = domain.map((d, i) => ({
-					filteredCount: counts[i].count,
-					count: d["count"],
-					binStart: d["binStart"],
-					binEnd: d["binEnd"],
-					color: d["color"],
-				}));
+				console.log(domain);
 			}
 			histogramData = { table: domain };
 		}
