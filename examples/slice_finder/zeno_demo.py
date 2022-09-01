@@ -6,7 +6,7 @@ from foo import *
 # Y_colname = a string of coloumn name of the true label
 # id_colname = id coloumn name
 # output_colname = (predicted) output coloumn name
-# metric_fn = name of metric function
+# metric_fn = metric function
 # slice_num = number of problematic slices to find
 # degree_val = maxium number of crossing features
 # size_min_val = minimum size of problematic slices
@@ -19,13 +19,14 @@ def find_slice_main(data_name, X_colname, Y_colname, id_colname, output_colname,
         data_name, 
         sep=r'\s*,\s*', engine='python', na_values="?")
 
-    full_data = full_data.dropna()
+    # full_data = full_data.dropna()
 
     encoders = {}
     for column in full_data.columns:
         if full_data.dtypes[column] == np.object:
             le = LabelEncoder()
-            full_data[column] = le.fit_transform(full_data[column])
+            # full_data[column] = le.fit_transform(full_data[column])
+            le.fit_transform(full_data[column])
             encoders[column] = le
             print(column, le.classes_, le.transform(le.classes_))
 
@@ -45,7 +46,8 @@ def find_slice_main(data_name, X_colname, Y_colname, id_colname, output_colname,
             if k in encoders:
                 le = encoders[k]
                 for v_ in v:
-                    values += '%s '%(le.inverse_transform(v_)[0])
+                    # values += '%s '%(le.inverse_transform(v_)[0])
+                    values += '%s '%((v_)[0])
             else:
                 for v_ in sorted(v, key=lambda x: x[0]):
                     if len(v_) > 1:
@@ -60,7 +62,7 @@ def find_slice_main(data_name, X_colname, Y_colname, id_colname, output_colname,
     return recommendations
 
 
-
+# Cifar_zeon example
 data_name = "cifar_zeno.csv"
 X_colname = ['id', 'blue_border_count', 'red_count', 'border_brightness', 'brightness', 'label']
 Y_colname = 'label'
@@ -75,13 +77,26 @@ max_workers_val = 4
 
 find_slice_main(data_name, X_colname, Y_colname, id_colname, output_colname, metric_fn, slice_num, degree_val, size_min_val, epsilon_val, max_workers_val=4)
 
+# Audio example
+data_name = "audio.csv"
+X_colname = ['0id', '0label', '0speaker', '0take', '1amplitude', '1length']
+Y_colname = '0label'
+id_colname = '0id'
+output_colname = 'label'
+metric_fn = accuracy_metric_audio
+slice_num = 10
+size_min_val = 20
+epsilon_val = 0.4
+degree_val = 2
+max_workers_val = 4
 
-
-
+find_slice_main(data_name, X_colname, Y_colname, id_colname, output_colname, metric_fn, slice_num, degree_val, size_min_val, epsilon_val, max_workers_val=4)
 
 # zeno_data = pd.read_csv(
-#     "cifar_zeno.csv", 
+#     "clean_audio.csv", 
 #     sep=r'\s*,\s*', engine='python', na_values="?")
+# print(zeno_data.columns)
+# print(zeno_data.head())
 
 # # drop nan values
 # zeno_data = zeno_data.dropna()
